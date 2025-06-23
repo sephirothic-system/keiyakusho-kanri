@@ -1,7 +1,8 @@
 {
-  "name": "sample",
+  "name": "keiyakusho-kanri",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "license": "Elastic-2.0",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
