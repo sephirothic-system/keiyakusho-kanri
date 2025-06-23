@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+契約書管理サービス
+
+## Backend
+
+- next.js
+- serverside
+- postgresql
+
+## Frontend
+
+- next.js
+- shadcn
+- tailwindcss
+
+
