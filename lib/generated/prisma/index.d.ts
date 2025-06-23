@@ -1578,13 +1578,13 @@ export namespace Prisma {
    */
 
   export type GroupCountOutputType = {
-    userGroups: number
     directoryAccess: number
+    userGroups: number
   }
 
   export type GroupCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    userGroups?: boolean | GroupCountOutputTypeCountUserGroupsArgs
     directoryAccess?: boolean | GroupCountOutputTypeCountDirectoryAccessArgs
+    userGroups?: boolean | GroupCountOutputTypeCountUserGroupsArgs
   }
 
   // Custom InputTypes
@@ -1601,15 +1601,15 @@ export namespace Prisma {
   /**
    * GroupCountOutputType without action
    */
-  export type GroupCountOutputTypeCountUserGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: UserGroupWhereInput
+  export type GroupCountOutputTypeCountDirectoryAccessArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DirectoryAccessWhereInput
   }
 
   /**
    * GroupCountOutputType without action
    */
-  export type GroupCountOutputTypeCountDirectoryAccessArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DirectoryAccessWhereInput
+  export type GroupCountOutputTypeCountUserGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserGroupWhereInput
   }
 
 
@@ -1618,14 +1618,14 @@ export namespace Prisma {
    */
 
   export type DirectoryCountOutputType = {
-    children: number
     contracts: number
+    children: number
     directoryAccess: number
   }
 
   export type DirectoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    children?: boolean | DirectoryCountOutputTypeCountChildrenArgs
     contracts?: boolean | DirectoryCountOutputTypeCountContractsArgs
+    children?: boolean | DirectoryCountOutputTypeCountChildrenArgs
     directoryAccess?: boolean | DirectoryCountOutputTypeCountDirectoryAccessArgs
   }
 
@@ -1643,15 +1643,15 @@ export namespace Prisma {
   /**
    * DirectoryCountOutputType without action
    */
-  export type DirectoryCountOutputTypeCountChildrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: DirectoryWhereInput
+  export type DirectoryCountOutputTypeCountContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContractWhereInput
   }
 
   /**
    * DirectoryCountOutputType without action
    */
-  export type DirectoryCountOutputTypeCountContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ContractWhereInput
+  export type DirectoryCountOutputTypeCountChildrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DirectoryWhereInput
   }
 
   /**
@@ -3011,8 +3011,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    userGroups?: boolean | Group$userGroupsArgs<ExtArgs>
     directoryAccess?: boolean | Group$directoryAccessArgs<ExtArgs>
+    userGroups?: boolean | Group$userGroupsArgs<ExtArgs>
     _count?: boolean | GroupCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["group"]>
 
@@ -3045,8 +3045,8 @@ export namespace Prisma {
 
   export type GroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["group"]>
   export type GroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    userGroups?: boolean | Group$userGroupsArgs<ExtArgs>
     directoryAccess?: boolean | Group$directoryAccessArgs<ExtArgs>
+    userGroups?: boolean | Group$userGroupsArgs<ExtArgs>
     _count?: boolean | GroupCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -3055,8 +3055,8 @@ export namespace Prisma {
   export type $GroupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Group"
     objects: {
-      userGroups: Prisma.$UserGroupPayload<ExtArgs>[]
       directoryAccess: Prisma.$DirectoryAccessPayload<ExtArgs>[]
+      userGroups: Prisma.$UserGroupPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3459,8 +3459,8 @@ export namespace Prisma {
    */
   export interface Prisma__GroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    userGroups<T extends Group$userGroupsArgs<ExtArgs> = {}>(args?: Subset<T, Group$userGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     directoryAccess<T extends Group$directoryAccessArgs<ExtArgs> = {}>(args?: Subset<T, Group$directoryAccessArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userGroups<T extends Group$userGroupsArgs<ExtArgs> = {}>(args?: Subset<T, Group$userGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3884,30 +3884,6 @@ export namespace Prisma {
   }
 
   /**
-   * Group.userGroups
-   */
-  export type Group$userGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserGroup
-     */
-    select?: UserGroupSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the UserGroup
-     */
-    omit?: UserGroupOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserGroupInclude<ExtArgs> | null
-    where?: UserGroupWhereInput
-    orderBy?: UserGroupOrderByWithRelationInput | UserGroupOrderByWithRelationInput[]
-    cursor?: UserGroupWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserGroupScalarFieldEnum | UserGroupScalarFieldEnum[]
-  }
-
-  /**
    * Group.directoryAccess
    */
   export type Group$directoryAccessArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3929,6 +3905,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DirectoryAccessScalarFieldEnum | DirectoryAccessScalarFieldEnum[]
+  }
+
+  /**
+   * Group.userGroups
+   */
+  export type Group$userGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    where?: UserGroupWhereInput
+    orderBy?: UserGroupOrderByWithRelationInput | UserGroupOrderByWithRelationInput[]
+    cursor?: UserGroupWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserGroupScalarFieldEnum | UserGroupScalarFieldEnum[]
   }
 
   /**
@@ -4106,8 +4106,8 @@ export namespace Prisma {
     userId?: boolean
     groupId?: boolean
     joinedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userGroup"]>
 
   export type UserGroupSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4115,8 +4115,8 @@ export namespace Prisma {
     userId?: boolean
     groupId?: boolean
     joinedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userGroup"]>
 
   export type UserGroupSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4124,8 +4124,8 @@ export namespace Prisma {
     userId?: boolean
     groupId?: boolean
     joinedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["userGroup"]>
 
   export type UserGroupSelectScalar = {
@@ -4137,23 +4137,23 @@ export namespace Prisma {
 
   export type UserGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "groupId" | "joinedAt", ExtArgs["result"]["userGroup"]>
   export type UserGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserGroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type UserGroupIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
     group?: boolean | GroupDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $UserGroupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "UserGroup"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
       group: Prisma.$GroupPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4554,8 +4554,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserGroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     group<T extends GroupDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GroupDefaultArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5191,9 +5191,9 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    contracts?: boolean | Directory$contractsArgs<ExtArgs>
     parent?: boolean | Directory$parentArgs<ExtArgs>
     children?: boolean | Directory$childrenArgs<ExtArgs>
-    contracts?: boolean | Directory$contractsArgs<ExtArgs>
     directoryAccess?: boolean | Directory$directoryAccessArgs<ExtArgs>
     _count?: boolean | DirectoryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["directory"]>
@@ -5235,9 +5235,9 @@ export namespace Prisma {
 
   export type DirectoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "parentId" | "path" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["directory"]>
   export type DirectoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contracts?: boolean | Directory$contractsArgs<ExtArgs>
     parent?: boolean | Directory$parentArgs<ExtArgs>
     children?: boolean | Directory$childrenArgs<ExtArgs>
-    contracts?: boolean | Directory$contractsArgs<ExtArgs>
     directoryAccess?: boolean | Directory$directoryAccessArgs<ExtArgs>
     _count?: boolean | DirectoryCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -5251,9 +5251,9 @@ export namespace Prisma {
   export type $DirectoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Directory"
     objects: {
+      contracts: Prisma.$ContractPayload<ExtArgs>[]
       parent: Prisma.$DirectoryPayload<ExtArgs> | null
       children: Prisma.$DirectoryPayload<ExtArgs>[]
-      contracts: Prisma.$ContractPayload<ExtArgs>[]
       directoryAccess: Prisma.$DirectoryAccessPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -5659,9 +5659,9 @@ export namespace Prisma {
    */
   export interface Prisma__DirectoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    contracts<T extends Directory$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Directory$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     parent<T extends Directory$parentArgs<ExtArgs> = {}>(args?: Subset<T, Directory$parentArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     children<T extends Directory$childrenArgs<ExtArgs> = {}>(args?: Subset<T, Directory$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    contracts<T extends Directory$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Directory$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     directoryAccess<T extends Directory$directoryAccessArgs<ExtArgs> = {}>(args?: Subset<T, Directory$directoryAccessArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -6096,6 +6096,30 @@ export namespace Prisma {
   }
 
   /**
+   * Directory.contracts
+   */
+  export type Directory$contractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    where?: ContractWhereInput
+    orderBy?: ContractOrderByWithRelationInput | ContractOrderByWithRelationInput[]
+    cursor?: ContractWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ContractScalarFieldEnum | ContractScalarFieldEnum[]
+  }
+
+  /**
    * Directory.parent
    */
   export type Directory$parentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6136,30 +6160,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DirectoryScalarFieldEnum | DirectoryScalarFieldEnum[]
-  }
-
-  /**
-   * Directory.contracts
-   */
-  export type Directory$contractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Contract
-     */
-    select?: ContractSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Contract
-     */
-    omit?: ContractOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ContractInclude<ExtArgs> | null
-    where?: ContractWhereInput
-    orderBy?: ContractOrderByWithRelationInput | ContractOrderByWithRelationInput[]
-    cursor?: ContractWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ContractScalarFieldEnum | ContractScalarFieldEnum[]
   }
 
   /**
@@ -7491,10 +7491,10 @@ export namespace Prisma {
     ownerId?: boolean
     directoryId?: boolean
     categoryId?: boolean
-    owner?: boolean | UserDefaultArgs<ExtArgs>
-    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
-    category?: boolean | Contract$categoryArgs<ExtArgs>
     versions?: boolean | Contract$versionsArgs<ExtArgs>
+    category?: boolean | Contract$categoryArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | ContractCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
@@ -7511,9 +7511,9 @@ export namespace Prisma {
     ownerId?: boolean
     directoryId?: boolean
     categoryId?: boolean
-    owner?: boolean | UserDefaultArgs<ExtArgs>
-    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
   export type ContractSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7529,9 +7529,9 @@ export namespace Prisma {
     ownerId?: boolean
     directoryId?: boolean
     categoryId?: boolean
-    owner?: boolean | UserDefaultArgs<ExtArgs>
-    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
   export type ContractSelectScalar = {
@@ -7551,30 +7551,30 @@ export namespace Prisma {
 
   export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "status" | "contractNumber" | "startDate" | "endDate" | "createdAt" | "updatedAt" | "ownerId" | "directoryId" | "categoryId", ExtArgs["result"]["contract"]>
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    owner?: boolean | UserDefaultArgs<ExtArgs>
-    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
-    category?: boolean | Contract$categoryArgs<ExtArgs>
     versions?: boolean | Contract$versionsArgs<ExtArgs>
+    category?: boolean | Contract$categoryArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
     _count?: boolean | ContractCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ContractIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    owner?: boolean | UserDefaultArgs<ExtArgs>
-    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type ContractIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    owner?: boolean | UserDefaultArgs<ExtArgs>
-    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
   }
 
   export type $ContractPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Contract"
     objects: {
-      owner: Prisma.$UserPayload<ExtArgs>
-      directory: Prisma.$DirectoryPayload<ExtArgs>
-      category: Prisma.$CategoryPayload<ExtArgs> | null
       versions: Prisma.$ContractVersionPayload<ExtArgs>[]
+      category: Prisma.$CategoryPayload<ExtArgs> | null
+      directory: Prisma.$DirectoryPayload<ExtArgs>
+      owner: Prisma.$UserPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7983,10 +7983,10 @@ export namespace Prisma {
    */
   export interface Prisma__ContractClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    directory<T extends DirectoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DirectoryDefaultArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    category<T extends Contract$categoryArgs<ExtArgs> = {}>(args?: Subset<T, Contract$categoryArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     versions<T extends Contract$versionsArgs<ExtArgs> = {}>(args?: Subset<T, Contract$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    category<T extends Contract$categoryArgs<ExtArgs> = {}>(args?: Subset<T, Contract$categoryArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    directory<T extends DirectoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DirectoryDefaultArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8424,25 +8424,6 @@ export namespace Prisma {
   }
 
   /**
-   * Contract.category
-   */
-  export type Contract$categoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Category
-     */
-    select?: CategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Category
-     */
-    omit?: CategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: CategoryInclude<ExtArgs> | null
-    where?: CategoryWhereInput
-  }
-
-  /**
    * Contract.versions
    */
   export type Contract$versionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8464,6 +8445,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ContractVersionScalarFieldEnum | ContractVersionScalarFieldEnum[]
+  }
+
+  /**
+   * Contract.category
+   */
+  export type Contract$categoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Category
+     */
+    select?: CategorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Category
+     */
+    omit?: CategoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CategoryInclude<ExtArgs> | null
+    where?: CategoryWhereInput
   }
 
   /**
@@ -10984,8 +10984,8 @@ export namespace Prisma {
     isActive?: BoolFilter<"Group"> | boolean
     createdAt?: DateTimeFilter<"Group"> | Date | string
     updatedAt?: DateTimeFilter<"Group"> | Date | string
-    userGroups?: UserGroupListRelationFilter
     directoryAccess?: DirectoryAccessListRelationFilter
+    userGroups?: UserGroupListRelationFilter
   }
 
   export type GroupOrderByWithRelationInput = {
@@ -10995,8 +10995,8 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userGroups?: UserGroupOrderByRelationAggregateInput
     directoryAccess?: DirectoryAccessOrderByRelationAggregateInput
+    userGroups?: UserGroupOrderByRelationAggregateInput
   }
 
   export type GroupWhereUniqueInput = Prisma.AtLeast<{
@@ -11009,8 +11009,8 @@ export namespace Prisma {
     isActive?: BoolFilter<"Group"> | boolean
     createdAt?: DateTimeFilter<"Group"> | Date | string
     updatedAt?: DateTimeFilter<"Group"> | Date | string
-    userGroups?: UserGroupListRelationFilter
     directoryAccess?: DirectoryAccessListRelationFilter
+    userGroups?: UserGroupListRelationFilter
   }, "id" | "name">
 
   export type GroupOrderByWithAggregationInput = {
@@ -11045,8 +11045,8 @@ export namespace Prisma {
     userId?: StringFilter<"UserGroup"> | string
     groupId?: StringFilter<"UserGroup"> | string
     joinedAt?: DateTimeFilter<"UserGroup"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type UserGroupOrderByWithRelationInput = {
@@ -11054,8 +11054,8 @@ export namespace Prisma {
     userId?: SortOrder
     groupId?: SortOrder
     joinedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
     group?: GroupOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
   }
 
   export type UserGroupWhereUniqueInput = Prisma.AtLeast<{
@@ -11067,8 +11067,8 @@ export namespace Prisma {
     userId?: StringFilter<"UserGroup"> | string
     groupId?: StringFilter<"UserGroup"> | string
     joinedAt?: DateTimeFilter<"UserGroup"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
     group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "userId_groupId">
 
   export type UserGroupOrderByWithAggregationInput = {
@@ -11103,9 +11103,9 @@ export namespace Prisma {
     isActive?: BoolFilter<"Directory"> | boolean
     createdAt?: DateTimeFilter<"Directory"> | Date | string
     updatedAt?: DateTimeFilter<"Directory"> | Date | string
+    contracts?: ContractListRelationFilter
     parent?: XOR<DirectoryNullableScalarRelationFilter, DirectoryWhereInput> | null
     children?: DirectoryListRelationFilter
-    contracts?: ContractListRelationFilter
     directoryAccess?: DirectoryAccessListRelationFilter
   }
 
@@ -11118,9 +11118,9 @@ export namespace Prisma {
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    contracts?: ContractOrderByRelationAggregateInput
     parent?: DirectoryOrderByWithRelationInput
     children?: DirectoryOrderByRelationAggregateInput
-    contracts?: ContractOrderByRelationAggregateInput
     directoryAccess?: DirectoryAccessOrderByRelationAggregateInput
   }
 
@@ -11137,9 +11137,9 @@ export namespace Prisma {
     isActive?: BoolFilter<"Directory"> | boolean
     createdAt?: DateTimeFilter<"Directory"> | Date | string
     updatedAt?: DateTimeFilter<"Directory"> | Date | string
+    contracts?: ContractListRelationFilter
     parent?: XOR<DirectoryNullableScalarRelationFilter, DirectoryWhereInput> | null
     children?: DirectoryListRelationFilter
-    contracts?: ContractListRelationFilter
     directoryAccess?: DirectoryAccessListRelationFilter
   }, "id" | "path" | "parentId_name">
 
@@ -11246,10 +11246,10 @@ export namespace Prisma {
     ownerId?: StringFilter<"Contract"> | string
     directoryId?: StringFilter<"Contract"> | string
     categoryId?: StringNullableFilter<"Contract"> | string | null
-    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
-    directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
-    category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     versions?: ContractVersionListRelationFilter
+    category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
+    directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
 
   export type ContractOrderByWithRelationInput = {
@@ -11265,10 +11265,10 @@ export namespace Prisma {
     ownerId?: SortOrder
     directoryId?: SortOrder
     categoryId?: SortOrderInput | SortOrder
-    owner?: UserOrderByWithRelationInput
-    directory?: DirectoryOrderByWithRelationInput
-    category?: CategoryOrderByWithRelationInput
     versions?: ContractVersionOrderByRelationAggregateInput
+    category?: CategoryOrderByWithRelationInput
+    directory?: DirectoryOrderByWithRelationInput
+    owner?: UserOrderByWithRelationInput
   }
 
   export type ContractWhereUniqueInput = Prisma.AtLeast<{
@@ -11287,10 +11287,10 @@ export namespace Prisma {
     ownerId?: StringFilter<"Contract"> | string
     directoryId?: StringFilter<"Contract"> | string
     categoryId?: StringNullableFilter<"Contract"> | string | null
-    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
-    directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
-    category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     versions?: ContractVersionListRelationFilter
+    category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
+    directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "contractNumber">
 
   export type ContractOrderByWithAggregationInput = {
@@ -11530,8 +11530,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    userGroups?: UserGroupCreateNestedManyWithoutGroupInput
     directoryAccess?: DirectoryAccessCreateNestedManyWithoutGroupInput
+    userGroups?: UserGroupCreateNestedManyWithoutGroupInput
   }
 
   export type GroupUncheckedCreateInput = {
@@ -11541,8 +11541,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    userGroups?: UserGroupUncheckedCreateNestedManyWithoutGroupInput
     directoryAccess?: DirectoryAccessUncheckedCreateNestedManyWithoutGroupInput
+    userGroups?: UserGroupUncheckedCreateNestedManyWithoutGroupInput
   }
 
   export type GroupUpdateInput = {
@@ -11552,8 +11552,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userGroups?: UserGroupUpdateManyWithoutGroupNestedInput
     directoryAccess?: DirectoryAccessUpdateManyWithoutGroupNestedInput
+    userGroups?: UserGroupUpdateManyWithoutGroupNestedInput
   }
 
   export type GroupUncheckedUpdateInput = {
@@ -11563,8 +11563,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userGroups?: UserGroupUncheckedUpdateManyWithoutGroupNestedInput
     directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutGroupNestedInput
+    userGroups?: UserGroupUncheckedUpdateManyWithoutGroupNestedInput
   }
 
   export type GroupCreateManyInput = {
@@ -11597,8 +11597,8 @@ export namespace Prisma {
   export type UserGroupCreateInput = {
     id?: string
     joinedAt?: Date | string
-    user: UserCreateNestedOneWithoutUserGroupsInput
     group: GroupCreateNestedOneWithoutUserGroupsInput
+    user: UserCreateNestedOneWithoutUserGroupsInput
   }
 
   export type UserGroupUncheckedCreateInput = {
@@ -11611,8 +11611,8 @@ export namespace Prisma {
   export type UserGroupUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUserGroupsNestedInput
     group?: GroupUpdateOneRequiredWithoutUserGroupsNestedInput
+    user?: UserUpdateOneRequiredWithoutUserGroupsNestedInput
   }
 
   export type UserGroupUncheckedUpdateInput = {
@@ -11649,9 +11649,9 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    contracts?: ContractCreateNestedManyWithoutDirectoryInput
     parent?: DirectoryCreateNestedOneWithoutChildrenInput
     children?: DirectoryCreateNestedManyWithoutParentInput
-    contracts?: ContractCreateNestedManyWithoutDirectoryInput
     directoryAccess?: DirectoryAccessCreateNestedManyWithoutDirectoryInput
   }
 
@@ -11664,8 +11664,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
     contracts?: ContractUncheckedCreateNestedManyWithoutDirectoryInput
+    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
     directoryAccess?: DirectoryAccessUncheckedCreateNestedManyWithoutDirectoryInput
   }
 
@@ -11677,9 +11677,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
     parent?: DirectoryUpdateOneWithoutChildrenNestedInput
     children?: DirectoryUpdateManyWithoutParentNestedInput
-    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
     directoryAccess?: DirectoryAccessUpdateManyWithoutDirectoryNestedInput
   }
 
@@ -11692,8 +11692,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutDirectoryNestedInput
+    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
     directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput
   }
 
@@ -11793,10 +11793,10 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    owner: UserCreateNestedOneWithoutOwnedContractsInput
-    directory: DirectoryCreateNestedOneWithoutContractsInput
-    category?: CategoryCreateNestedOneWithoutContractsInput
     versions?: ContractVersionCreateNestedManyWithoutContractInput
+    category?: CategoryCreateNestedOneWithoutContractsInput
+    directory: DirectoryCreateNestedOneWithoutContractsInput
+    owner: UserCreateNestedOneWithoutOwnedContractsInput
   }
 
   export type ContractUncheckedCreateInput = {
@@ -11825,10 +11825,10 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
-    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
-    category?: CategoryUpdateOneWithoutContractsNestedInput
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    category?: CategoryUpdateOneWithoutContractsNestedInput
+    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
   }
 
   export type ContractUncheckedUpdateInput = {
@@ -12211,14 +12211,14 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type GroupScalarRelationFilter = {
     is?: GroupWhereInput
     isNot?: GroupWhereInput
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
   }
 
   export type UserGroupUserIdGroupIdCompoundUniqueInput = {
@@ -12369,15 +12369,15 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type CategoryNullableScalarRelationFilter = {
-    is?: CategoryWhereInput | null
-    isNot?: CategoryWhereInput | null
-  }
-
   export type ContractVersionListRelationFilter = {
     every?: ContractVersionWhereInput
     some?: ContractVersionWhereInput
     none?: ContractVersionWhereInput
+  }
+
+  export type CategoryNullableScalarRelationFilter = {
+    is?: CategoryWhereInput | null
+    isNot?: CategoryWhereInput | null
   }
 
   export type ContractVersionOrderByRelationAggregateInput = {
@@ -12652,13 +12652,6 @@ export namespace Prisma {
     deleteMany?: UserGroupScalarWhereInput | UserGroupScalarWhereInput[]
   }
 
-  export type UserGroupCreateNestedManyWithoutGroupInput = {
-    create?: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput> | UserGroupCreateWithoutGroupInput[] | UserGroupUncheckedCreateWithoutGroupInput[]
-    connectOrCreate?: UserGroupCreateOrConnectWithoutGroupInput | UserGroupCreateOrConnectWithoutGroupInput[]
-    createMany?: UserGroupCreateManyGroupInputEnvelope
-    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
-  }
-
   export type DirectoryAccessCreateNestedManyWithoutGroupInput = {
     create?: XOR<DirectoryAccessCreateWithoutGroupInput, DirectoryAccessUncheckedCreateWithoutGroupInput> | DirectoryAccessCreateWithoutGroupInput[] | DirectoryAccessUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: DirectoryAccessCreateOrConnectWithoutGroupInput | DirectoryAccessCreateOrConnectWithoutGroupInput[]
@@ -12666,7 +12659,7 @@ export namespace Prisma {
     connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
   }
 
-  export type UserGroupUncheckedCreateNestedManyWithoutGroupInput = {
+  export type UserGroupCreateNestedManyWithoutGroupInput = {
     create?: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput> | UserGroupCreateWithoutGroupInput[] | UserGroupUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: UserGroupCreateOrConnectWithoutGroupInput | UserGroupCreateOrConnectWithoutGroupInput[]
     createMany?: UserGroupCreateManyGroupInputEnvelope
@@ -12680,18 +12673,11 @@ export namespace Prisma {
     connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
   }
 
-  export type UserGroupUpdateManyWithoutGroupNestedInput = {
+  export type UserGroupUncheckedCreateNestedManyWithoutGroupInput = {
     create?: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput> | UserGroupCreateWithoutGroupInput[] | UserGroupUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: UserGroupCreateOrConnectWithoutGroupInput | UserGroupCreateOrConnectWithoutGroupInput[]
-    upsert?: UserGroupUpsertWithWhereUniqueWithoutGroupInput | UserGroupUpsertWithWhereUniqueWithoutGroupInput[]
     createMany?: UserGroupCreateManyGroupInputEnvelope
-    set?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
-    disconnect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
-    delete?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
     connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
-    update?: UserGroupUpdateWithWhereUniqueWithoutGroupInput | UserGroupUpdateWithWhereUniqueWithoutGroupInput[]
-    updateMany?: UserGroupUpdateManyWithWhereWithoutGroupInput | UserGroupUpdateManyWithWhereWithoutGroupInput[]
-    deleteMany?: UserGroupScalarWhereInput | UserGroupScalarWhereInput[]
   }
 
   export type DirectoryAccessUpdateManyWithoutGroupNestedInput = {
@@ -12708,7 +12694,7 @@ export namespace Prisma {
     deleteMany?: DirectoryAccessScalarWhereInput | DirectoryAccessScalarWhereInput[]
   }
 
-  export type UserGroupUncheckedUpdateManyWithoutGroupNestedInput = {
+  export type UserGroupUpdateManyWithoutGroupNestedInput = {
     create?: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput> | UserGroupCreateWithoutGroupInput[] | UserGroupUncheckedCreateWithoutGroupInput[]
     connectOrCreate?: UserGroupCreateOrConnectWithoutGroupInput | UserGroupCreateOrConnectWithoutGroupInput[]
     upsert?: UserGroupUpsertWithWhereUniqueWithoutGroupInput | UserGroupUpsertWithWhereUniqueWithoutGroupInput[]
@@ -12736,16 +12722,38 @@ export namespace Prisma {
     deleteMany?: DirectoryAccessScalarWhereInput | DirectoryAccessScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutUserGroupsInput = {
-    create?: XOR<UserCreateWithoutUserGroupsInput, UserUncheckedCreateWithoutUserGroupsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutUserGroupsInput
-    connect?: UserWhereUniqueInput
+  export type UserGroupUncheckedUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput> | UserGroupCreateWithoutGroupInput[] | UserGroupUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: UserGroupCreateOrConnectWithoutGroupInput | UserGroupCreateOrConnectWithoutGroupInput[]
+    upsert?: UserGroupUpsertWithWhereUniqueWithoutGroupInput | UserGroupUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: UserGroupCreateManyGroupInputEnvelope
+    set?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    disconnect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    delete?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    update?: UserGroupUpdateWithWhereUniqueWithoutGroupInput | UserGroupUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: UserGroupUpdateManyWithWhereWithoutGroupInput | UserGroupUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: UserGroupScalarWhereInput | UserGroupScalarWhereInput[]
   }
 
   export type GroupCreateNestedOneWithoutUserGroupsInput = {
     create?: XOR<GroupCreateWithoutUserGroupsInput, GroupUncheckedCreateWithoutUserGroupsInput>
     connectOrCreate?: GroupCreateOrConnectWithoutUserGroupsInput
     connect?: GroupWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutUserGroupsInput = {
+    create?: XOR<UserCreateWithoutUserGroupsInput, UserUncheckedCreateWithoutUserGroupsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserGroupsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type GroupUpdateOneRequiredWithoutUserGroupsNestedInput = {
+    create?: XOR<GroupCreateWithoutUserGroupsInput, GroupUncheckedCreateWithoutUserGroupsInput>
+    connectOrCreate?: GroupCreateOrConnectWithoutUserGroupsInput
+    upsert?: GroupUpsertWithoutUserGroupsInput
+    connect?: GroupWhereUniqueInput
+    update?: XOR<XOR<GroupUpdateToOneWithWhereWithoutUserGroupsInput, GroupUpdateWithoutUserGroupsInput>, GroupUncheckedUpdateWithoutUserGroupsInput>
   }
 
   export type UserUpdateOneRequiredWithoutUserGroupsNestedInput = {
@@ -12756,12 +12764,11 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserGroupsInput, UserUpdateWithoutUserGroupsInput>, UserUncheckedUpdateWithoutUserGroupsInput>
   }
 
-  export type GroupUpdateOneRequiredWithoutUserGroupsNestedInput = {
-    create?: XOR<GroupCreateWithoutUserGroupsInput, GroupUncheckedCreateWithoutUserGroupsInput>
-    connectOrCreate?: GroupCreateOrConnectWithoutUserGroupsInput
-    upsert?: GroupUpsertWithoutUserGroupsInput
-    connect?: GroupWhereUniqueInput
-    update?: XOR<XOR<GroupUpdateToOneWithWhereWithoutUserGroupsInput, GroupUpdateWithoutUserGroupsInput>, GroupUncheckedUpdateWithoutUserGroupsInput>
+  export type ContractCreateNestedManyWithoutDirectoryInput = {
+    create?: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput> | ContractCreateWithoutDirectoryInput[] | ContractUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutDirectoryInput | ContractCreateOrConnectWithoutDirectoryInput[]
+    createMany?: ContractCreateManyDirectoryInputEnvelope
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
   }
 
   export type DirectoryCreateNestedOneWithoutChildrenInput = {
@@ -12777,25 +12784,11 @@ export namespace Prisma {
     connect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
   }
 
-  export type ContractCreateNestedManyWithoutDirectoryInput = {
-    create?: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput> | ContractCreateWithoutDirectoryInput[] | ContractUncheckedCreateWithoutDirectoryInput[]
-    connectOrCreate?: ContractCreateOrConnectWithoutDirectoryInput | ContractCreateOrConnectWithoutDirectoryInput[]
-    createMany?: ContractCreateManyDirectoryInputEnvelope
-    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
-  }
-
   export type DirectoryAccessCreateNestedManyWithoutDirectoryInput = {
     create?: XOR<DirectoryAccessCreateWithoutDirectoryInput, DirectoryAccessUncheckedCreateWithoutDirectoryInput> | DirectoryAccessCreateWithoutDirectoryInput[] | DirectoryAccessUncheckedCreateWithoutDirectoryInput[]
     connectOrCreate?: DirectoryAccessCreateOrConnectWithoutDirectoryInput | DirectoryAccessCreateOrConnectWithoutDirectoryInput[]
     createMany?: DirectoryAccessCreateManyDirectoryInputEnvelope
     connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
-  }
-
-  export type DirectoryUncheckedCreateNestedManyWithoutParentInput = {
-    create?: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput> | DirectoryCreateWithoutParentInput[] | DirectoryUncheckedCreateWithoutParentInput[]
-    connectOrCreate?: DirectoryCreateOrConnectWithoutParentInput | DirectoryCreateOrConnectWithoutParentInput[]
-    createMany?: DirectoryCreateManyParentInputEnvelope
-    connect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
   }
 
   export type ContractUncheckedCreateNestedManyWithoutDirectoryInput = {
@@ -12805,11 +12798,32 @@ export namespace Prisma {
     connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
   }
 
+  export type DirectoryUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput> | DirectoryCreateWithoutParentInput[] | DirectoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DirectoryCreateOrConnectWithoutParentInput | DirectoryCreateOrConnectWithoutParentInput[]
+    createMany?: DirectoryCreateManyParentInputEnvelope
+    connect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+  }
+
   export type DirectoryAccessUncheckedCreateNestedManyWithoutDirectoryInput = {
     create?: XOR<DirectoryAccessCreateWithoutDirectoryInput, DirectoryAccessUncheckedCreateWithoutDirectoryInput> | DirectoryAccessCreateWithoutDirectoryInput[] | DirectoryAccessUncheckedCreateWithoutDirectoryInput[]
     connectOrCreate?: DirectoryAccessCreateOrConnectWithoutDirectoryInput | DirectoryAccessCreateOrConnectWithoutDirectoryInput[]
     createMany?: DirectoryAccessCreateManyDirectoryInputEnvelope
     connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+  }
+
+  export type ContractUpdateManyWithoutDirectoryNestedInput = {
+    create?: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput> | ContractCreateWithoutDirectoryInput[] | ContractUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutDirectoryInput | ContractCreateOrConnectWithoutDirectoryInput[]
+    upsert?: ContractUpsertWithWhereUniqueWithoutDirectoryInput | ContractUpsertWithWhereUniqueWithoutDirectoryInput[]
+    createMany?: ContractCreateManyDirectoryInputEnvelope
+    set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    update?: ContractUpdateWithWhereUniqueWithoutDirectoryInput | ContractUpdateWithWhereUniqueWithoutDirectoryInput[]
+    updateMany?: ContractUpdateManyWithWhereWithoutDirectoryInput | ContractUpdateManyWithWhereWithoutDirectoryInput[]
+    deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
   }
 
   export type DirectoryUpdateOneWithoutChildrenNestedInput = {
@@ -12836,20 +12850,6 @@ export namespace Prisma {
     deleteMany?: DirectoryScalarWhereInput | DirectoryScalarWhereInput[]
   }
 
-  export type ContractUpdateManyWithoutDirectoryNestedInput = {
-    create?: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput> | ContractCreateWithoutDirectoryInput[] | ContractUncheckedCreateWithoutDirectoryInput[]
-    connectOrCreate?: ContractCreateOrConnectWithoutDirectoryInput | ContractCreateOrConnectWithoutDirectoryInput[]
-    upsert?: ContractUpsertWithWhereUniqueWithoutDirectoryInput | ContractUpsertWithWhereUniqueWithoutDirectoryInput[]
-    createMany?: ContractCreateManyDirectoryInputEnvelope
-    set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
-    disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
-    delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
-    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
-    update?: ContractUpdateWithWhereUniqueWithoutDirectoryInput | ContractUpdateWithWhereUniqueWithoutDirectoryInput[]
-    updateMany?: ContractUpdateManyWithWhereWithoutDirectoryInput | ContractUpdateManyWithWhereWithoutDirectoryInput[]
-    deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
-  }
-
   export type DirectoryAccessUpdateManyWithoutDirectoryNestedInput = {
     create?: XOR<DirectoryAccessCreateWithoutDirectoryInput, DirectoryAccessUncheckedCreateWithoutDirectoryInput> | DirectoryAccessCreateWithoutDirectoryInput[] | DirectoryAccessUncheckedCreateWithoutDirectoryInput[]
     connectOrCreate?: DirectoryAccessCreateOrConnectWithoutDirectoryInput | DirectoryAccessCreateOrConnectWithoutDirectoryInput[]
@@ -12864,20 +12864,6 @@ export namespace Prisma {
     deleteMany?: DirectoryAccessScalarWhereInput | DirectoryAccessScalarWhereInput[]
   }
 
-  export type DirectoryUncheckedUpdateManyWithoutParentNestedInput = {
-    create?: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput> | DirectoryCreateWithoutParentInput[] | DirectoryUncheckedCreateWithoutParentInput[]
-    connectOrCreate?: DirectoryCreateOrConnectWithoutParentInput | DirectoryCreateOrConnectWithoutParentInput[]
-    upsert?: DirectoryUpsertWithWhereUniqueWithoutParentInput | DirectoryUpsertWithWhereUniqueWithoutParentInput[]
-    createMany?: DirectoryCreateManyParentInputEnvelope
-    set?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
-    disconnect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
-    delete?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
-    connect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
-    update?: DirectoryUpdateWithWhereUniqueWithoutParentInput | DirectoryUpdateWithWhereUniqueWithoutParentInput[]
-    updateMany?: DirectoryUpdateManyWithWhereWithoutParentInput | DirectoryUpdateManyWithWhereWithoutParentInput[]
-    deleteMany?: DirectoryScalarWhereInput | DirectoryScalarWhereInput[]
-  }
-
   export type ContractUncheckedUpdateManyWithoutDirectoryNestedInput = {
     create?: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput> | ContractCreateWithoutDirectoryInput[] | ContractUncheckedCreateWithoutDirectoryInput[]
     connectOrCreate?: ContractCreateOrConnectWithoutDirectoryInput | ContractCreateOrConnectWithoutDirectoryInput[]
@@ -12890,6 +12876,20 @@ export namespace Prisma {
     update?: ContractUpdateWithWhereUniqueWithoutDirectoryInput | ContractUpdateWithWhereUniqueWithoutDirectoryInput[]
     updateMany?: ContractUpdateManyWithWhereWithoutDirectoryInput | ContractUpdateManyWithWhereWithoutDirectoryInput[]
     deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
+  }
+
+  export type DirectoryUncheckedUpdateManyWithoutParentNestedInput = {
+    create?: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput> | DirectoryCreateWithoutParentInput[] | DirectoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DirectoryCreateOrConnectWithoutParentInput | DirectoryCreateOrConnectWithoutParentInput[]
+    upsert?: DirectoryUpsertWithWhereUniqueWithoutParentInput | DirectoryUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: DirectoryCreateManyParentInputEnvelope
+    set?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    disconnect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    delete?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    connect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    update?: DirectoryUpdateWithWhereUniqueWithoutParentInput | DirectoryUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: DirectoryUpdateManyWithWhereWithoutParentInput | DirectoryUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: DirectoryScalarWhereInput | DirectoryScalarWhereInput[]
   }
 
   export type DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput = {
@@ -12938,16 +12938,11 @@ export namespace Prisma {
     update?: XOR<XOR<GroupUpdateToOneWithWhereWithoutDirectoryAccessInput, GroupUpdateWithoutDirectoryAccessInput>, GroupUncheckedUpdateWithoutDirectoryAccessInput>
   }
 
-  export type UserCreateNestedOneWithoutOwnedContractsInput = {
-    create?: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOwnedContractsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type DirectoryCreateNestedOneWithoutContractsInput = {
-    create?: XOR<DirectoryCreateWithoutContractsInput, DirectoryUncheckedCreateWithoutContractsInput>
-    connectOrCreate?: DirectoryCreateOrConnectWithoutContractsInput
-    connect?: DirectoryWhereUniqueInput
+  export type ContractVersionCreateNestedManyWithoutContractInput = {
+    create?: XOR<ContractVersionCreateWithoutContractInput, ContractVersionUncheckedCreateWithoutContractInput> | ContractVersionCreateWithoutContractInput[] | ContractVersionUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: ContractVersionCreateOrConnectWithoutContractInput | ContractVersionCreateOrConnectWithoutContractInput[]
+    createMany?: ContractVersionCreateManyContractInputEnvelope
+    connect?: ContractVersionWhereUniqueInput | ContractVersionWhereUniqueInput[]
   }
 
   export type CategoryCreateNestedOneWithoutContractsInput = {
@@ -12956,11 +12951,16 @@ export namespace Prisma {
     connect?: CategoryWhereUniqueInput
   }
 
-  export type ContractVersionCreateNestedManyWithoutContractInput = {
-    create?: XOR<ContractVersionCreateWithoutContractInput, ContractVersionUncheckedCreateWithoutContractInput> | ContractVersionCreateWithoutContractInput[] | ContractVersionUncheckedCreateWithoutContractInput[]
-    connectOrCreate?: ContractVersionCreateOrConnectWithoutContractInput | ContractVersionCreateOrConnectWithoutContractInput[]
-    createMany?: ContractVersionCreateManyContractInputEnvelope
-    connect?: ContractVersionWhereUniqueInput | ContractVersionWhereUniqueInput[]
+  export type DirectoryCreateNestedOneWithoutContractsInput = {
+    create?: XOR<DirectoryCreateWithoutContractsInput, DirectoryUncheckedCreateWithoutContractsInput>
+    connectOrCreate?: DirectoryCreateOrConnectWithoutContractsInput
+    connect?: DirectoryWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutOwnedContractsInput = {
+    create?: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOwnedContractsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type ContractVersionUncheckedCreateNestedManyWithoutContractInput = {
@@ -12978,32 +12978,6 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
-  export type UserUpdateOneRequiredWithoutOwnedContractsNestedInput = {
-    create?: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutOwnedContractsInput
-    upsert?: UserUpsertWithoutOwnedContractsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOwnedContractsInput, UserUpdateWithoutOwnedContractsInput>, UserUncheckedUpdateWithoutOwnedContractsInput>
-  }
-
-  export type DirectoryUpdateOneRequiredWithoutContractsNestedInput = {
-    create?: XOR<DirectoryCreateWithoutContractsInput, DirectoryUncheckedCreateWithoutContractsInput>
-    connectOrCreate?: DirectoryCreateOrConnectWithoutContractsInput
-    upsert?: DirectoryUpsertWithoutContractsInput
-    connect?: DirectoryWhereUniqueInput
-    update?: XOR<XOR<DirectoryUpdateToOneWithWhereWithoutContractsInput, DirectoryUpdateWithoutContractsInput>, DirectoryUncheckedUpdateWithoutContractsInput>
-  }
-
-  export type CategoryUpdateOneWithoutContractsNestedInput = {
-    create?: XOR<CategoryCreateWithoutContractsInput, CategoryUncheckedCreateWithoutContractsInput>
-    connectOrCreate?: CategoryCreateOrConnectWithoutContractsInput
-    upsert?: CategoryUpsertWithoutContractsInput
-    disconnect?: CategoryWhereInput | boolean
-    delete?: CategoryWhereInput | boolean
-    connect?: CategoryWhereUniqueInput
-    update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutContractsInput, CategoryUpdateWithoutContractsInput>, CategoryUncheckedUpdateWithoutContractsInput>
-  }
-
   export type ContractVersionUpdateManyWithoutContractNestedInput = {
     create?: XOR<ContractVersionCreateWithoutContractInput, ContractVersionUncheckedCreateWithoutContractInput> | ContractVersionCreateWithoutContractInput[] | ContractVersionUncheckedCreateWithoutContractInput[]
     connectOrCreate?: ContractVersionCreateOrConnectWithoutContractInput | ContractVersionCreateOrConnectWithoutContractInput[]
@@ -13016,6 +12990,32 @@ export namespace Prisma {
     update?: ContractVersionUpdateWithWhereUniqueWithoutContractInput | ContractVersionUpdateWithWhereUniqueWithoutContractInput[]
     updateMany?: ContractVersionUpdateManyWithWhereWithoutContractInput | ContractVersionUpdateManyWithWhereWithoutContractInput[]
     deleteMany?: ContractVersionScalarWhereInput | ContractVersionScalarWhereInput[]
+  }
+
+  export type CategoryUpdateOneWithoutContractsNestedInput = {
+    create?: XOR<CategoryCreateWithoutContractsInput, CategoryUncheckedCreateWithoutContractsInput>
+    connectOrCreate?: CategoryCreateOrConnectWithoutContractsInput
+    upsert?: CategoryUpsertWithoutContractsInput
+    disconnect?: CategoryWhereInput | boolean
+    delete?: CategoryWhereInput | boolean
+    connect?: CategoryWhereUniqueInput
+    update?: XOR<XOR<CategoryUpdateToOneWithWhereWithoutContractsInput, CategoryUpdateWithoutContractsInput>, CategoryUncheckedUpdateWithoutContractsInput>
+  }
+
+  export type DirectoryUpdateOneRequiredWithoutContractsNestedInput = {
+    create?: XOR<DirectoryCreateWithoutContractsInput, DirectoryUncheckedCreateWithoutContractsInput>
+    connectOrCreate?: DirectoryCreateOrConnectWithoutContractsInput
+    upsert?: DirectoryUpsertWithoutContractsInput
+    connect?: DirectoryWhereUniqueInput
+    update?: XOR<XOR<DirectoryUpdateToOneWithWhereWithoutContractsInput, DirectoryUpdateWithoutContractsInput>, DirectoryUncheckedUpdateWithoutContractsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutOwnedContractsNestedInput = {
+    create?: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOwnedContractsInput
+    upsert?: UserUpsertWithoutOwnedContractsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOwnedContractsInput, UserUpdateWithoutOwnedContractsInput>, UserUncheckedUpdateWithoutOwnedContractsInput>
   }
 
   export type ContractVersionUncheckedUpdateManyWithoutContractNestedInput = {
@@ -13314,9 +13314,9 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    directory: DirectoryCreateNestedOneWithoutContractsInput
-    category?: CategoryCreateNestedOneWithoutContractsInput
     versions?: ContractVersionCreateNestedManyWithoutContractInput
+    category?: CategoryCreateNestedOneWithoutContractsInput
+    directory: DirectoryCreateNestedOneWithoutContractsInput
   }
 
   export type ContractUncheckedCreateWithoutOwnerInput = {
@@ -13426,28 +13426,6 @@ export namespace Prisma {
     joinedAt?: DateTimeFilter<"UserGroup"> | Date | string
   }
 
-  export type UserGroupCreateWithoutGroupInput = {
-    id?: string
-    joinedAt?: Date | string
-    user: UserCreateNestedOneWithoutUserGroupsInput
-  }
-
-  export type UserGroupUncheckedCreateWithoutGroupInput = {
-    id?: string
-    userId: string
-    joinedAt?: Date | string
-  }
-
-  export type UserGroupCreateOrConnectWithoutGroupInput = {
-    where: UserGroupWhereUniqueInput
-    create: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput>
-  }
-
-  export type UserGroupCreateManyGroupInputEnvelope = {
-    data: UserGroupCreateManyGroupInput | UserGroupCreateManyGroupInput[]
-    skipDuplicates?: boolean
-  }
-
   export type DirectoryAccessCreateWithoutGroupInput = {
     id?: string
     permission?: $Enums.Permission
@@ -13472,20 +13450,26 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type UserGroupUpsertWithWhereUniqueWithoutGroupInput = {
+  export type UserGroupCreateWithoutGroupInput = {
+    id?: string
+    joinedAt?: Date | string
+    user: UserCreateNestedOneWithoutUserGroupsInput
+  }
+
+  export type UserGroupUncheckedCreateWithoutGroupInput = {
+    id?: string
+    userId: string
+    joinedAt?: Date | string
+  }
+
+  export type UserGroupCreateOrConnectWithoutGroupInput = {
     where: UserGroupWhereUniqueInput
-    update: XOR<UserGroupUpdateWithoutGroupInput, UserGroupUncheckedUpdateWithoutGroupInput>
     create: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput>
   }
 
-  export type UserGroupUpdateWithWhereUniqueWithoutGroupInput = {
-    where: UserGroupWhereUniqueInput
-    data: XOR<UserGroupUpdateWithoutGroupInput, UserGroupUncheckedUpdateWithoutGroupInput>
-  }
-
-  export type UserGroupUpdateManyWithWhereWithoutGroupInput = {
-    where: UserGroupScalarWhereInput
-    data: XOR<UserGroupUpdateManyMutationInput, UserGroupUncheckedUpdateManyWithoutGroupInput>
+  export type UserGroupCreateManyGroupInputEnvelope = {
+    data: UserGroupCreateManyGroupInput | UserGroupCreateManyGroupInput[]
+    skipDuplicates?: boolean
   }
 
   export type DirectoryAccessUpsertWithWhereUniqueWithoutGroupInput = {
@@ -13515,29 +13499,20 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"DirectoryAccess"> | Date | string
   }
 
-  export type UserCreateWithoutUserGroupsInput = {
-    id?: string
-    email: string
-    name?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ownedContracts?: ContractCreateNestedManyWithoutOwnerInput
+  export type UserGroupUpsertWithWhereUniqueWithoutGroupInput = {
+    where: UserGroupWhereUniqueInput
+    update: XOR<UserGroupUpdateWithoutGroupInput, UserGroupUncheckedUpdateWithoutGroupInput>
+    create: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput>
   }
 
-  export type UserUncheckedCreateWithoutUserGroupsInput = {
-    id?: string
-    email: string
-    name?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ownedContracts?: ContractUncheckedCreateNestedManyWithoutOwnerInput
+  export type UserGroupUpdateWithWhereUniqueWithoutGroupInput = {
+    where: UserGroupWhereUniqueInput
+    data: XOR<UserGroupUpdateWithoutGroupInput, UserGroupUncheckedUpdateWithoutGroupInput>
   }
 
-  export type UserCreateOrConnectWithoutUserGroupsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutUserGroupsInput, UserUncheckedCreateWithoutUserGroupsInput>
+  export type UserGroupUpdateManyWithWhereWithoutGroupInput = {
+    where: UserGroupScalarWhereInput
+    data: XOR<UserGroupUpdateManyMutationInput, UserGroupUncheckedUpdateManyWithoutGroupInput>
   }
 
   export type GroupCreateWithoutUserGroupsInput = {
@@ -13565,35 +13540,29 @@ export namespace Prisma {
     create: XOR<GroupCreateWithoutUserGroupsInput, GroupUncheckedCreateWithoutUserGroupsInput>
   }
 
-  export type UserUpsertWithoutUserGroupsInput = {
-    update: XOR<UserUpdateWithoutUserGroupsInput, UserUncheckedUpdateWithoutUserGroupsInput>
+  export type UserCreateWithoutUserGroupsInput = {
+    id?: string
+    email: string
+    name?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ownedContracts?: ContractCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserUncheckedCreateWithoutUserGroupsInput = {
+    id?: string
+    email: string
+    name?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ownedContracts?: ContractUncheckedCreateNestedManyWithoutOwnerInput
+  }
+
+  export type UserCreateOrConnectWithoutUserGroupsInput = {
+    where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutUserGroupsInput, UserUncheckedCreateWithoutUserGroupsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutUserGroupsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutUserGroupsInput, UserUncheckedUpdateWithoutUserGroupsInput>
-  }
-
-  export type UserUpdateWithoutUserGroupsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ownedContracts?: ContractUpdateManyWithoutOwnerNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutUserGroupsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    ownedContracts?: ContractUncheckedUpdateManyWithoutOwnerNestedInput
   }
 
   export type GroupUpsertWithoutUserGroupsInput = {
@@ -13627,6 +13596,77 @@ export namespace Prisma {
     directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutGroupNestedInput
   }
 
+  export type UserUpsertWithoutUserGroupsInput = {
+    update: XOR<UserUpdateWithoutUserGroupsInput, UserUncheckedUpdateWithoutUserGroupsInput>
+    create: XOR<UserCreateWithoutUserGroupsInput, UserUncheckedCreateWithoutUserGroupsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUserGroupsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserGroupsInput, UserUncheckedUpdateWithoutUserGroupsInput>
+  }
+
+  export type UserUpdateWithoutUserGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownedContracts?: ContractUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUserGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownedContracts?: ContractUncheckedUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type ContractCreateWithoutDirectoryInput = {
+    id?: string
+    title: string
+    content: string
+    status?: $Enums.ContractStatus
+    contractNumber?: string | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: ContractVersionCreateNestedManyWithoutContractInput
+    category?: CategoryCreateNestedOneWithoutContractsInput
+    owner: UserCreateNestedOneWithoutOwnedContractsInput
+  }
+
+  export type ContractUncheckedCreateWithoutDirectoryInput = {
+    id?: string
+    title: string
+    content: string
+    status?: $Enums.ContractStatus
+    contractNumber?: string | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ownerId: string
+    categoryId?: string | null
+    versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
+  }
+
+  export type ContractCreateOrConnectWithoutDirectoryInput = {
+    where: ContractWhereUniqueInput
+    create: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput>
+  }
+
+  export type ContractCreateManyDirectoryInputEnvelope = {
+    data: ContractCreateManyDirectoryInput | ContractCreateManyDirectoryInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DirectoryCreateWithoutChildrenInput = {
     id?: string
     name: string
@@ -13635,8 +13675,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    parent?: DirectoryCreateNestedOneWithoutChildrenInput
     contracts?: ContractCreateNestedManyWithoutDirectoryInput
+    parent?: DirectoryCreateNestedOneWithoutChildrenInput
     directoryAccess?: DirectoryAccessCreateNestedManyWithoutDirectoryInput
   }
 
@@ -13666,8 +13706,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    children?: DirectoryCreateNestedManyWithoutParentInput
     contracts?: ContractCreateNestedManyWithoutDirectoryInput
+    children?: DirectoryCreateNestedManyWithoutParentInput
     directoryAccess?: DirectoryAccessCreateNestedManyWithoutDirectoryInput
   }
 
@@ -13679,8 +13719,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
     contracts?: ContractUncheckedCreateNestedManyWithoutDirectoryInput
+    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
     directoryAccess?: DirectoryAccessUncheckedCreateNestedManyWithoutDirectoryInput
   }
 
@@ -13691,46 +13731,6 @@ export namespace Prisma {
 
   export type DirectoryCreateManyParentInputEnvelope = {
     data: DirectoryCreateManyParentInput | DirectoryCreateManyParentInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type ContractCreateWithoutDirectoryInput = {
-    id?: string
-    title: string
-    content: string
-    status?: $Enums.ContractStatus
-    contractNumber?: string | null
-    startDate?: Date | string | null
-    endDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    owner: UserCreateNestedOneWithoutOwnedContractsInput
-    category?: CategoryCreateNestedOneWithoutContractsInput
-    versions?: ContractVersionCreateNestedManyWithoutContractInput
-  }
-
-  export type ContractUncheckedCreateWithoutDirectoryInput = {
-    id?: string
-    title: string
-    content: string
-    status?: $Enums.ContractStatus
-    contractNumber?: string | null
-    startDate?: Date | string | null
-    endDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    ownerId: string
-    categoryId?: string | null
-    versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
-  }
-
-  export type ContractCreateOrConnectWithoutDirectoryInput = {
-    where: ContractWhereUniqueInput
-    create: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput>
-  }
-
-  export type ContractCreateManyDirectoryInputEnvelope = {
-    data: ContractCreateManyDirectoryInput | ContractCreateManyDirectoryInput[]
     skipDuplicates?: boolean
   }
 
@@ -13758,6 +13758,22 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ContractUpsertWithWhereUniqueWithoutDirectoryInput = {
+    where: ContractWhereUniqueInput
+    update: XOR<ContractUpdateWithoutDirectoryInput, ContractUncheckedUpdateWithoutDirectoryInput>
+    create: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput>
+  }
+
+  export type ContractUpdateWithWhereUniqueWithoutDirectoryInput = {
+    where: ContractWhereUniqueInput
+    data: XOR<ContractUpdateWithoutDirectoryInput, ContractUncheckedUpdateWithoutDirectoryInput>
+  }
+
+  export type ContractUpdateManyWithWhereWithoutDirectoryInput = {
+    where: ContractScalarWhereInput
+    data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyWithoutDirectoryInput>
+  }
+
   export type DirectoryUpsertWithoutChildrenInput = {
     update: XOR<DirectoryUpdateWithoutChildrenInput, DirectoryUncheckedUpdateWithoutChildrenInput>
     create: XOR<DirectoryCreateWithoutChildrenInput, DirectoryUncheckedCreateWithoutChildrenInput>
@@ -13777,8 +13793,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    parent?: DirectoryUpdateOneWithoutChildrenNestedInput
     contracts?: ContractUpdateManyWithoutDirectoryNestedInput
+    parent?: DirectoryUpdateOneWithoutChildrenNestedInput
     directoryAccess?: DirectoryAccessUpdateManyWithoutDirectoryNestedInput
   }
 
@@ -13825,22 +13841,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Directory"> | Date | string
   }
 
-  export type ContractUpsertWithWhereUniqueWithoutDirectoryInput = {
-    where: ContractWhereUniqueInput
-    update: XOR<ContractUpdateWithoutDirectoryInput, ContractUncheckedUpdateWithoutDirectoryInput>
-    create: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput>
-  }
-
-  export type ContractUpdateWithWhereUniqueWithoutDirectoryInput = {
-    where: ContractWhereUniqueInput
-    data: XOR<ContractUpdateWithoutDirectoryInput, ContractUncheckedUpdateWithoutDirectoryInput>
-  }
-
-  export type ContractUpdateManyWithWhereWithoutDirectoryInput = {
-    where: ContractScalarWhereInput
-    data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyWithoutDirectoryInput>
-  }
-
   export type DirectoryAccessUpsertWithWhereUniqueWithoutDirectoryInput = {
     where: DirectoryAccessWhereUniqueInput
     update: XOR<DirectoryAccessUpdateWithoutDirectoryInput, DirectoryAccessUncheckedUpdateWithoutDirectoryInput>
@@ -13865,9 +13865,9 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    contracts?: ContractCreateNestedManyWithoutDirectoryInput
     parent?: DirectoryCreateNestedOneWithoutChildrenInput
     children?: DirectoryCreateNestedManyWithoutParentInput
-    contracts?: ContractCreateNestedManyWithoutDirectoryInput
   }
 
   export type DirectoryUncheckedCreateWithoutDirectoryAccessInput = {
@@ -13879,8 +13879,8 @@ export namespace Prisma {
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
     contracts?: ContractUncheckedCreateNestedManyWithoutDirectoryInput
+    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
   }
 
   export type DirectoryCreateOrConnectWithoutDirectoryAccessInput = {
@@ -13932,9 +13932,9 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
     parent?: DirectoryUpdateOneWithoutChildrenNestedInput
     children?: DirectoryUpdateManyWithoutParentNestedInput
-    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
   }
 
   export type DirectoryUncheckedUpdateWithoutDirectoryAccessInput = {
@@ -13946,8 +13946,8 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
     contracts?: ContractUncheckedUpdateManyWithoutDirectoryNestedInput
+    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
   }
 
   export type GroupUpsertWithoutDirectoryAccessInput = {
@@ -13981,29 +13981,53 @@ export namespace Prisma {
     userGroups?: UserGroupUncheckedUpdateManyWithoutGroupNestedInput
   }
 
-  export type UserCreateWithoutOwnedContractsInput = {
+  export type ContractVersionCreateWithoutContractInput = {
     id?: string
-    email: string
-    name?: string | null
-    isActive?: boolean
+    version: number
+    title: string
+    content: string
+    changeNote?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    userGroups?: UserGroupCreateNestedManyWithoutUserInput
   }
 
-  export type UserUncheckedCreateWithoutOwnedContractsInput = {
+  export type ContractVersionUncheckedCreateWithoutContractInput = {
     id?: string
-    email: string
-    name?: string | null
-    isActive?: boolean
+    version: number
+    title: string
+    content: string
+    changeNote?: string | null
     createdAt?: Date | string
-    updatedAt?: Date | string
-    userGroups?: UserGroupUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type UserCreateOrConnectWithoutOwnedContractsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
+  export type ContractVersionCreateOrConnectWithoutContractInput = {
+    where: ContractVersionWhereUniqueInput
+    create: XOR<ContractVersionCreateWithoutContractInput, ContractVersionUncheckedCreateWithoutContractInput>
+  }
+
+  export type ContractVersionCreateManyContractInputEnvelope = {
+    data: ContractVersionCreateManyContractInput | ContractVersionCreateManyContractInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CategoryCreateWithoutContractsInput = {
+    id?: string
+    name: string
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CategoryUncheckedCreateWithoutContractsInput = {
+    id?: string
+    name: string
+    color?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CategoryCreateOrConnectWithoutContractsInput = {
+    where: CategoryWhereUniqueInput
+    create: XOR<CategoryCreateWithoutContractsInput, CategoryUncheckedCreateWithoutContractsInput>
   }
 
   export type DirectoryCreateWithoutContractsInput = {
@@ -14037,84 +14061,85 @@ export namespace Prisma {
     create: XOR<DirectoryCreateWithoutContractsInput, DirectoryUncheckedCreateWithoutContractsInput>
   }
 
-  export type CategoryCreateWithoutContractsInput = {
+  export type UserCreateWithoutOwnedContractsInput = {
     id?: string
-    name: string
-    color?: string | null
+    email: string
+    name?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    userGroups?: UserGroupCreateNestedManyWithoutUserInput
   }
 
-  export type CategoryUncheckedCreateWithoutContractsInput = {
+  export type UserUncheckedCreateWithoutOwnedContractsInput = {
     id?: string
-    name: string
-    color?: string | null
+    email: string
+    name?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    userGroups?: UserGroupUncheckedCreateNestedManyWithoutUserInput
   }
 
-  export type CategoryCreateOrConnectWithoutContractsInput = {
-    where: CategoryWhereUniqueInput
-    create: XOR<CategoryCreateWithoutContractsInput, CategoryUncheckedCreateWithoutContractsInput>
+  export type UserCreateOrConnectWithoutOwnedContractsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
   }
 
-  export type ContractVersionCreateWithoutContractInput = {
-    id?: string
-    version: number
-    title: string
-    content: string
-    changeNote?: string | null
-    createdAt?: Date | string
-  }
-
-  export type ContractVersionUncheckedCreateWithoutContractInput = {
-    id?: string
-    version: number
-    title: string
-    content: string
-    changeNote?: string | null
-    createdAt?: Date | string
-  }
-
-  export type ContractVersionCreateOrConnectWithoutContractInput = {
+  export type ContractVersionUpsertWithWhereUniqueWithoutContractInput = {
     where: ContractVersionWhereUniqueInput
+    update: XOR<ContractVersionUpdateWithoutContractInput, ContractVersionUncheckedUpdateWithoutContractInput>
     create: XOR<ContractVersionCreateWithoutContractInput, ContractVersionUncheckedCreateWithoutContractInput>
   }
 
-  export type ContractVersionCreateManyContractInputEnvelope = {
-    data: ContractVersionCreateManyContractInput | ContractVersionCreateManyContractInput[]
-    skipDuplicates?: boolean
+  export type ContractVersionUpdateWithWhereUniqueWithoutContractInput = {
+    where: ContractVersionWhereUniqueInput
+    data: XOR<ContractVersionUpdateWithoutContractInput, ContractVersionUncheckedUpdateWithoutContractInput>
   }
 
-  export type UserUpsertWithoutOwnedContractsInput = {
-    update: XOR<UserUpdateWithoutOwnedContractsInput, UserUncheckedUpdateWithoutOwnedContractsInput>
-    create: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
-    where?: UserWhereInput
+  export type ContractVersionUpdateManyWithWhereWithoutContractInput = {
+    where: ContractVersionScalarWhereInput
+    data: XOR<ContractVersionUpdateManyMutationInput, ContractVersionUncheckedUpdateManyWithoutContractInput>
   }
 
-  export type UserUpdateToOneWithWhereWithoutOwnedContractsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutOwnedContractsInput, UserUncheckedUpdateWithoutOwnedContractsInput>
+  export type ContractVersionScalarWhereInput = {
+    AND?: ContractVersionScalarWhereInput | ContractVersionScalarWhereInput[]
+    OR?: ContractVersionScalarWhereInput[]
+    NOT?: ContractVersionScalarWhereInput | ContractVersionScalarWhereInput[]
+    id?: StringFilter<"ContractVersion"> | string
+    version?: IntFilter<"ContractVersion"> | number
+    title?: StringFilter<"ContractVersion"> | string
+    content?: StringFilter<"ContractVersion"> | string
+    changeNote?: StringNullableFilter<"ContractVersion"> | string | null
+    createdAt?: DateTimeFilter<"ContractVersion"> | Date | string
+    contractId?: StringFilter<"ContractVersion"> | string
   }
 
-  export type UserUpdateWithoutOwnedContractsInput = {
+  export type CategoryUpsertWithoutContractsInput = {
+    update: XOR<CategoryUpdateWithoutContractsInput, CategoryUncheckedUpdateWithoutContractsInput>
+    create: XOR<CategoryCreateWithoutContractsInput, CategoryUncheckedCreateWithoutContractsInput>
+    where?: CategoryWhereInput
+  }
+
+  export type CategoryUpdateToOneWithWhereWithoutContractsInput = {
+    where?: CategoryWhereInput
+    data: XOR<CategoryUpdateWithoutContractsInput, CategoryUncheckedUpdateWithoutContractsInput>
+  }
+
+  export type CategoryUpdateWithoutContractsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    name?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userGroups?: UserGroupUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutOwnedContractsInput = {
+  export type CategoryUncheckedUpdateWithoutContractsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
+    name?: StringFieldUpdateOperationsInput | string
+    color?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userGroups?: UserGroupUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type DirectoryUpsertWithoutContractsInput = {
@@ -14154,60 +14179,35 @@ export namespace Prisma {
     directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput
   }
 
-  export type CategoryUpsertWithoutContractsInput = {
-    update: XOR<CategoryUpdateWithoutContractsInput, CategoryUncheckedUpdateWithoutContractsInput>
-    create: XOR<CategoryCreateWithoutContractsInput, CategoryUncheckedCreateWithoutContractsInput>
-    where?: CategoryWhereInput
+  export type UserUpsertWithoutOwnedContractsInput = {
+    update: XOR<UserUpdateWithoutOwnedContractsInput, UserUncheckedUpdateWithoutOwnedContractsInput>
+    create: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
+    where?: UserWhereInput
   }
 
-  export type CategoryUpdateToOneWithWhereWithoutContractsInput = {
-    where?: CategoryWhereInput
-    data: XOR<CategoryUpdateWithoutContractsInput, CategoryUncheckedUpdateWithoutContractsInput>
+  export type UserUpdateToOneWithWhereWithoutOwnedContractsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutOwnedContractsInput, UserUncheckedUpdateWithoutOwnedContractsInput>
   }
 
-  export type CategoryUpdateWithoutContractsInput = {
+  export type UserUpdateWithoutOwnedContractsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    color?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userGroups?: UserGroupUpdateManyWithoutUserNestedInput
   }
 
-  export type CategoryUncheckedUpdateWithoutContractsInput = {
+  export type UserUncheckedUpdateWithoutOwnedContractsInput = {
     id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    color?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ContractVersionUpsertWithWhereUniqueWithoutContractInput = {
-    where: ContractVersionWhereUniqueInput
-    update: XOR<ContractVersionUpdateWithoutContractInput, ContractVersionUncheckedUpdateWithoutContractInput>
-    create: XOR<ContractVersionCreateWithoutContractInput, ContractVersionUncheckedCreateWithoutContractInput>
-  }
-
-  export type ContractVersionUpdateWithWhereUniqueWithoutContractInput = {
-    where: ContractVersionWhereUniqueInput
-    data: XOR<ContractVersionUpdateWithoutContractInput, ContractVersionUncheckedUpdateWithoutContractInput>
-  }
-
-  export type ContractVersionUpdateManyWithWhereWithoutContractInput = {
-    where: ContractVersionScalarWhereInput
-    data: XOR<ContractVersionUpdateManyMutationInput, ContractVersionUncheckedUpdateManyWithoutContractInput>
-  }
-
-  export type ContractVersionScalarWhereInput = {
-    AND?: ContractVersionScalarWhereInput | ContractVersionScalarWhereInput[]
-    OR?: ContractVersionScalarWhereInput[]
-    NOT?: ContractVersionScalarWhereInput | ContractVersionScalarWhereInput[]
-    id?: StringFilter<"ContractVersion"> | string
-    version?: IntFilter<"ContractVersion"> | number
-    title?: StringFilter<"ContractVersion"> | string
-    content?: StringFilter<"ContractVersion"> | string
-    changeNote?: StringNullableFilter<"ContractVersion"> | string | null
-    createdAt?: DateTimeFilter<"ContractVersion"> | Date | string
-    contractId?: StringFilter<"ContractVersion"> | string
+    userGroups?: UserGroupUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ContractCreateWithoutCategoryInput = {
@@ -14220,9 +14220,9 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    owner: UserCreateNestedOneWithoutOwnedContractsInput
-    directory: DirectoryCreateNestedOneWithoutContractsInput
     versions?: ContractVersionCreateNestedManyWithoutContractInput
+    directory: DirectoryCreateNestedOneWithoutContractsInput
+    owner: UserCreateNestedOneWithoutOwnedContractsInput
   }
 
   export type ContractUncheckedCreateWithoutCategoryInput = {
@@ -14276,9 +14276,9 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    owner: UserCreateNestedOneWithoutOwnedContractsInput
-    directory: DirectoryCreateNestedOneWithoutContractsInput
     category?: CategoryCreateNestedOneWithoutContractsInput
+    directory: DirectoryCreateNestedOneWithoutContractsInput
+    owner: UserCreateNestedOneWithoutOwnedContractsInput
   }
 
   export type ContractUncheckedCreateWithoutVersionsInput = {
@@ -14322,9 +14322,9 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
-    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
     category?: CategoryUpdateOneWithoutContractsNestedInput
+    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutVersionsInput = {
@@ -14372,9 +14372,9 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
-    category?: CategoryUpdateOneWithoutContractsNestedInput
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    category?: CategoryUpdateOneWithoutContractsNestedInput
+    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutOwnerInput = {
@@ -14424,12 +14424,6 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserGroupCreateManyGroupInput = {
-    id?: string
-    userId: string
-    joinedAt?: Date | string
-  }
-
   export type DirectoryAccessCreateManyGroupInput = {
     id?: string
     directoryId: string
@@ -14437,22 +14431,10 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
-  export type UserGroupUpdateWithoutGroupInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutUserGroupsNestedInput
-  }
-
-  export type UserGroupUncheckedUpdateWithoutGroupInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserGroupUncheckedUpdateManyWithoutGroupInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  export type UserGroupCreateManyGroupInput = {
+    id?: string
+    userId: string
+    joinedAt?: Date | string
   }
 
   export type DirectoryAccessUpdateWithoutGroupInput = {
@@ -14476,14 +14458,22 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type DirectoryCreateManyParentInput = {
-    id?: string
-    name: string
-    description?: string | null
-    path: string
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
+  export type UserGroupUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserGroupsNestedInput
+  }
+
+  export type UserGroupUncheckedUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserGroupUncheckedUpdateManyWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ContractCreateManyDirectoryInput = {
@@ -14500,47 +14490,21 @@ export namespace Prisma {
     categoryId?: string | null
   }
 
+  export type DirectoryCreateManyParentInput = {
+    id?: string
+    name: string
+    description?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type DirectoryAccessCreateManyDirectoryInput = {
     id?: string
     groupId: string
     permission?: $Enums.Permission
     createdAt?: Date | string
-  }
-
-  export type DirectoryUpdateWithoutParentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    path?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    children?: DirectoryUpdateManyWithoutParentNestedInput
-    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
-    directoryAccess?: DirectoryAccessUpdateManyWithoutDirectoryNestedInput
-  }
-
-  export type DirectoryUncheckedUpdateWithoutParentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    path?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
-    contracts?: ContractUncheckedUpdateManyWithoutDirectoryNestedInput
-    directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput
-  }
-
-  export type DirectoryUncheckedUpdateManyWithoutParentInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    path?: StringFieldUpdateOperationsInput | string
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ContractUpdateWithoutDirectoryInput = {
@@ -14553,9 +14517,9 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
-    category?: CategoryUpdateOneWithoutContractsNestedInput
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    category?: CategoryUpdateOneWithoutContractsNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutDirectoryInput = {
@@ -14585,6 +14549,42 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DirectoryUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
+    children?: DirectoryUpdateManyWithoutParentNestedInput
+    directoryAccess?: DirectoryAccessUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryUncheckedUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUncheckedUpdateManyWithoutDirectoryNestedInput
+    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
+    directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryUncheckedUpdateManyWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type DirectoryAccessUpdateWithoutDirectoryInput = {
@@ -14668,9 +14668,9 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
-    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutCategoryInput = {
