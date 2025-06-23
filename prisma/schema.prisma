@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../lib/generated/prisma"
@@ -14,106 +8,134 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ユーザーモデル
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // リレーション
-  contracts Contract[]
+  id             String      @id @default(cuid())
+  email          String      @unique
+  name           String?
+  isActive       Boolean     @default(true)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  ownedContracts Contract[]  @relation("ContractOwner")
+  userGroups     UserGroup[]
 
   @@map("users")
 }
 
-// 契約書モデル
-model Contract {
-  id          String        @id @default(cuid())
-  title       String
-  content     String        // Markdownコンテンツ
-  status      ContractStatus @default(DRAFT)
-  contractNumber String?    @unique // 契約書番号
-  
-  // 契約期間
-  startDate   DateTime?
-  endDate     DateTime?
-  
-  // メタデータ
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  
-  // リレーション
-  userId      String
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  // 契約書のカテゴリ
-  categoryId  String?
-  category    Category?     @relation(fields: [categoryId], references: [id])
-  
-  // 契約書のバージョン履歴
-  versions    ContractVersion[]
-  
-  // 関連する添付ファイル
-  attachments Attachment[]
+model Group {
+  id              String            @id @default(cuid())
+  name            String            @unique
+  description     String?
+  isActive        Boolean           @default(true)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  directoryAccess DirectoryAccess[]
+  userGroups      UserGroup[]
 
+  @@map("groups")
+}
+
+model UserGroup {
+  id       String   @id @default(cuid())
+  userId   String
+  groupId  String
+  joinedAt DateTime @default(now())
+  group    Group    @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+  @@map("user_groups")
+}
+
+model Directory {
+  id              String            @id @default(cuid())
+  name            String
+  description     String?
+  parentId        String?
+  path            String            @unique
+  isActive        Boolean           @default(true)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  contracts       Contract[]
+  parent          Directory?        @relation("DirectoryHierarchy", fields: [parentId], references: [id])
+  children        Directory[]       @relation("DirectoryHierarchy")
+  directoryAccess DirectoryAccess[]
+
+  @@unique([parentId, name])
+  @@map("directories")
+}
+
+model DirectoryAccess {
+  id          String     @id @default(cuid())
+  directoryId String
+  groupId     String
+  permission  Permission @default(READ)
+  createdAt   DateTime   @default(now())
+  directory   Directory  @relation(fields: [directoryId], references: [id], onDelete: Cascade)
+  group       Group      @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([directoryId, groupId])
+  @@map("directory_access")
+}
+
+model Contract {
+  id             String            @id @default(cuid())
+  title          String
+  content        String
+  status         ContractStatus    @default(DRAFT)
+  contractNumber String?           @unique
+  startDate      DateTime?
+  endDate        DateTime?
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  ownerId        String
+  directoryId    String
+  categoryId     String?
+  versions       ContractVersion[]
+  category       Category?         @relation(fields: [categoryId], references: [id])
+  directory      Directory         @relation(fields: [directoryId], references: [id])
+  owner          User              @relation("ContractOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([directoryId])
+  @@index([ownerId])
+  @@index([status])
   @@map("contracts")
 }
 
-// 契約書のステータス
-enum ContractStatus {
-  DRAFT     // 下書き
-  REVIEW    // レビュー中
-  ACTIVE    // 有効
-  EXPIRED   // 期限切れ
-  TERMINATED // 終了
-}
-
-// 契約書のカテゴリ
 model Category {
-  id        String   @id @default(cuid())
-  name      String   @unique
-  color     String?  // カテゴリの色
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // リレーション
+  id        String     @id @default(cuid())
+  name      String     @unique
+  color     String?
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   contracts Contract[]
 
   @@map("categories")
 }
 
-// 契約書のバージョン履歴
 model ContractVersion {
   id         String   @id @default(cuid())
-  version    Int      // バージョン番号
+  version    Int
   title      String
-  content    String   // その時点でのMarkdownコンテンツ
-  changeNote String?  // 変更点のメモ
+  content    String
+  changeNote String?
   createdAt  DateTime @default(now())
-
-  // リレーション
   contractId String
   contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
   @@unique([contractId, version])
+  @@index([contractId])
   @@map("contract_versions")
 }
 
-// 添付ファイル
-model Attachment {
-  id        String   @id @default(cuid())
-  filename  String
-  originalName String
-  mimeType  String
-  size      Int      // ファイルサイズ（bytes）
-  path      String   // ファイルパス
-  createdAt DateTime @default(now())
+enum Permission {
+  READ
+  WRITE
+}
 
-  // リレーション
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
-
-  @@map("attachments")
+enum ContractStatus {
+  DRAFT
+  REVIEW
+  ACTIVE
+  EXPIRED
+  TERMINATED
 }

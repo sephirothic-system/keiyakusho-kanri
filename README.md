@@ -131,7 +131,6 @@ npm run dev
 - endDate: 終了日
 - category: カテゴリ
 - versions: バージョン履歴
-- attachments: 添付ファイル
 
 #### Category（カテゴリ）
 
@@ -145,15 +144,6 @@ npm run dev
 - version: バージョン番号
 - content: その時点のコンテンツ
 - changeNote: 変更メモ
-
-#### Attachment（添付ファイル）
-
-- id: ファイルID
-- filename: ファイル名
-- originalName: 元のファイル名
-- mimeType: MIMEタイプ
-- size: ファイルサイズ
-- path: ファイルパス
 
 ## 開発時の注意事項
 

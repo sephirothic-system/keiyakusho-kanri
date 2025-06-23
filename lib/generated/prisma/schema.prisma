@@ -19,13 +19,89 @@ model User {
   id        String   @id @default(cuid())
   email     String   @unique
   name      String?
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // リレーション
-  contracts Contract[]
+  ownedContracts Contract[]  @relation("ContractOwner")
+  userGroups     UserGroup[]
 
   @@map("users")
+}
+
+// グループモデル
+model Group {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // リレーション
+  userGroups      UserGroup[]
+  directoryAccess DirectoryAccess[]
+
+  @@map("groups")
+}
+
+// ユーザーとグループの多対多関係
+model UserGroup {
+  id       String   @id @default(cuid())
+  userId   String
+  groupId  String
+  joinedAt DateTime @default(now())
+
+  // リレーション
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  group Group @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, groupId])
+  @@map("user_groups")
+}
+
+// ディレクトリモデル（階層構造対応）
+model Directory {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  parentId    String? // 親ディレクトリID（NULL = ルートディレクトリ）
+  path        String   @unique // 階層パス（例: /root/contracts/legal）
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // リレーション
+  parent          Directory?        @relation("DirectoryHierarchy", fields: [parentId], references: [id])
+  children        Directory[]       @relation("DirectoryHierarchy")
+  contracts       Contract[]
+  directoryAccess DirectoryAccess[]
+
+  @@unique([parentId, name]) // 同じ親ディレクトリ内で同名不可
+  @@map("directories")
+}
+
+// ディレクトリへのグループアクセス権限
+model DirectoryAccess {
+  id          String     @id @default(cuid())
+  directoryId String
+  groupId     String
+  permission  Permission @default(READ)
+  createdAt   DateTime   @default(now())
+
+  // リレーション
+  directory Directory @relation(fields: [directoryId], references: [id], onDelete: Cascade)
+  group     Group     @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([directoryId, groupId])
+  @@map("directory_access")
+}
+
+// 権限の種類
+enum Permission {
+  READ // 読み取り専用
+  WRITE // 読み書き可能
 }
 
 // 契約書モデル
@@ -44,9 +120,13 @@ model Contract {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // リレーション
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  // オーナー（作成者）
+  ownerId String
+  owner   User   @relation("ContractOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  // ディレクトリ配置
+  directoryId String
+  directory   Directory @relation(fields: [directoryId], references: [id])
 
   // 契約書のカテゴリ
   categoryId String?
@@ -55,9 +135,9 @@ model Contract {
   // 契約書のバージョン履歴
   versions ContractVersion[]
 
-  // 関連する添付ファイル
-  attachments Attachment[]
-
+  @@index([directoryId])
+  @@index([ownerId])
+  @@index([status])
   @@map("contracts")
 }
 
@@ -98,22 +178,6 @@ model ContractVersion {
   contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
 
   @@unique([contractId, version])
+  @@index([contractId])
   @@map("contract_versions")
-}
-
-// 添付ファイル
-model Attachment {
-  id           String   @id @default(cuid())
-  filename     String
-  originalName String
-  mimeType     String
-  size         Int // ファイルサイズ（bytes）
-  path         String // ファイルパス
-  createdAt    DateTime @default(now())
-
-  // リレーション
-  contractId String
-  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
-
-  @@map("attachments")
 }

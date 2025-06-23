@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../lib/generated/prisma'
 
 const prisma = new PrismaClient()
 
@@ -52,16 +52,211 @@ async function main() {
   console.log('Categories created:', categories.length)
 
   // テストユーザーの作成
-  const testUser = await prisma.user.upsert({
-    where: { email: 'test@example.com' },
+  const testUsers = await Promise.all([
+    prisma.user.upsert({
+      where: { email: 'admin@example.com' },
+      update: {},
+      create: {
+        email: 'admin@example.com',
+        name: '管理者ユーザー',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'legal@example.com' },
+      update: {},
+      create: {
+        email: 'legal@example.com',
+        name: '法務担当者',
+        isActive: true,
+      },
+    }),
+    prisma.user.upsert({
+      where: { email: 'manager@example.com' },
+      update: {},
+      create: {
+        email: 'manager@example.com',
+        name: 'マネージャー',
+        isActive: true,
+      },
+    }),
+  ])
+
+  console.log('Test users created:', testUsers.length)
+
+  // グループの作成
+  const groups = await Promise.all([
+    prisma.group.upsert({
+      where: { name: '管理者' },
+      update: {},
+      create: {
+        name: '管理者',
+        description: 'システム管理者グループ',
+        isActive: true,
+      },
+    }),
+    prisma.group.upsert({
+      where: { name: '法務部' },
+      update: {},
+      create: {
+        name: '法務部',
+        description: '法務部門のメンバー',
+        isActive: true,
+      },
+    }),
+    prisma.group.upsert({
+      where: { name: '営業部' },
+      update: {},
+      create: {
+        name: '営業部',
+        description: '営業部門のメンバー',
+        isActive: true,
+      },
+    }),
+  ])
+
+  console.log('Groups created:', groups.length)
+
+  // ユーザーとグループの関連付け
+  await Promise.all([
+    // 管理者ユーザー → 管理者グループ
+    prisma.userGroup.upsert({
+      where: { userId_groupId: { userId: testUsers[0].id, groupId: groups[0].id } },
+      update: {},
+      create: {
+        userId: testUsers[0].id,
+        groupId: groups[0].id,
+      },
+    }),
+    // 法務担当者 → 法務部グループ
+    prisma.userGroup.upsert({
+      where: { userId_groupId: { userId: testUsers[1].id, groupId: groups[1].id } },
+      update: {},
+      create: {
+        userId: testUsers[1].id,
+        groupId: groups[1].id,
+      },
+    }),
+    // マネージャー → 営業部グループ
+    prisma.userGroup.upsert({
+      where: { userId_groupId: { userId: testUsers[2].id, groupId: groups[2].id } },
+      update: {},
+      create: {
+        userId: testUsers[2].id,
+        groupId: groups[2].id,
+      },
+    }),
+  ])
+
+  console.log('User-Group relationships created')
+
+  // ディレクトリ構造の作成（階層構造）
+  const rootDirectory = await prisma.directory.upsert({
+    where: { path: '/root' },
     update: {},
     create: {
-      email: 'test@example.com',
-      name: 'テストユーザー',
+      name: 'root',
+      description: 'ルートディレクトリ',
+      path: '/root',
+      isActive: true,
     },
   })
 
-  console.log('Test user created:', testUser.email)
+  const contractsDirectory = await prisma.directory.upsert({
+    where: { path: '/root/contracts' },
+    update: {},
+    create: {
+      name: 'contracts',
+      description: '契約書管理',
+      parentId: rootDirectory.id,
+      path: '/root/contracts',
+      isActive: true,
+    },
+  })
+
+  const directories = await Promise.all([
+    prisma.directory.upsert({
+      where: { path: '/root/contracts/legal' },
+      update: {},
+      create: {
+        name: 'legal',
+        description: '法務関連契約書',
+        parentId: contractsDirectory.id,
+        path: '/root/contracts/legal',
+        isActive: true,
+      },
+    }),
+    prisma.directory.upsert({
+      where: { path: '/root/contracts/business' },
+      update: {},
+      create: {
+        name: 'business',
+        description: '業務関連契約書',
+        parentId: contractsDirectory.id,
+        path: '/root/contracts/business',
+        isActive: true,
+      },
+    }),
+    prisma.directory.upsert({
+      where: { path: '/root/contracts/hr' },
+      update: {},
+      create: {
+        name: 'hr',
+        description: '人事関連契約書',
+        parentId: contractsDirectory.id,
+        path: '/root/contracts/hr',
+        isActive: true,
+      },
+    }),
+  ])
+
+  console.log('Directory structure created:', directories.length + 2)
+
+  // ディレクトリアクセス権限の設定
+  await Promise.all([
+    // 管理者グループ → 全ディレクトリに書き込み権限
+    prisma.directoryAccess.upsert({
+      where: { directoryId_groupId: { directoryId: contractsDirectory.id, groupId: groups[0].id } },
+      update: {},
+      create: {
+        directoryId: contractsDirectory.id,
+        groupId: groups[0].id,
+        permission: 'WRITE',
+      },
+    }),
+    // 法務部 → 法務ディレクトリに書き込み権限
+    prisma.directoryAccess.upsert({
+      where: { directoryId_groupId: { directoryId: directories[0].id, groupId: groups[1].id } },
+      update: {},
+      create: {
+        directoryId: directories[0].id,
+        groupId: groups[1].id,
+        permission: 'WRITE',
+      },
+    }),
+    // 営業部 → 業務ディレクトリに書き込み権限
+    prisma.directoryAccess.upsert({
+      where: { directoryId_groupId: { directoryId: directories[1].id, groupId: groups[2].id } },
+      update: {},
+      create: {
+        directoryId: directories[1].id,
+        groupId: groups[2].id,
+        permission: 'WRITE',
+      },
+    }),
+    // 営業部 → 法務ディレクトリに読み取り権限
+    prisma.directoryAccess.upsert({
+      where: { directoryId_groupId: { directoryId: directories[0].id, groupId: groups[2].id } },
+      update: {},
+      create: {
+        directoryId: directories[0].id,
+        groupId: groups[2].id,
+        permission: 'READ',
+      },
+    }),
+  ])
+
+  console.log('Directory access permissions created')
 
   // サンプル契約書の作成
   const sampleContracts = await Promise.all([
@@ -90,7 +285,8 @@ async function main() {
         contractNumber: 'BC-2024-001',
         startDate: new Date('2024-01-01'),
         endDate: new Date('2024-12-31'),
-        userId: testUser.id,
+        ownerId: testUsers[0].id, // 管理者が作成
+        directoryId: directories[1].id, // 業務ディレクトリ
         categoryId: categories[0].id, // 業務委託契約
       },
     }),
@@ -111,8 +307,33 @@ async function main() {
 ## 第4条（契約期間）
 本契約の有効期間は、契約締結日から5年間とする。`,
         status: 'DRAFT',
-        userId: testUser.id,
+        ownerId: testUsers[1].id, // 法務担当者が作成
+        directoryId: directories[0].id, // 法務ディレクトリ
         categoryId: categories[4].id, // NDA
+      },
+    }),
+    prisma.contract.create({
+      data: {
+        title: '雇用契約書（正社員）',
+        content: `# 雇用契約書
+
+## 第1条（雇用）
+会社は、従業員を正社員として雇用する。
+
+## 第2条（職務内容）
+従業員は、会社の指示に従い、誠実に職務を遂行する。
+
+## 第3条（勤務時間）
+勤務時間は、午前9時から午後6時までとする。
+
+## 第4条（給与）
+基本給は月額30万円とする。`,
+        status: 'ACTIVE',
+        contractNumber: 'EMP-2024-001',
+        startDate: new Date('2024-04-01'),
+        ownerId: testUsers[0].id, // 管理者が作成
+        directoryId: directories[2].id, // 人事ディレクトリ
+        categoryId: categories[3].id, // 雇用契約
       },
     }),
   ])
@@ -120,19 +341,36 @@ async function main() {
   console.log('Sample contracts created:', sampleContracts.length)
 
   // バージョン履歴のサンプル作成
-  await prisma.contractVersion.create({
-    data: {
-      version: 1,
-      title: '業務委託契約書（サンプル）- 初版',
-      content: '# 業務委託契約書（初版）\n\n初版の内容です。',
-      changeNote: '初版作成',
-      contractId: sampleContracts[0].id,
-    },
-  })
+  await Promise.all([
+    prisma.contractVersion.create({
+      data: {
+        version: 1,
+        title: '業務委託契約書（サンプル）- 初版',
+        content: '# 業務委託契約書（初版）\n\n初版の内容です。',
+        changeNote: '初版作成',
+        contractId: sampleContracts[0].id,
+      },
+    }),
+    prisma.contractVersion.create({
+      data: {
+        version: 1,
+        title: '秘密保持契約書（NDA）- 初版',
+        content: '# 秘密保持契約書（初版）\n\n初版の内容です。',
+        changeNote: '初版作成',
+        contractId: sampleContracts[1].id,
+      },
+    }),
+  ])
 
-  console.log('Contract version created')
+  console.log('Contract versions created')
 
-  console.log('Seed completed successfully!')
+  console.log('🎉 Seed completed successfully!')
+  console.log('📊 Created sample data:')
+  console.log(`  - ${testUsers.length} users`)
+  console.log(`  - ${groups.length} groups`)
+  console.log(`  - ${directories.length + 2} directories`)
+  console.log(`  - ${categories.length} categories`)
+  console.log(`  - ${sampleContracts.length} contracts`)
 }
 
 main()

@@ -19,6 +19,26 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model Group
+ * 
+ */
+export type Group = $Result.DefaultSelection<Prisma.$GroupPayload>
+/**
+ * Model UserGroup
+ * 
+ */
+export type UserGroup = $Result.DefaultSelection<Prisma.$UserGroupPayload>
+/**
+ * Model Directory
+ * 
+ */
+export type Directory = $Result.DefaultSelection<Prisma.$DirectoryPayload>
+/**
+ * Model DirectoryAccess
+ * 
+ */
+export type DirectoryAccess = $Result.DefaultSelection<Prisma.$DirectoryAccessPayload>
+/**
  * Model Contract
  * 
  */
@@ -33,17 +53,20 @@ export type Category = $Result.DefaultSelection<Prisma.$CategoryPayload>
  * 
  */
 export type ContractVersion = $Result.DefaultSelection<Prisma.$ContractVersionPayload>
-/**
- * Model Attachment
- * 
- */
-export type Attachment = $Result.DefaultSelection<Prisma.$AttachmentPayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const ContractStatus: {
+  export const Permission: {
+  READ: 'READ',
+  WRITE: 'WRITE'
+};
+
+export type Permission = (typeof Permission)[keyof typeof Permission]
+
+
+export const ContractStatus: {
   DRAFT: 'DRAFT',
   REVIEW: 'REVIEW',
   ACTIVE: 'ACTIVE',
@@ -54,6 +77,10 @@ export namespace $Enums {
 export type ContractStatus = (typeof ContractStatus)[keyof typeof ContractStatus]
 
 }
+
+export type Permission = $Enums.Permission
+
+export const Permission: typeof $Enums.Permission
 
 export type ContractStatus = $Enums.ContractStatus
 
@@ -195,6 +222,46 @@ export class PrismaClient<
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.group`: Exposes CRUD operations for the **Group** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Groups
+    * const groups = await prisma.group.findMany()
+    * ```
+    */
+  get group(): Prisma.GroupDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userGroup`: Exposes CRUD operations for the **UserGroup** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserGroups
+    * const userGroups = await prisma.userGroup.findMany()
+    * ```
+    */
+  get userGroup(): Prisma.UserGroupDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.directory`: Exposes CRUD operations for the **Directory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Directories
+    * const directories = await prisma.directory.findMany()
+    * ```
+    */
+  get directory(): Prisma.DirectoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.directoryAccess`: Exposes CRUD operations for the **DirectoryAccess** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DirectoryAccesses
+    * const directoryAccesses = await prisma.directoryAccess.findMany()
+    * ```
+    */
+  get directoryAccess(): Prisma.DirectoryAccessDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.contract`: Exposes CRUD operations for the **Contract** model.
     * Example usage:
     * ```ts
@@ -223,16 +290,6 @@ export class PrismaClient<
     * ```
     */
   get contractVersion(): Prisma.ContractVersionDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.attachment`: Exposes CRUD operations for the **Attachment** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Attachments
-    * const attachments = await prisma.attachment.findMany()
-    * ```
-    */
-  get attachment(): Prisma.AttachmentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -674,10 +731,13 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    Group: 'Group',
+    UserGroup: 'UserGroup',
+    Directory: 'Directory',
+    DirectoryAccess: 'DirectoryAccess',
     Contract: 'Contract',
     Category: 'Category',
-    ContractVersion: 'ContractVersion',
-    Attachment: 'Attachment'
+    ContractVersion: 'ContractVersion'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -696,7 +756,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "contract" | "category" | "contractVersion" | "attachment"
+      modelProps: "user" | "group" | "userGroup" | "directory" | "directoryAccess" | "contract" | "category" | "contractVersion"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -771,6 +831,302 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Group: {
+        payload: Prisma.$GroupPayload<ExtArgs>
+        fields: Prisma.GroupFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GroupFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GroupFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload>
+          }
+          findFirst: {
+            args: Prisma.GroupFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GroupFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload>
+          }
+          findMany: {
+            args: Prisma.GroupFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload>[]
+          }
+          create: {
+            args: Prisma.GroupCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload>
+          }
+          createMany: {
+            args: Prisma.GroupCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GroupCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload>[]
+          }
+          delete: {
+            args: Prisma.GroupDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload>
+          }
+          update: {
+            args: Prisma.GroupUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload>
+          }
+          deleteMany: {
+            args: Prisma.GroupDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GroupUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GroupUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload>[]
+          }
+          upsert: {
+            args: Prisma.GroupUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GroupPayload>
+          }
+          aggregate: {
+            args: Prisma.GroupAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGroup>
+          }
+          groupBy: {
+            args: Prisma.GroupGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GroupGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GroupCountArgs<ExtArgs>
+            result: $Utils.Optional<GroupCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserGroup: {
+        payload: Prisma.$UserGroupPayload<ExtArgs>
+        fields: Prisma.UserGroupFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserGroupFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserGroupFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload>
+          }
+          findFirst: {
+            args: Prisma.UserGroupFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserGroupFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload>
+          }
+          findMany: {
+            args: Prisma.UserGroupFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload>[]
+          }
+          create: {
+            args: Prisma.UserGroupCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload>
+          }
+          createMany: {
+            args: Prisma.UserGroupCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserGroupCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload>[]
+          }
+          delete: {
+            args: Prisma.UserGroupDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload>
+          }
+          update: {
+            args: Prisma.UserGroupUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserGroupDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserGroupUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserGroupUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserGroupUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserGroupPayload>
+          }
+          aggregate: {
+            args: Prisma.UserGroupAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserGroup>
+          }
+          groupBy: {
+            args: Prisma.UserGroupGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserGroupGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserGroupCountArgs<ExtArgs>
+            result: $Utils.Optional<UserGroupCountAggregateOutputType> | number
+          }
+        }
+      }
+      Directory: {
+        payload: Prisma.$DirectoryPayload<ExtArgs>
+        fields: Prisma.DirectoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DirectoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DirectoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload>
+          }
+          findFirst: {
+            args: Prisma.DirectoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DirectoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload>
+          }
+          findMany: {
+            args: Prisma.DirectoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload>[]
+          }
+          create: {
+            args: Prisma.DirectoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload>
+          }
+          createMany: {
+            args: Prisma.DirectoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DirectoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload>[]
+          }
+          delete: {
+            args: Prisma.DirectoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload>
+          }
+          update: {
+            args: Prisma.DirectoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.DirectoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DirectoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DirectoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.DirectoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryPayload>
+          }
+          aggregate: {
+            args: Prisma.DirectoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDirectory>
+          }
+          groupBy: {
+            args: Prisma.DirectoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DirectoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DirectoryCountArgs<ExtArgs>
+            result: $Utils.Optional<DirectoryCountAggregateOutputType> | number
+          }
+        }
+      }
+      DirectoryAccess: {
+        payload: Prisma.$DirectoryAccessPayload<ExtArgs>
+        fields: Prisma.DirectoryAccessFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DirectoryAccessFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DirectoryAccessFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload>
+          }
+          findFirst: {
+            args: Prisma.DirectoryAccessFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DirectoryAccessFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload>
+          }
+          findMany: {
+            args: Prisma.DirectoryAccessFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload>[]
+          }
+          create: {
+            args: Prisma.DirectoryAccessCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload>
+          }
+          createMany: {
+            args: Prisma.DirectoryAccessCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DirectoryAccessCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload>[]
+          }
+          delete: {
+            args: Prisma.DirectoryAccessDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload>
+          }
+          update: {
+            args: Prisma.DirectoryAccessUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload>
+          }
+          deleteMany: {
+            args: Prisma.DirectoryAccessDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DirectoryAccessUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DirectoryAccessUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload>[]
+          }
+          upsert: {
+            args: Prisma.DirectoryAccessUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DirectoryAccessPayload>
+          }
+          aggregate: {
+            args: Prisma.DirectoryAccessAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDirectoryAccess>
+          }
+          groupBy: {
+            args: Prisma.DirectoryAccessGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DirectoryAccessGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DirectoryAccessCountArgs<ExtArgs>
+            result: $Utils.Optional<DirectoryAccessCountAggregateOutputType> | number
           }
         }
       }
@@ -996,80 +1352,6 @@ export namespace Prisma {
           }
         }
       }
-      Attachment: {
-        payload: Prisma.$AttachmentPayload<ExtArgs>
-        fields: Prisma.AttachmentFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.AttachmentFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.AttachmentFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
-          }
-          findFirst: {
-            args: Prisma.AttachmentFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.AttachmentFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
-          }
-          findMany: {
-            args: Prisma.AttachmentFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>[]
-          }
-          create: {
-            args: Prisma.AttachmentCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
-          }
-          createMany: {
-            args: Prisma.AttachmentCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.AttachmentCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>[]
-          }
-          delete: {
-            args: Prisma.AttachmentDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
-          }
-          update: {
-            args: Prisma.AttachmentUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
-          }
-          deleteMany: {
-            args: Prisma.AttachmentDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.AttachmentUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.AttachmentUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>[]
-          }
-          upsert: {
-            args: Prisma.AttachmentUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$AttachmentPayload>
-          }
-          aggregate: {
-            args: Prisma.AttachmentAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateAttachment>
-          }
-          groupBy: {
-            args: Prisma.AttachmentGroupByArgs<ExtArgs>
-            result: $Utils.Optional<AttachmentGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.AttachmentCountArgs<ExtArgs>
-            result: $Utils.Optional<AttachmentCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -1155,10 +1437,13 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    group?: GroupOmit
+    userGroup?: UserGroupOmit
+    directory?: DirectoryOmit
+    directoryAccess?: DirectoryAccessOmit
     contract?: ContractOmit
     category?: CategoryOmit
     contractVersion?: ContractVersionOmit
-    attachment?: AttachmentOmit
   }
 
   /* Types for Logging */
@@ -1253,11 +1538,13 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
-    contracts: number
+    ownedContracts: number
+    userGroups: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contracts?: boolean | UserCountOutputTypeCountContractsArgs
+    ownedContracts?: boolean | UserCountOutputTypeCountOwnedContractsArgs
+    userGroups?: boolean | UserCountOutputTypeCountUserGroupsArgs
   }
 
   // Custom InputTypes
@@ -1274,8 +1561,104 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountOwnedContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ContractWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountUserGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserGroupWhereInput
+  }
+
+
+  /**
+   * Count Type GroupCountOutputType
+   */
+
+  export type GroupCountOutputType = {
+    userGroups: number
+    directoryAccess: number
+  }
+
+  export type GroupCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userGroups?: boolean | GroupCountOutputTypeCountUserGroupsArgs
+    directoryAccess?: boolean | GroupCountOutputTypeCountDirectoryAccessArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * GroupCountOutputType without action
+   */
+  export type GroupCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GroupCountOutputType
+     */
+    select?: GroupCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * GroupCountOutputType without action
+   */
+  export type GroupCountOutputTypeCountUserGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserGroupWhereInput
+  }
+
+  /**
+   * GroupCountOutputType without action
+   */
+  export type GroupCountOutputTypeCountDirectoryAccessArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DirectoryAccessWhereInput
+  }
+
+
+  /**
+   * Count Type DirectoryCountOutputType
+   */
+
+  export type DirectoryCountOutputType = {
+    children: number
+    contracts: number
+    directoryAccess: number
+  }
+
+  export type DirectoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    children?: boolean | DirectoryCountOutputTypeCountChildrenArgs
+    contracts?: boolean | DirectoryCountOutputTypeCountContractsArgs
+    directoryAccess?: boolean | DirectoryCountOutputTypeCountDirectoryAccessArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DirectoryCountOutputType without action
+   */
+  export type DirectoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryCountOutputType
+     */
+    select?: DirectoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DirectoryCountOutputType without action
+   */
+  export type DirectoryCountOutputTypeCountChildrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DirectoryWhereInput
+  }
+
+  /**
+   * DirectoryCountOutputType without action
+   */
+  export type DirectoryCountOutputTypeCountContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ContractWhereInput
+  }
+
+  /**
+   * DirectoryCountOutputType without action
+   */
+  export type DirectoryCountOutputTypeCountDirectoryAccessArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DirectoryAccessWhereInput
   }
 
 
@@ -1285,12 +1668,10 @@ export namespace Prisma {
 
   export type ContractCountOutputType = {
     versions: number
-    attachments: number
   }
 
   export type ContractCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     versions?: boolean | ContractCountOutputTypeCountVersionsArgs
-    attachments?: boolean | ContractCountOutputTypeCountAttachmentsArgs
   }
 
   // Custom InputTypes
@@ -1309,13 +1690,6 @@ export namespace Prisma {
    */
   export type ContractCountOutputTypeCountVersionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ContractVersionWhereInput
-  }
-
-  /**
-   * ContractCountOutputType without action
-   */
-  export type ContractCountOutputTypeCountAttachmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AttachmentWhereInput
   }
 
 
@@ -1368,6 +1742,7 @@ export namespace Prisma {
     id: string | null
     email: string | null
     name: string | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1376,6 +1751,7 @@ export namespace Prisma {
     id: string | null
     email: string | null
     name: string | null
+    isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1384,6 +1760,7 @@ export namespace Prisma {
     id: number
     email: number
     name: number
+    isActive: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1394,6 +1771,7 @@ export namespace Prisma {
     id?: true
     email?: true
     name?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1402,6 +1780,7 @@ export namespace Prisma {
     id?: true
     email?: true
     name?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1410,6 +1789,7 @@ export namespace Prisma {
     id?: true
     email?: true
     name?: true
+    isActive?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1491,6 +1871,7 @@ export namespace Prisma {
     id: string
     email: string
     name: string | null
+    isActive: boolean
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -1516,9 +1897,11 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     name?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    contracts?: boolean | User$contractsArgs<ExtArgs>
+    ownedContracts?: boolean | User$ownedContractsArgs<ExtArgs>
+    userGroups?: boolean | User$userGroupsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1526,6 +1909,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     name?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1534,6 +1918,7 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     name?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -1542,13 +1927,15 @@ export namespace Prisma {
     id?: boolean
     email?: boolean
     name?: boolean
+    isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contracts?: boolean | User$contractsArgs<ExtArgs>
+    ownedContracts?: boolean | User$ownedContractsArgs<ExtArgs>
+    userGroups?: boolean | User$userGroupsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1557,12 +1944,14 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      contracts: Prisma.$ContractPayload<ExtArgs>[]
+      ownedContracts: Prisma.$ContractPayload<ExtArgs>[]
+      userGroups: Prisma.$UserGroupPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       email: string
       name: string | null
+      isActive: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -1959,7 +2348,8 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    contracts<T extends User$contractsArgs<ExtArgs> = {}>(args?: Subset<T, User$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ownedContracts<T extends User$ownedContractsArgs<ExtArgs> = {}>(args?: Subset<T, User$ownedContractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    userGroups<T extends User$userGroupsArgs<ExtArgs> = {}>(args?: Subset<T, User$userGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1992,6 +2382,7 @@ export namespace Prisma {
     readonly id: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly name: FieldRef<"User", 'String'>
+    readonly isActive: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -2382,9 +2773,9 @@ export namespace Prisma {
   }
 
   /**
-   * User.contracts
+   * User.ownedContracts
    */
-  export type User$contractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type User$ownedContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the Contract
      */
@@ -2406,6 +2797,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.userGroups
+   */
+  export type User$userGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    where?: UserGroupWhereInput
+    orderBy?: UserGroupOrderByWithRelationInput | UserGroupOrderByWithRelationInput[]
+    cursor?: UserGroupWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserGroupScalarFieldEnum | UserGroupScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2421,6 +2836,4438 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Group
+   */
+
+  export type AggregateGroup = {
+    _count: GroupCountAggregateOutputType | null
+    _min: GroupMinAggregateOutputType | null
+    _max: GroupMaxAggregateOutputType | null
+  }
+
+  export type GroupMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GroupMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GroupCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GroupMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GroupMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GroupCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GroupAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Group to aggregate.
+     */
+    where?: GroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Groups to fetch.
+     */
+    orderBy?: GroupOrderByWithRelationInput | GroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Groups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Groups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Groups
+    **/
+    _count?: true | GroupCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GroupMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GroupMaxAggregateInputType
+  }
+
+  export type GetGroupAggregateType<T extends GroupAggregateArgs> = {
+        [P in keyof T & keyof AggregateGroup]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGroup[P]>
+      : GetScalarType<T[P], AggregateGroup[P]>
+  }
+
+
+
+
+  export type GroupGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GroupWhereInput
+    orderBy?: GroupOrderByWithAggregationInput | GroupOrderByWithAggregationInput[]
+    by: GroupScalarFieldEnum[] | GroupScalarFieldEnum
+    having?: GroupScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GroupCountAggregateInputType | true
+    _min?: GroupMinAggregateInputType
+    _max?: GroupMaxAggregateInputType
+  }
+
+  export type GroupGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: GroupCountAggregateOutputType | null
+    _min: GroupMinAggregateOutputType | null
+    _max: GroupMaxAggregateOutputType | null
+  }
+
+  type GetGroupGroupByPayload<T extends GroupGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GroupGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GroupGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GroupGroupByOutputType[P]>
+            : GetScalarType<T[P], GroupGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GroupSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userGroups?: boolean | Group$userGroupsArgs<ExtArgs>
+    directoryAccess?: boolean | Group$directoryAccessArgs<ExtArgs>
+    _count?: boolean | GroupCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["group"]>
+
+  export type GroupSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["group"]>
+
+  export type GroupSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["group"]>
+
+  export type GroupSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["group"]>
+  export type GroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userGroups?: boolean | Group$userGroupsArgs<ExtArgs>
+    directoryAccess?: boolean | Group$directoryAccessArgs<ExtArgs>
+    _count?: boolean | GroupCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type GroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type GroupIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $GroupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Group"
+    objects: {
+      userGroups: Prisma.$UserGroupPayload<ExtArgs>[]
+      directoryAccess: Prisma.$DirectoryAccessPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["group"]>
+    composites: {}
+  }
+
+  type GroupGetPayload<S extends boolean | null | undefined | GroupDefaultArgs> = $Result.GetResult<Prisma.$GroupPayload, S>
+
+  type GroupCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GroupFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GroupCountAggregateInputType | true
+    }
+
+  export interface GroupDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Group'], meta: { name: 'Group' } }
+    /**
+     * Find zero or one Group that matches the filter.
+     * @param {GroupFindUniqueArgs} args - Arguments to find a Group
+     * @example
+     * // Get one Group
+     * const group = await prisma.group.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GroupFindUniqueArgs>(args: SelectSubset<T, GroupFindUniqueArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Group that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GroupFindUniqueOrThrowArgs} args - Arguments to find a Group
+     * @example
+     * // Get one Group
+     * const group = await prisma.group.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GroupFindUniqueOrThrowArgs>(args: SelectSubset<T, GroupFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Group that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupFindFirstArgs} args - Arguments to find a Group
+     * @example
+     * // Get one Group
+     * const group = await prisma.group.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GroupFindFirstArgs>(args?: SelectSubset<T, GroupFindFirstArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Group that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupFindFirstOrThrowArgs} args - Arguments to find a Group
+     * @example
+     * // Get one Group
+     * const group = await prisma.group.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GroupFindFirstOrThrowArgs>(args?: SelectSubset<T, GroupFindFirstOrThrowArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Groups that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Groups
+     * const groups = await prisma.group.findMany()
+     * 
+     * // Get first 10 Groups
+     * const groups = await prisma.group.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const groupWithIdOnly = await prisma.group.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GroupFindManyArgs>(args?: SelectSubset<T, GroupFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Group.
+     * @param {GroupCreateArgs} args - Arguments to create a Group.
+     * @example
+     * // Create one Group
+     * const Group = await prisma.group.create({
+     *   data: {
+     *     // ... data to create a Group
+     *   }
+     * })
+     * 
+     */
+    create<T extends GroupCreateArgs>(args: SelectSubset<T, GroupCreateArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Groups.
+     * @param {GroupCreateManyArgs} args - Arguments to create many Groups.
+     * @example
+     * // Create many Groups
+     * const group = await prisma.group.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GroupCreateManyArgs>(args?: SelectSubset<T, GroupCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Groups and returns the data saved in the database.
+     * @param {GroupCreateManyAndReturnArgs} args - Arguments to create many Groups.
+     * @example
+     * // Create many Groups
+     * const group = await prisma.group.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Groups and only return the `id`
+     * const groupWithIdOnly = await prisma.group.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GroupCreateManyAndReturnArgs>(args?: SelectSubset<T, GroupCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Group.
+     * @param {GroupDeleteArgs} args - Arguments to delete one Group.
+     * @example
+     * // Delete one Group
+     * const Group = await prisma.group.delete({
+     *   where: {
+     *     // ... filter to delete one Group
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GroupDeleteArgs>(args: SelectSubset<T, GroupDeleteArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Group.
+     * @param {GroupUpdateArgs} args - Arguments to update one Group.
+     * @example
+     * // Update one Group
+     * const group = await prisma.group.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GroupUpdateArgs>(args: SelectSubset<T, GroupUpdateArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Groups.
+     * @param {GroupDeleteManyArgs} args - Arguments to filter Groups to delete.
+     * @example
+     * // Delete a few Groups
+     * const { count } = await prisma.group.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GroupDeleteManyArgs>(args?: SelectSubset<T, GroupDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Groups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Groups
+     * const group = await prisma.group.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GroupUpdateManyArgs>(args: SelectSubset<T, GroupUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Groups and returns the data updated in the database.
+     * @param {GroupUpdateManyAndReturnArgs} args - Arguments to update many Groups.
+     * @example
+     * // Update many Groups
+     * const group = await prisma.group.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Groups and only return the `id`
+     * const groupWithIdOnly = await prisma.group.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GroupUpdateManyAndReturnArgs>(args: SelectSubset<T, GroupUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Group.
+     * @param {GroupUpsertArgs} args - Arguments to update or create a Group.
+     * @example
+     * // Update or create a Group
+     * const group = await prisma.group.upsert({
+     *   create: {
+     *     // ... data to create a Group
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Group we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GroupUpsertArgs>(args: SelectSubset<T, GroupUpsertArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Groups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupCountArgs} args - Arguments to filter Groups to count.
+     * @example
+     * // Count the number of Groups
+     * const count = await prisma.group.count({
+     *   where: {
+     *     // ... the filter for the Groups we want to count
+     *   }
+     * })
+    **/
+    count<T extends GroupCountArgs>(
+      args?: Subset<T, GroupCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GroupCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Group.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GroupAggregateArgs>(args: Subset<T, GroupAggregateArgs>): Prisma.PrismaPromise<GetGroupAggregateType<T>>
+
+    /**
+     * Group by Group.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GroupGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GroupGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GroupGroupByArgs['orderBy'] }
+        : { orderBy?: GroupGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GroupGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGroupGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Group model
+   */
+  readonly fields: GroupFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Group.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    userGroups<T extends Group$userGroupsArgs<ExtArgs> = {}>(args?: Subset<T, Group$userGroupsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    directoryAccess<T extends Group$directoryAccessArgs<ExtArgs> = {}>(args?: Subset<T, Group$directoryAccessArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Group model
+   */
+  interface GroupFieldRefs {
+    readonly id: FieldRef<"Group", 'String'>
+    readonly name: FieldRef<"Group", 'String'>
+    readonly description: FieldRef<"Group", 'String'>
+    readonly isActive: FieldRef<"Group", 'Boolean'>
+    readonly createdAt: FieldRef<"Group", 'DateTime'>
+    readonly updatedAt: FieldRef<"Group", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Group findUnique
+   */
+  export type GroupFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+    /**
+     * Filter, which Group to fetch.
+     */
+    where: GroupWhereUniqueInput
+  }
+
+  /**
+   * Group findUniqueOrThrow
+   */
+  export type GroupFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+    /**
+     * Filter, which Group to fetch.
+     */
+    where: GroupWhereUniqueInput
+  }
+
+  /**
+   * Group findFirst
+   */
+  export type GroupFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+    /**
+     * Filter, which Group to fetch.
+     */
+    where?: GroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Groups to fetch.
+     */
+    orderBy?: GroupOrderByWithRelationInput | GroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Groups.
+     */
+    cursor?: GroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Groups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Groups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Groups.
+     */
+    distinct?: GroupScalarFieldEnum | GroupScalarFieldEnum[]
+  }
+
+  /**
+   * Group findFirstOrThrow
+   */
+  export type GroupFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+    /**
+     * Filter, which Group to fetch.
+     */
+    where?: GroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Groups to fetch.
+     */
+    orderBy?: GroupOrderByWithRelationInput | GroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Groups.
+     */
+    cursor?: GroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Groups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Groups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Groups.
+     */
+    distinct?: GroupScalarFieldEnum | GroupScalarFieldEnum[]
+  }
+
+  /**
+   * Group findMany
+   */
+  export type GroupFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+    /**
+     * Filter, which Groups to fetch.
+     */
+    where?: GroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Groups to fetch.
+     */
+    orderBy?: GroupOrderByWithRelationInput | GroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Groups.
+     */
+    cursor?: GroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Groups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Groups.
+     */
+    skip?: number
+    distinct?: GroupScalarFieldEnum | GroupScalarFieldEnum[]
+  }
+
+  /**
+   * Group create
+   */
+  export type GroupCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Group.
+     */
+    data: XOR<GroupCreateInput, GroupUncheckedCreateInput>
+  }
+
+  /**
+   * Group createMany
+   */
+  export type GroupCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Groups.
+     */
+    data: GroupCreateManyInput | GroupCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Group createManyAndReturn
+   */
+  export type GroupCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * The data used to create many Groups.
+     */
+    data: GroupCreateManyInput | GroupCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Group update
+   */
+  export type GroupUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Group.
+     */
+    data: XOR<GroupUpdateInput, GroupUncheckedUpdateInput>
+    /**
+     * Choose, which Group to update.
+     */
+    where: GroupWhereUniqueInput
+  }
+
+  /**
+   * Group updateMany
+   */
+  export type GroupUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Groups.
+     */
+    data: XOR<GroupUpdateManyMutationInput, GroupUncheckedUpdateManyInput>
+    /**
+     * Filter which Groups to update
+     */
+    where?: GroupWhereInput
+    /**
+     * Limit how many Groups to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Group updateManyAndReturn
+   */
+  export type GroupUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * The data used to update Groups.
+     */
+    data: XOR<GroupUpdateManyMutationInput, GroupUncheckedUpdateManyInput>
+    /**
+     * Filter which Groups to update
+     */
+    where?: GroupWhereInput
+    /**
+     * Limit how many Groups to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Group upsert
+   */
+  export type GroupUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Group to update in case it exists.
+     */
+    where: GroupWhereUniqueInput
+    /**
+     * In case the Group found by the `where` argument doesn't exist, create a new Group with this data.
+     */
+    create: XOR<GroupCreateInput, GroupUncheckedCreateInput>
+    /**
+     * In case the Group was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GroupUpdateInput, GroupUncheckedUpdateInput>
+  }
+
+  /**
+   * Group delete
+   */
+  export type GroupDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+    /**
+     * Filter which Group to delete.
+     */
+    where: GroupWhereUniqueInput
+  }
+
+  /**
+   * Group deleteMany
+   */
+  export type GroupDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Groups to delete
+     */
+    where?: GroupWhereInput
+    /**
+     * Limit how many Groups to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Group.userGroups
+   */
+  export type Group$userGroupsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    where?: UserGroupWhereInput
+    orderBy?: UserGroupOrderByWithRelationInput | UserGroupOrderByWithRelationInput[]
+    cursor?: UserGroupWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserGroupScalarFieldEnum | UserGroupScalarFieldEnum[]
+  }
+
+  /**
+   * Group.directoryAccess
+   */
+  export type Group$directoryAccessArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    where?: DirectoryAccessWhereInput
+    orderBy?: DirectoryAccessOrderByWithRelationInput | DirectoryAccessOrderByWithRelationInput[]
+    cursor?: DirectoryAccessWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DirectoryAccessScalarFieldEnum | DirectoryAccessScalarFieldEnum[]
+  }
+
+  /**
+   * Group without action
+   */
+  export type GroupDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Group
+     */
+    select?: GroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Group
+     */
+    omit?: GroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GroupInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserGroup
+   */
+
+  export type AggregateUserGroup = {
+    _count: UserGroupCountAggregateOutputType | null
+    _min: UserGroupMinAggregateOutputType | null
+    _max: UserGroupMaxAggregateOutputType | null
+  }
+
+  export type UserGroupMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    groupId: string | null
+    joinedAt: Date | null
+  }
+
+  export type UserGroupMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    groupId: string | null
+    joinedAt: Date | null
+  }
+
+  export type UserGroupCountAggregateOutputType = {
+    id: number
+    userId: number
+    groupId: number
+    joinedAt: number
+    _all: number
+  }
+
+
+  export type UserGroupMinAggregateInputType = {
+    id?: true
+    userId?: true
+    groupId?: true
+    joinedAt?: true
+  }
+
+  export type UserGroupMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    groupId?: true
+    joinedAt?: true
+  }
+
+  export type UserGroupCountAggregateInputType = {
+    id?: true
+    userId?: true
+    groupId?: true
+    joinedAt?: true
+    _all?: true
+  }
+
+  export type UserGroupAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserGroup to aggregate.
+     */
+    where?: UserGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserGroups to fetch.
+     */
+    orderBy?: UserGroupOrderByWithRelationInput | UserGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserGroups
+    **/
+    _count?: true | UserGroupCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserGroupMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserGroupMaxAggregateInputType
+  }
+
+  export type GetUserGroupAggregateType<T extends UserGroupAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserGroup]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserGroup[P]>
+      : GetScalarType<T[P], AggregateUserGroup[P]>
+  }
+
+
+
+
+  export type UserGroupGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserGroupWhereInput
+    orderBy?: UserGroupOrderByWithAggregationInput | UserGroupOrderByWithAggregationInput[]
+    by: UserGroupScalarFieldEnum[] | UserGroupScalarFieldEnum
+    having?: UserGroupScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserGroupCountAggregateInputType | true
+    _min?: UserGroupMinAggregateInputType
+    _max?: UserGroupMaxAggregateInputType
+  }
+
+  export type UserGroupGroupByOutputType = {
+    id: string
+    userId: string
+    groupId: string
+    joinedAt: Date
+    _count: UserGroupCountAggregateOutputType | null
+    _min: UserGroupMinAggregateOutputType | null
+    _max: UserGroupMaxAggregateOutputType | null
+  }
+
+  type GetUserGroupGroupByPayload<T extends UserGroupGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserGroupGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserGroupGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserGroupGroupByOutputType[P]>
+            : GetScalarType<T[P], UserGroupGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserGroupSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    groupId?: boolean
+    joinedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userGroup"]>
+
+  export type UserGroupSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    groupId?: boolean
+    joinedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userGroup"]>
+
+  export type UserGroupSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    groupId?: boolean
+    joinedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userGroup"]>
+
+  export type UserGroupSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    groupId?: boolean
+    joinedAt?: boolean
+  }
+
+  export type UserGroupOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "groupId" | "joinedAt", ExtArgs["result"]["userGroup"]>
+  export type UserGroupInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+  export type UserGroupIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+  export type UserGroupIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+
+  export type $UserGroupPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserGroup"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      group: Prisma.$GroupPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      groupId: string
+      joinedAt: Date
+    }, ExtArgs["result"]["userGroup"]>
+    composites: {}
+  }
+
+  type UserGroupGetPayload<S extends boolean | null | undefined | UserGroupDefaultArgs> = $Result.GetResult<Prisma.$UserGroupPayload, S>
+
+  type UserGroupCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserGroupFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserGroupCountAggregateInputType | true
+    }
+
+  export interface UserGroupDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserGroup'], meta: { name: 'UserGroup' } }
+    /**
+     * Find zero or one UserGroup that matches the filter.
+     * @param {UserGroupFindUniqueArgs} args - Arguments to find a UserGroup
+     * @example
+     * // Get one UserGroup
+     * const userGroup = await prisma.userGroup.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserGroupFindUniqueArgs>(args: SelectSubset<T, UserGroupFindUniqueArgs<ExtArgs>>): Prisma__UserGroupClient<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserGroup that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserGroupFindUniqueOrThrowArgs} args - Arguments to find a UserGroup
+     * @example
+     * // Get one UserGroup
+     * const userGroup = await prisma.userGroup.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserGroupFindUniqueOrThrowArgs>(args: SelectSubset<T, UserGroupFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserGroupClient<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserGroup that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupFindFirstArgs} args - Arguments to find a UserGroup
+     * @example
+     * // Get one UserGroup
+     * const userGroup = await prisma.userGroup.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserGroupFindFirstArgs>(args?: SelectSubset<T, UserGroupFindFirstArgs<ExtArgs>>): Prisma__UserGroupClient<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserGroup that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupFindFirstOrThrowArgs} args - Arguments to find a UserGroup
+     * @example
+     * // Get one UserGroup
+     * const userGroup = await prisma.userGroup.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserGroupFindFirstOrThrowArgs>(args?: SelectSubset<T, UserGroupFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserGroupClient<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserGroups that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserGroups
+     * const userGroups = await prisma.userGroup.findMany()
+     * 
+     * // Get first 10 UserGroups
+     * const userGroups = await prisma.userGroup.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userGroupWithIdOnly = await prisma.userGroup.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserGroupFindManyArgs>(args?: SelectSubset<T, UserGroupFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserGroup.
+     * @param {UserGroupCreateArgs} args - Arguments to create a UserGroup.
+     * @example
+     * // Create one UserGroup
+     * const UserGroup = await prisma.userGroup.create({
+     *   data: {
+     *     // ... data to create a UserGroup
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserGroupCreateArgs>(args: SelectSubset<T, UserGroupCreateArgs<ExtArgs>>): Prisma__UserGroupClient<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserGroups.
+     * @param {UserGroupCreateManyArgs} args - Arguments to create many UserGroups.
+     * @example
+     * // Create many UserGroups
+     * const userGroup = await prisma.userGroup.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserGroupCreateManyArgs>(args?: SelectSubset<T, UserGroupCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserGroups and returns the data saved in the database.
+     * @param {UserGroupCreateManyAndReturnArgs} args - Arguments to create many UserGroups.
+     * @example
+     * // Create many UserGroups
+     * const userGroup = await prisma.userGroup.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserGroups and only return the `id`
+     * const userGroupWithIdOnly = await prisma.userGroup.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserGroupCreateManyAndReturnArgs>(args?: SelectSubset<T, UserGroupCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserGroup.
+     * @param {UserGroupDeleteArgs} args - Arguments to delete one UserGroup.
+     * @example
+     * // Delete one UserGroup
+     * const UserGroup = await prisma.userGroup.delete({
+     *   where: {
+     *     // ... filter to delete one UserGroup
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserGroupDeleteArgs>(args: SelectSubset<T, UserGroupDeleteArgs<ExtArgs>>): Prisma__UserGroupClient<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserGroup.
+     * @param {UserGroupUpdateArgs} args - Arguments to update one UserGroup.
+     * @example
+     * // Update one UserGroup
+     * const userGroup = await prisma.userGroup.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserGroupUpdateArgs>(args: SelectSubset<T, UserGroupUpdateArgs<ExtArgs>>): Prisma__UserGroupClient<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserGroups.
+     * @param {UserGroupDeleteManyArgs} args - Arguments to filter UserGroups to delete.
+     * @example
+     * // Delete a few UserGroups
+     * const { count } = await prisma.userGroup.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserGroupDeleteManyArgs>(args?: SelectSubset<T, UserGroupDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserGroups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserGroups
+     * const userGroup = await prisma.userGroup.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserGroupUpdateManyArgs>(args: SelectSubset<T, UserGroupUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserGroups and returns the data updated in the database.
+     * @param {UserGroupUpdateManyAndReturnArgs} args - Arguments to update many UserGroups.
+     * @example
+     * // Update many UserGroups
+     * const userGroup = await prisma.userGroup.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserGroups and only return the `id`
+     * const userGroupWithIdOnly = await prisma.userGroup.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserGroupUpdateManyAndReturnArgs>(args: SelectSubset<T, UserGroupUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserGroup.
+     * @param {UserGroupUpsertArgs} args - Arguments to update or create a UserGroup.
+     * @example
+     * // Update or create a UserGroup
+     * const userGroup = await prisma.userGroup.upsert({
+     *   create: {
+     *     // ... data to create a UserGroup
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserGroup we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserGroupUpsertArgs>(args: SelectSubset<T, UserGroupUpsertArgs<ExtArgs>>): Prisma__UserGroupClient<$Result.GetResult<Prisma.$UserGroupPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserGroups.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupCountArgs} args - Arguments to filter UserGroups to count.
+     * @example
+     * // Count the number of UserGroups
+     * const count = await prisma.userGroup.count({
+     *   where: {
+     *     // ... the filter for the UserGroups we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserGroupCountArgs>(
+      args?: Subset<T, UserGroupCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserGroupCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserGroup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserGroupAggregateArgs>(args: Subset<T, UserGroupAggregateArgs>): Prisma.PrismaPromise<GetUserGroupAggregateType<T>>
+
+    /**
+     * Group by UserGroup.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserGroupGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserGroupGroupByArgs['orderBy'] }
+        : { orderBy?: UserGroupGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserGroupGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserGroup model
+   */
+  readonly fields: UserGroupFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserGroup.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserGroupClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    group<T extends GroupDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GroupDefaultArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserGroup model
+   */
+  interface UserGroupFieldRefs {
+    readonly id: FieldRef<"UserGroup", 'String'>
+    readonly userId: FieldRef<"UserGroup", 'String'>
+    readonly groupId: FieldRef<"UserGroup", 'String'>
+    readonly joinedAt: FieldRef<"UserGroup", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserGroup findUnique
+   */
+  export type UserGroupFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which UserGroup to fetch.
+     */
+    where: UserGroupWhereUniqueInput
+  }
+
+  /**
+   * UserGroup findUniqueOrThrow
+   */
+  export type UserGroupFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which UserGroup to fetch.
+     */
+    where: UserGroupWhereUniqueInput
+  }
+
+  /**
+   * UserGroup findFirst
+   */
+  export type UserGroupFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which UserGroup to fetch.
+     */
+    where?: UserGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserGroups to fetch.
+     */
+    orderBy?: UserGroupOrderByWithRelationInput | UserGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserGroups.
+     */
+    cursor?: UserGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserGroups.
+     */
+    distinct?: UserGroupScalarFieldEnum | UserGroupScalarFieldEnum[]
+  }
+
+  /**
+   * UserGroup findFirstOrThrow
+   */
+  export type UserGroupFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which UserGroup to fetch.
+     */
+    where?: UserGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserGroups to fetch.
+     */
+    orderBy?: UserGroupOrderByWithRelationInput | UserGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserGroups.
+     */
+    cursor?: UserGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserGroups.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserGroups.
+     */
+    distinct?: UserGroupScalarFieldEnum | UserGroupScalarFieldEnum[]
+  }
+
+  /**
+   * UserGroup findMany
+   */
+  export type UserGroupFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    /**
+     * Filter, which UserGroups to fetch.
+     */
+    where?: UserGroupWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserGroups to fetch.
+     */
+    orderBy?: UserGroupOrderByWithRelationInput | UserGroupOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserGroups.
+     */
+    cursor?: UserGroupWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserGroups from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserGroups.
+     */
+    skip?: number
+    distinct?: UserGroupScalarFieldEnum | UserGroupScalarFieldEnum[]
+  }
+
+  /**
+   * UserGroup create
+   */
+  export type UserGroupCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserGroup.
+     */
+    data: XOR<UserGroupCreateInput, UserGroupUncheckedCreateInput>
+  }
+
+  /**
+   * UserGroup createMany
+   */
+  export type UserGroupCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserGroups.
+     */
+    data: UserGroupCreateManyInput | UserGroupCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserGroup createManyAndReturn
+   */
+  export type UserGroupCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserGroups.
+     */
+    data: UserGroupCreateManyInput | UserGroupCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserGroup update
+   */
+  export type UserGroupUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserGroup.
+     */
+    data: XOR<UserGroupUpdateInput, UserGroupUncheckedUpdateInput>
+    /**
+     * Choose, which UserGroup to update.
+     */
+    where: UserGroupWhereUniqueInput
+  }
+
+  /**
+   * UserGroup updateMany
+   */
+  export type UserGroupUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserGroups.
+     */
+    data: XOR<UserGroupUpdateManyMutationInput, UserGroupUncheckedUpdateManyInput>
+    /**
+     * Filter which UserGroups to update
+     */
+    where?: UserGroupWhereInput
+    /**
+     * Limit how many UserGroups to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserGroup updateManyAndReturn
+   */
+  export type UserGroupUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * The data used to update UserGroups.
+     */
+    data: XOR<UserGroupUpdateManyMutationInput, UserGroupUncheckedUpdateManyInput>
+    /**
+     * Filter which UserGroups to update
+     */
+    where?: UserGroupWhereInput
+    /**
+     * Limit how many UserGroups to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserGroup upsert
+   */
+  export type UserGroupUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserGroup to update in case it exists.
+     */
+    where: UserGroupWhereUniqueInput
+    /**
+     * In case the UserGroup found by the `where` argument doesn't exist, create a new UserGroup with this data.
+     */
+    create: XOR<UserGroupCreateInput, UserGroupUncheckedCreateInput>
+    /**
+     * In case the UserGroup was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserGroupUpdateInput, UserGroupUncheckedUpdateInput>
+  }
+
+  /**
+   * UserGroup delete
+   */
+  export type UserGroupDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+    /**
+     * Filter which UserGroup to delete.
+     */
+    where: UserGroupWhereUniqueInput
+  }
+
+  /**
+   * UserGroup deleteMany
+   */
+  export type UserGroupDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserGroups to delete
+     */
+    where?: UserGroupWhereInput
+    /**
+     * Limit how many UserGroups to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserGroup without action
+   */
+  export type UserGroupDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserGroup
+     */
+    select?: UserGroupSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserGroup
+     */
+    omit?: UserGroupOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserGroupInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Directory
+   */
+
+  export type AggregateDirectory = {
+    _count: DirectoryCountAggregateOutputType | null
+    _min: DirectoryMinAggregateOutputType | null
+    _max: DirectoryMaxAggregateOutputType | null
+  }
+
+  export type DirectoryMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    parentId: string | null
+    path: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DirectoryMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    parentId: string | null
+    path: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DirectoryCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    parentId: number
+    path: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DirectoryMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    parentId?: true
+    path?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DirectoryMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    parentId?: true
+    path?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DirectoryCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    parentId?: true
+    path?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DirectoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Directory to aggregate.
+     */
+    where?: DirectoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Directories to fetch.
+     */
+    orderBy?: DirectoryOrderByWithRelationInput | DirectoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DirectoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Directories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Directories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Directories
+    **/
+    _count?: true | DirectoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DirectoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DirectoryMaxAggregateInputType
+  }
+
+  export type GetDirectoryAggregateType<T extends DirectoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateDirectory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDirectory[P]>
+      : GetScalarType<T[P], AggregateDirectory[P]>
+  }
+
+
+
+
+  export type DirectoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DirectoryWhereInput
+    orderBy?: DirectoryOrderByWithAggregationInput | DirectoryOrderByWithAggregationInput[]
+    by: DirectoryScalarFieldEnum[] | DirectoryScalarFieldEnum
+    having?: DirectoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DirectoryCountAggregateInputType | true
+    _min?: DirectoryMinAggregateInputType
+    _max?: DirectoryMaxAggregateInputType
+  }
+
+  export type DirectoryGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    parentId: string | null
+    path: string
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: DirectoryCountAggregateOutputType | null
+    _min: DirectoryMinAggregateOutputType | null
+    _max: DirectoryMaxAggregateOutputType | null
+  }
+
+  type GetDirectoryGroupByPayload<T extends DirectoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DirectoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DirectoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DirectoryGroupByOutputType[P]>
+            : GetScalarType<T[P], DirectoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DirectorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    parentId?: boolean
+    path?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    parent?: boolean | Directory$parentArgs<ExtArgs>
+    children?: boolean | Directory$childrenArgs<ExtArgs>
+    contracts?: boolean | Directory$contractsArgs<ExtArgs>
+    directoryAccess?: boolean | Directory$directoryAccessArgs<ExtArgs>
+    _count?: boolean | DirectoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["directory"]>
+
+  export type DirectorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    parentId?: boolean
+    path?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    parent?: boolean | Directory$parentArgs<ExtArgs>
+  }, ExtArgs["result"]["directory"]>
+
+  export type DirectorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    parentId?: boolean
+    path?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    parent?: boolean | Directory$parentArgs<ExtArgs>
+  }, ExtArgs["result"]["directory"]>
+
+  export type DirectorySelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    parentId?: boolean
+    path?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DirectoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "parentId" | "path" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["directory"]>
+  export type DirectoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | Directory$parentArgs<ExtArgs>
+    children?: boolean | Directory$childrenArgs<ExtArgs>
+    contracts?: boolean | Directory$contractsArgs<ExtArgs>
+    directoryAccess?: boolean | Directory$directoryAccessArgs<ExtArgs>
+    _count?: boolean | DirectoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DirectoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | Directory$parentArgs<ExtArgs>
+  }
+  export type DirectoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    parent?: boolean | Directory$parentArgs<ExtArgs>
+  }
+
+  export type $DirectoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Directory"
+    objects: {
+      parent: Prisma.$DirectoryPayload<ExtArgs> | null
+      children: Prisma.$DirectoryPayload<ExtArgs>[]
+      contracts: Prisma.$ContractPayload<ExtArgs>[]
+      directoryAccess: Prisma.$DirectoryAccessPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      parentId: string | null
+      path: string
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["directory"]>
+    composites: {}
+  }
+
+  type DirectoryGetPayload<S extends boolean | null | undefined | DirectoryDefaultArgs> = $Result.GetResult<Prisma.$DirectoryPayload, S>
+
+  type DirectoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DirectoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DirectoryCountAggregateInputType | true
+    }
+
+  export interface DirectoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Directory'], meta: { name: 'Directory' } }
+    /**
+     * Find zero or one Directory that matches the filter.
+     * @param {DirectoryFindUniqueArgs} args - Arguments to find a Directory
+     * @example
+     * // Get one Directory
+     * const directory = await prisma.directory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DirectoryFindUniqueArgs>(args: SelectSubset<T, DirectoryFindUniqueArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Directory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DirectoryFindUniqueOrThrowArgs} args - Arguments to find a Directory
+     * @example
+     * // Get one Directory
+     * const directory = await prisma.directory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DirectoryFindUniqueOrThrowArgs>(args: SelectSubset<T, DirectoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Directory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryFindFirstArgs} args - Arguments to find a Directory
+     * @example
+     * // Get one Directory
+     * const directory = await prisma.directory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DirectoryFindFirstArgs>(args?: SelectSubset<T, DirectoryFindFirstArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Directory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryFindFirstOrThrowArgs} args - Arguments to find a Directory
+     * @example
+     * // Get one Directory
+     * const directory = await prisma.directory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DirectoryFindFirstOrThrowArgs>(args?: SelectSubset<T, DirectoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Directories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Directories
+     * const directories = await prisma.directory.findMany()
+     * 
+     * // Get first 10 Directories
+     * const directories = await prisma.directory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const directoryWithIdOnly = await prisma.directory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DirectoryFindManyArgs>(args?: SelectSubset<T, DirectoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Directory.
+     * @param {DirectoryCreateArgs} args - Arguments to create a Directory.
+     * @example
+     * // Create one Directory
+     * const Directory = await prisma.directory.create({
+     *   data: {
+     *     // ... data to create a Directory
+     *   }
+     * })
+     * 
+     */
+    create<T extends DirectoryCreateArgs>(args: SelectSubset<T, DirectoryCreateArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Directories.
+     * @param {DirectoryCreateManyArgs} args - Arguments to create many Directories.
+     * @example
+     * // Create many Directories
+     * const directory = await prisma.directory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DirectoryCreateManyArgs>(args?: SelectSubset<T, DirectoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Directories and returns the data saved in the database.
+     * @param {DirectoryCreateManyAndReturnArgs} args - Arguments to create many Directories.
+     * @example
+     * // Create many Directories
+     * const directory = await prisma.directory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Directories and only return the `id`
+     * const directoryWithIdOnly = await prisma.directory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DirectoryCreateManyAndReturnArgs>(args?: SelectSubset<T, DirectoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Directory.
+     * @param {DirectoryDeleteArgs} args - Arguments to delete one Directory.
+     * @example
+     * // Delete one Directory
+     * const Directory = await prisma.directory.delete({
+     *   where: {
+     *     // ... filter to delete one Directory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DirectoryDeleteArgs>(args: SelectSubset<T, DirectoryDeleteArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Directory.
+     * @param {DirectoryUpdateArgs} args - Arguments to update one Directory.
+     * @example
+     * // Update one Directory
+     * const directory = await prisma.directory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DirectoryUpdateArgs>(args: SelectSubset<T, DirectoryUpdateArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Directories.
+     * @param {DirectoryDeleteManyArgs} args - Arguments to filter Directories to delete.
+     * @example
+     * // Delete a few Directories
+     * const { count } = await prisma.directory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DirectoryDeleteManyArgs>(args?: SelectSubset<T, DirectoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Directories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Directories
+     * const directory = await prisma.directory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DirectoryUpdateManyArgs>(args: SelectSubset<T, DirectoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Directories and returns the data updated in the database.
+     * @param {DirectoryUpdateManyAndReturnArgs} args - Arguments to update many Directories.
+     * @example
+     * // Update many Directories
+     * const directory = await prisma.directory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Directories and only return the `id`
+     * const directoryWithIdOnly = await prisma.directory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DirectoryUpdateManyAndReturnArgs>(args: SelectSubset<T, DirectoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Directory.
+     * @param {DirectoryUpsertArgs} args - Arguments to update or create a Directory.
+     * @example
+     * // Update or create a Directory
+     * const directory = await prisma.directory.upsert({
+     *   create: {
+     *     // ... data to create a Directory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Directory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DirectoryUpsertArgs>(args: SelectSubset<T, DirectoryUpsertArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Directories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryCountArgs} args - Arguments to filter Directories to count.
+     * @example
+     * // Count the number of Directories
+     * const count = await prisma.directory.count({
+     *   where: {
+     *     // ... the filter for the Directories we want to count
+     *   }
+     * })
+    **/
+    count<T extends DirectoryCountArgs>(
+      args?: Subset<T, DirectoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DirectoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Directory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DirectoryAggregateArgs>(args: Subset<T, DirectoryAggregateArgs>): Prisma.PrismaPromise<GetDirectoryAggregateType<T>>
+
+    /**
+     * Group by Directory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DirectoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DirectoryGroupByArgs['orderBy'] }
+        : { orderBy?: DirectoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DirectoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDirectoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Directory model
+   */
+  readonly fields: DirectoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Directory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DirectoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    parent<T extends Directory$parentArgs<ExtArgs> = {}>(args?: Subset<T, Directory$parentArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    children<T extends Directory$childrenArgs<ExtArgs> = {}>(args?: Subset<T, Directory$childrenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    contracts<T extends Directory$contractsArgs<ExtArgs> = {}>(args?: Subset<T, Directory$contractsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    directoryAccess<T extends Directory$directoryAccessArgs<ExtArgs> = {}>(args?: Subset<T, Directory$directoryAccessArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Directory model
+   */
+  interface DirectoryFieldRefs {
+    readonly id: FieldRef<"Directory", 'String'>
+    readonly name: FieldRef<"Directory", 'String'>
+    readonly description: FieldRef<"Directory", 'String'>
+    readonly parentId: FieldRef<"Directory", 'String'>
+    readonly path: FieldRef<"Directory", 'String'>
+    readonly isActive: FieldRef<"Directory", 'Boolean'>
+    readonly createdAt: FieldRef<"Directory", 'DateTime'>
+    readonly updatedAt: FieldRef<"Directory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Directory findUnique
+   */
+  export type DirectoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Directory to fetch.
+     */
+    where: DirectoryWhereUniqueInput
+  }
+
+  /**
+   * Directory findUniqueOrThrow
+   */
+  export type DirectoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Directory to fetch.
+     */
+    where: DirectoryWhereUniqueInput
+  }
+
+  /**
+   * Directory findFirst
+   */
+  export type DirectoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Directory to fetch.
+     */
+    where?: DirectoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Directories to fetch.
+     */
+    orderBy?: DirectoryOrderByWithRelationInput | DirectoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Directories.
+     */
+    cursor?: DirectoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Directories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Directories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Directories.
+     */
+    distinct?: DirectoryScalarFieldEnum | DirectoryScalarFieldEnum[]
+  }
+
+  /**
+   * Directory findFirstOrThrow
+   */
+  export type DirectoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Directory to fetch.
+     */
+    where?: DirectoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Directories to fetch.
+     */
+    orderBy?: DirectoryOrderByWithRelationInput | DirectoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Directories.
+     */
+    cursor?: DirectoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Directories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Directories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Directories.
+     */
+    distinct?: DirectoryScalarFieldEnum | DirectoryScalarFieldEnum[]
+  }
+
+  /**
+   * Directory findMany
+   */
+  export type DirectoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    /**
+     * Filter, which Directories to fetch.
+     */
+    where?: DirectoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Directories to fetch.
+     */
+    orderBy?: DirectoryOrderByWithRelationInput | DirectoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Directories.
+     */
+    cursor?: DirectoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Directories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Directories.
+     */
+    skip?: number
+    distinct?: DirectoryScalarFieldEnum | DirectoryScalarFieldEnum[]
+  }
+
+  /**
+   * Directory create
+   */
+  export type DirectoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Directory.
+     */
+    data: XOR<DirectoryCreateInput, DirectoryUncheckedCreateInput>
+  }
+
+  /**
+   * Directory createMany
+   */
+  export type DirectoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Directories.
+     */
+    data: DirectoryCreateManyInput | DirectoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Directory createManyAndReturn
+   */
+  export type DirectoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many Directories.
+     */
+    data: DirectoryCreateManyInput | DirectoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Directory update
+   */
+  export type DirectoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Directory.
+     */
+    data: XOR<DirectoryUpdateInput, DirectoryUncheckedUpdateInput>
+    /**
+     * Choose, which Directory to update.
+     */
+    where: DirectoryWhereUniqueInput
+  }
+
+  /**
+   * Directory updateMany
+   */
+  export type DirectoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Directories.
+     */
+    data: XOR<DirectoryUpdateManyMutationInput, DirectoryUncheckedUpdateManyInput>
+    /**
+     * Filter which Directories to update
+     */
+    where?: DirectoryWhereInput
+    /**
+     * Limit how many Directories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Directory updateManyAndReturn
+   */
+  export type DirectoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * The data used to update Directories.
+     */
+    data: XOR<DirectoryUpdateManyMutationInput, DirectoryUncheckedUpdateManyInput>
+    /**
+     * Filter which Directories to update
+     */
+    where?: DirectoryWhereInput
+    /**
+     * Limit how many Directories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Directory upsert
+   */
+  export type DirectoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Directory to update in case it exists.
+     */
+    where: DirectoryWhereUniqueInput
+    /**
+     * In case the Directory found by the `where` argument doesn't exist, create a new Directory with this data.
+     */
+    create: XOR<DirectoryCreateInput, DirectoryUncheckedCreateInput>
+    /**
+     * In case the Directory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DirectoryUpdateInput, DirectoryUncheckedUpdateInput>
+  }
+
+  /**
+   * Directory delete
+   */
+  export type DirectoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    /**
+     * Filter which Directory to delete.
+     */
+    where: DirectoryWhereUniqueInput
+  }
+
+  /**
+   * Directory deleteMany
+   */
+  export type DirectoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Directories to delete
+     */
+    where?: DirectoryWhereInput
+    /**
+     * Limit how many Directories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Directory.parent
+   */
+  export type Directory$parentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    where?: DirectoryWhereInput
+  }
+
+  /**
+   * Directory.children
+   */
+  export type Directory$childrenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+    where?: DirectoryWhereInput
+    orderBy?: DirectoryOrderByWithRelationInput | DirectoryOrderByWithRelationInput[]
+    cursor?: DirectoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DirectoryScalarFieldEnum | DirectoryScalarFieldEnum[]
+  }
+
+  /**
+   * Directory.contracts
+   */
+  export type Directory$contractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Contract
+     */
+    select?: ContractSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Contract
+     */
+    omit?: ContractOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ContractInclude<ExtArgs> | null
+    where?: ContractWhereInput
+    orderBy?: ContractOrderByWithRelationInput | ContractOrderByWithRelationInput[]
+    cursor?: ContractWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ContractScalarFieldEnum | ContractScalarFieldEnum[]
+  }
+
+  /**
+   * Directory.directoryAccess
+   */
+  export type Directory$directoryAccessArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    where?: DirectoryAccessWhereInput
+    orderBy?: DirectoryAccessOrderByWithRelationInput | DirectoryAccessOrderByWithRelationInput[]
+    cursor?: DirectoryAccessWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DirectoryAccessScalarFieldEnum | DirectoryAccessScalarFieldEnum[]
+  }
+
+  /**
+   * Directory without action
+   */
+  export type DirectoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Directory
+     */
+    select?: DirectorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Directory
+     */
+    omit?: DirectoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DirectoryAccess
+   */
+
+  export type AggregateDirectoryAccess = {
+    _count: DirectoryAccessCountAggregateOutputType | null
+    _min: DirectoryAccessMinAggregateOutputType | null
+    _max: DirectoryAccessMaxAggregateOutputType | null
+  }
+
+  export type DirectoryAccessMinAggregateOutputType = {
+    id: string | null
+    directoryId: string | null
+    groupId: string | null
+    permission: $Enums.Permission | null
+    createdAt: Date | null
+  }
+
+  export type DirectoryAccessMaxAggregateOutputType = {
+    id: string | null
+    directoryId: string | null
+    groupId: string | null
+    permission: $Enums.Permission | null
+    createdAt: Date | null
+  }
+
+  export type DirectoryAccessCountAggregateOutputType = {
+    id: number
+    directoryId: number
+    groupId: number
+    permission: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type DirectoryAccessMinAggregateInputType = {
+    id?: true
+    directoryId?: true
+    groupId?: true
+    permission?: true
+    createdAt?: true
+  }
+
+  export type DirectoryAccessMaxAggregateInputType = {
+    id?: true
+    directoryId?: true
+    groupId?: true
+    permission?: true
+    createdAt?: true
+  }
+
+  export type DirectoryAccessCountAggregateInputType = {
+    id?: true
+    directoryId?: true
+    groupId?: true
+    permission?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type DirectoryAccessAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DirectoryAccess to aggregate.
+     */
+    where?: DirectoryAccessWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DirectoryAccesses to fetch.
+     */
+    orderBy?: DirectoryAccessOrderByWithRelationInput | DirectoryAccessOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DirectoryAccessWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DirectoryAccesses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DirectoryAccesses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DirectoryAccesses
+    **/
+    _count?: true | DirectoryAccessCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DirectoryAccessMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DirectoryAccessMaxAggregateInputType
+  }
+
+  export type GetDirectoryAccessAggregateType<T extends DirectoryAccessAggregateArgs> = {
+        [P in keyof T & keyof AggregateDirectoryAccess]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDirectoryAccess[P]>
+      : GetScalarType<T[P], AggregateDirectoryAccess[P]>
+  }
+
+
+
+
+  export type DirectoryAccessGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DirectoryAccessWhereInput
+    orderBy?: DirectoryAccessOrderByWithAggregationInput | DirectoryAccessOrderByWithAggregationInput[]
+    by: DirectoryAccessScalarFieldEnum[] | DirectoryAccessScalarFieldEnum
+    having?: DirectoryAccessScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DirectoryAccessCountAggregateInputType | true
+    _min?: DirectoryAccessMinAggregateInputType
+    _max?: DirectoryAccessMaxAggregateInputType
+  }
+
+  export type DirectoryAccessGroupByOutputType = {
+    id: string
+    directoryId: string
+    groupId: string
+    permission: $Enums.Permission
+    createdAt: Date
+    _count: DirectoryAccessCountAggregateOutputType | null
+    _min: DirectoryAccessMinAggregateOutputType | null
+    _max: DirectoryAccessMaxAggregateOutputType | null
+  }
+
+  type GetDirectoryAccessGroupByPayload<T extends DirectoryAccessGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DirectoryAccessGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DirectoryAccessGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DirectoryAccessGroupByOutputType[P]>
+            : GetScalarType<T[P], DirectoryAccessGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DirectoryAccessSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    directoryId?: boolean
+    groupId?: boolean
+    permission?: boolean
+    createdAt?: boolean
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["directoryAccess"]>
+
+  export type DirectoryAccessSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    directoryId?: boolean
+    groupId?: boolean
+    permission?: boolean
+    createdAt?: boolean
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["directoryAccess"]>
+
+  export type DirectoryAccessSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    directoryId?: boolean
+    groupId?: boolean
+    permission?: boolean
+    createdAt?: boolean
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["directoryAccess"]>
+
+  export type DirectoryAccessSelectScalar = {
+    id?: boolean
+    directoryId?: boolean
+    groupId?: boolean
+    permission?: boolean
+    createdAt?: boolean
+  }
+
+  export type DirectoryAccessOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "directoryId" | "groupId" | "permission" | "createdAt", ExtArgs["result"]["directoryAccess"]>
+  export type DirectoryAccessInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+  export type DirectoryAccessIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+  export type DirectoryAccessIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
+    group?: boolean | GroupDefaultArgs<ExtArgs>
+  }
+
+  export type $DirectoryAccessPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DirectoryAccess"
+    objects: {
+      directory: Prisma.$DirectoryPayload<ExtArgs>
+      group: Prisma.$GroupPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      directoryId: string
+      groupId: string
+      permission: $Enums.Permission
+      createdAt: Date
+    }, ExtArgs["result"]["directoryAccess"]>
+    composites: {}
+  }
+
+  type DirectoryAccessGetPayload<S extends boolean | null | undefined | DirectoryAccessDefaultArgs> = $Result.GetResult<Prisma.$DirectoryAccessPayload, S>
+
+  type DirectoryAccessCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DirectoryAccessFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DirectoryAccessCountAggregateInputType | true
+    }
+
+  export interface DirectoryAccessDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DirectoryAccess'], meta: { name: 'DirectoryAccess' } }
+    /**
+     * Find zero or one DirectoryAccess that matches the filter.
+     * @param {DirectoryAccessFindUniqueArgs} args - Arguments to find a DirectoryAccess
+     * @example
+     * // Get one DirectoryAccess
+     * const directoryAccess = await prisma.directoryAccess.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DirectoryAccessFindUniqueArgs>(args: SelectSubset<T, DirectoryAccessFindUniqueArgs<ExtArgs>>): Prisma__DirectoryAccessClient<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DirectoryAccess that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DirectoryAccessFindUniqueOrThrowArgs} args - Arguments to find a DirectoryAccess
+     * @example
+     * // Get one DirectoryAccess
+     * const directoryAccess = await prisma.directoryAccess.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DirectoryAccessFindUniqueOrThrowArgs>(args: SelectSubset<T, DirectoryAccessFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DirectoryAccessClient<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DirectoryAccess that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryAccessFindFirstArgs} args - Arguments to find a DirectoryAccess
+     * @example
+     * // Get one DirectoryAccess
+     * const directoryAccess = await prisma.directoryAccess.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DirectoryAccessFindFirstArgs>(args?: SelectSubset<T, DirectoryAccessFindFirstArgs<ExtArgs>>): Prisma__DirectoryAccessClient<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DirectoryAccess that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryAccessFindFirstOrThrowArgs} args - Arguments to find a DirectoryAccess
+     * @example
+     * // Get one DirectoryAccess
+     * const directoryAccess = await prisma.directoryAccess.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DirectoryAccessFindFirstOrThrowArgs>(args?: SelectSubset<T, DirectoryAccessFindFirstOrThrowArgs<ExtArgs>>): Prisma__DirectoryAccessClient<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DirectoryAccesses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryAccessFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DirectoryAccesses
+     * const directoryAccesses = await prisma.directoryAccess.findMany()
+     * 
+     * // Get first 10 DirectoryAccesses
+     * const directoryAccesses = await prisma.directoryAccess.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const directoryAccessWithIdOnly = await prisma.directoryAccess.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DirectoryAccessFindManyArgs>(args?: SelectSubset<T, DirectoryAccessFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DirectoryAccess.
+     * @param {DirectoryAccessCreateArgs} args - Arguments to create a DirectoryAccess.
+     * @example
+     * // Create one DirectoryAccess
+     * const DirectoryAccess = await prisma.directoryAccess.create({
+     *   data: {
+     *     // ... data to create a DirectoryAccess
+     *   }
+     * })
+     * 
+     */
+    create<T extends DirectoryAccessCreateArgs>(args: SelectSubset<T, DirectoryAccessCreateArgs<ExtArgs>>): Prisma__DirectoryAccessClient<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DirectoryAccesses.
+     * @param {DirectoryAccessCreateManyArgs} args - Arguments to create many DirectoryAccesses.
+     * @example
+     * // Create many DirectoryAccesses
+     * const directoryAccess = await prisma.directoryAccess.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DirectoryAccessCreateManyArgs>(args?: SelectSubset<T, DirectoryAccessCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DirectoryAccesses and returns the data saved in the database.
+     * @param {DirectoryAccessCreateManyAndReturnArgs} args - Arguments to create many DirectoryAccesses.
+     * @example
+     * // Create many DirectoryAccesses
+     * const directoryAccess = await prisma.directoryAccess.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DirectoryAccesses and only return the `id`
+     * const directoryAccessWithIdOnly = await prisma.directoryAccess.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DirectoryAccessCreateManyAndReturnArgs>(args?: SelectSubset<T, DirectoryAccessCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DirectoryAccess.
+     * @param {DirectoryAccessDeleteArgs} args - Arguments to delete one DirectoryAccess.
+     * @example
+     * // Delete one DirectoryAccess
+     * const DirectoryAccess = await prisma.directoryAccess.delete({
+     *   where: {
+     *     // ... filter to delete one DirectoryAccess
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DirectoryAccessDeleteArgs>(args: SelectSubset<T, DirectoryAccessDeleteArgs<ExtArgs>>): Prisma__DirectoryAccessClient<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DirectoryAccess.
+     * @param {DirectoryAccessUpdateArgs} args - Arguments to update one DirectoryAccess.
+     * @example
+     * // Update one DirectoryAccess
+     * const directoryAccess = await prisma.directoryAccess.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DirectoryAccessUpdateArgs>(args: SelectSubset<T, DirectoryAccessUpdateArgs<ExtArgs>>): Prisma__DirectoryAccessClient<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DirectoryAccesses.
+     * @param {DirectoryAccessDeleteManyArgs} args - Arguments to filter DirectoryAccesses to delete.
+     * @example
+     * // Delete a few DirectoryAccesses
+     * const { count } = await prisma.directoryAccess.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DirectoryAccessDeleteManyArgs>(args?: SelectSubset<T, DirectoryAccessDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DirectoryAccesses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryAccessUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DirectoryAccesses
+     * const directoryAccess = await prisma.directoryAccess.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DirectoryAccessUpdateManyArgs>(args: SelectSubset<T, DirectoryAccessUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DirectoryAccesses and returns the data updated in the database.
+     * @param {DirectoryAccessUpdateManyAndReturnArgs} args - Arguments to update many DirectoryAccesses.
+     * @example
+     * // Update many DirectoryAccesses
+     * const directoryAccess = await prisma.directoryAccess.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DirectoryAccesses and only return the `id`
+     * const directoryAccessWithIdOnly = await prisma.directoryAccess.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DirectoryAccessUpdateManyAndReturnArgs>(args: SelectSubset<T, DirectoryAccessUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DirectoryAccess.
+     * @param {DirectoryAccessUpsertArgs} args - Arguments to update or create a DirectoryAccess.
+     * @example
+     * // Update or create a DirectoryAccess
+     * const directoryAccess = await prisma.directoryAccess.upsert({
+     *   create: {
+     *     // ... data to create a DirectoryAccess
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DirectoryAccess we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DirectoryAccessUpsertArgs>(args: SelectSubset<T, DirectoryAccessUpsertArgs<ExtArgs>>): Prisma__DirectoryAccessClient<$Result.GetResult<Prisma.$DirectoryAccessPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DirectoryAccesses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryAccessCountArgs} args - Arguments to filter DirectoryAccesses to count.
+     * @example
+     * // Count the number of DirectoryAccesses
+     * const count = await prisma.directoryAccess.count({
+     *   where: {
+     *     // ... the filter for the DirectoryAccesses we want to count
+     *   }
+     * })
+    **/
+    count<T extends DirectoryAccessCountArgs>(
+      args?: Subset<T, DirectoryAccessCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DirectoryAccessCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DirectoryAccess.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryAccessAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DirectoryAccessAggregateArgs>(args: Subset<T, DirectoryAccessAggregateArgs>): Prisma.PrismaPromise<GetDirectoryAccessAggregateType<T>>
+
+    /**
+     * Group by DirectoryAccess.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DirectoryAccessGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DirectoryAccessGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DirectoryAccessGroupByArgs['orderBy'] }
+        : { orderBy?: DirectoryAccessGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DirectoryAccessGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDirectoryAccessGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DirectoryAccess model
+   */
+  readonly fields: DirectoryAccessFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DirectoryAccess.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DirectoryAccessClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    directory<T extends DirectoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DirectoryDefaultArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    group<T extends GroupDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GroupDefaultArgs<ExtArgs>>): Prisma__GroupClient<$Result.GetResult<Prisma.$GroupPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DirectoryAccess model
+   */
+  interface DirectoryAccessFieldRefs {
+    readonly id: FieldRef<"DirectoryAccess", 'String'>
+    readonly directoryId: FieldRef<"DirectoryAccess", 'String'>
+    readonly groupId: FieldRef<"DirectoryAccess", 'String'>
+    readonly permission: FieldRef<"DirectoryAccess", 'Permission'>
+    readonly createdAt: FieldRef<"DirectoryAccess", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DirectoryAccess findUnique
+   */
+  export type DirectoryAccessFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    /**
+     * Filter, which DirectoryAccess to fetch.
+     */
+    where: DirectoryAccessWhereUniqueInput
+  }
+
+  /**
+   * DirectoryAccess findUniqueOrThrow
+   */
+  export type DirectoryAccessFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    /**
+     * Filter, which DirectoryAccess to fetch.
+     */
+    where: DirectoryAccessWhereUniqueInput
+  }
+
+  /**
+   * DirectoryAccess findFirst
+   */
+  export type DirectoryAccessFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    /**
+     * Filter, which DirectoryAccess to fetch.
+     */
+    where?: DirectoryAccessWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DirectoryAccesses to fetch.
+     */
+    orderBy?: DirectoryAccessOrderByWithRelationInput | DirectoryAccessOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DirectoryAccesses.
+     */
+    cursor?: DirectoryAccessWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DirectoryAccesses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DirectoryAccesses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DirectoryAccesses.
+     */
+    distinct?: DirectoryAccessScalarFieldEnum | DirectoryAccessScalarFieldEnum[]
+  }
+
+  /**
+   * DirectoryAccess findFirstOrThrow
+   */
+  export type DirectoryAccessFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    /**
+     * Filter, which DirectoryAccess to fetch.
+     */
+    where?: DirectoryAccessWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DirectoryAccesses to fetch.
+     */
+    orderBy?: DirectoryAccessOrderByWithRelationInput | DirectoryAccessOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DirectoryAccesses.
+     */
+    cursor?: DirectoryAccessWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DirectoryAccesses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DirectoryAccesses.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DirectoryAccesses.
+     */
+    distinct?: DirectoryAccessScalarFieldEnum | DirectoryAccessScalarFieldEnum[]
+  }
+
+  /**
+   * DirectoryAccess findMany
+   */
+  export type DirectoryAccessFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    /**
+     * Filter, which DirectoryAccesses to fetch.
+     */
+    where?: DirectoryAccessWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DirectoryAccesses to fetch.
+     */
+    orderBy?: DirectoryAccessOrderByWithRelationInput | DirectoryAccessOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DirectoryAccesses.
+     */
+    cursor?: DirectoryAccessWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DirectoryAccesses from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DirectoryAccesses.
+     */
+    skip?: number
+    distinct?: DirectoryAccessScalarFieldEnum | DirectoryAccessScalarFieldEnum[]
+  }
+
+  /**
+   * DirectoryAccess create
+   */
+  export type DirectoryAccessCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DirectoryAccess.
+     */
+    data: XOR<DirectoryAccessCreateInput, DirectoryAccessUncheckedCreateInput>
+  }
+
+  /**
+   * DirectoryAccess createMany
+   */
+  export type DirectoryAccessCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DirectoryAccesses.
+     */
+    data: DirectoryAccessCreateManyInput | DirectoryAccessCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DirectoryAccess createManyAndReturn
+   */
+  export type DirectoryAccessCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * The data used to create many DirectoryAccesses.
+     */
+    data: DirectoryAccessCreateManyInput | DirectoryAccessCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DirectoryAccess update
+   */
+  export type DirectoryAccessUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DirectoryAccess.
+     */
+    data: XOR<DirectoryAccessUpdateInput, DirectoryAccessUncheckedUpdateInput>
+    /**
+     * Choose, which DirectoryAccess to update.
+     */
+    where: DirectoryAccessWhereUniqueInput
+  }
+
+  /**
+   * DirectoryAccess updateMany
+   */
+  export type DirectoryAccessUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DirectoryAccesses.
+     */
+    data: XOR<DirectoryAccessUpdateManyMutationInput, DirectoryAccessUncheckedUpdateManyInput>
+    /**
+     * Filter which DirectoryAccesses to update
+     */
+    where?: DirectoryAccessWhereInput
+    /**
+     * Limit how many DirectoryAccesses to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DirectoryAccess updateManyAndReturn
+   */
+  export type DirectoryAccessUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * The data used to update DirectoryAccesses.
+     */
+    data: XOR<DirectoryAccessUpdateManyMutationInput, DirectoryAccessUncheckedUpdateManyInput>
+    /**
+     * Filter which DirectoryAccesses to update
+     */
+    where?: DirectoryAccessWhereInput
+    /**
+     * Limit how many DirectoryAccesses to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DirectoryAccess upsert
+   */
+  export type DirectoryAccessUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DirectoryAccess to update in case it exists.
+     */
+    where: DirectoryAccessWhereUniqueInput
+    /**
+     * In case the DirectoryAccess found by the `where` argument doesn't exist, create a new DirectoryAccess with this data.
+     */
+    create: XOR<DirectoryAccessCreateInput, DirectoryAccessUncheckedCreateInput>
+    /**
+     * In case the DirectoryAccess was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DirectoryAccessUpdateInput, DirectoryAccessUncheckedUpdateInput>
+  }
+
+  /**
+   * DirectoryAccess delete
+   */
+  export type DirectoryAccessDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
+    /**
+     * Filter which DirectoryAccess to delete.
+     */
+    where: DirectoryAccessWhereUniqueInput
+  }
+
+  /**
+   * DirectoryAccess deleteMany
+   */
+  export type DirectoryAccessDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DirectoryAccesses to delete
+     */
+    where?: DirectoryAccessWhereInput
+    /**
+     * Limit how many DirectoryAccesses to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DirectoryAccess without action
+   */
+  export type DirectoryAccessDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DirectoryAccess
+     */
+    select?: DirectoryAccessSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DirectoryAccess
+     */
+    omit?: DirectoryAccessOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DirectoryAccessInclude<ExtArgs> | null
   }
 
 
@@ -2444,7 +7291,8 @@ export namespace Prisma {
     endDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
-    userId: string | null
+    ownerId: string | null
+    directoryId: string | null
     categoryId: string | null
   }
 
@@ -2458,7 +7306,8 @@ export namespace Prisma {
     endDate: Date | null
     createdAt: Date | null
     updatedAt: Date | null
-    userId: string | null
+    ownerId: string | null
+    directoryId: string | null
     categoryId: string | null
   }
 
@@ -2472,7 +7321,8 @@ export namespace Prisma {
     endDate: number
     createdAt: number
     updatedAt: number
-    userId: number
+    ownerId: number
+    directoryId: number
     categoryId: number
     _all: number
   }
@@ -2488,7 +7338,8 @@ export namespace Prisma {
     endDate?: true
     createdAt?: true
     updatedAt?: true
-    userId?: true
+    ownerId?: true
+    directoryId?: true
     categoryId?: true
   }
 
@@ -2502,7 +7353,8 @@ export namespace Prisma {
     endDate?: true
     createdAt?: true
     updatedAt?: true
-    userId?: true
+    ownerId?: true
+    directoryId?: true
     categoryId?: true
   }
 
@@ -2516,7 +7368,8 @@ export namespace Prisma {
     endDate?: true
     createdAt?: true
     updatedAt?: true
-    userId?: true
+    ownerId?: true
+    directoryId?: true
     categoryId?: true
     _all?: true
   }
@@ -2603,7 +7456,8 @@ export namespace Prisma {
     endDate: Date | null
     createdAt: Date
     updatedAt: Date
-    userId: string
+    ownerId: string
+    directoryId: string
     categoryId: string | null
     _count: ContractCountAggregateOutputType | null
     _min: ContractMinAggregateOutputType | null
@@ -2634,12 +7488,13 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    userId?: boolean
+    ownerId?: boolean
+    directoryId?: boolean
     categoryId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
     versions?: boolean | Contract$versionsArgs<ExtArgs>
-    attachments?: boolean | Contract$attachmentsArgs<ExtArgs>
     _count?: boolean | ContractCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
@@ -2653,9 +7508,11 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    userId?: boolean
+    ownerId?: boolean
+    directoryId?: boolean
     categoryId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
@@ -2669,9 +7526,11 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    userId?: boolean
+    ownerId?: boolean
+    directoryId?: boolean
     categoryId?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
   }, ExtArgs["result"]["contract"]>
 
@@ -2685,34 +7544,37 @@ export namespace Prisma {
     endDate?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    userId?: boolean
+    ownerId?: boolean
+    directoryId?: boolean
     categoryId?: boolean
   }
 
-  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "status" | "contractNumber" | "startDate" | "endDate" | "createdAt" | "updatedAt" | "userId" | "categoryId", ExtArgs["result"]["contract"]>
+  export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "status" | "contractNumber" | "startDate" | "endDate" | "createdAt" | "updatedAt" | "ownerId" | "directoryId" | "categoryId", ExtArgs["result"]["contract"]>
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
     versions?: boolean | Contract$versionsArgs<ExtArgs>
-    attachments?: boolean | Contract$attachmentsArgs<ExtArgs>
     _count?: boolean | ContractCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ContractIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
   }
   export type ContractIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    owner?: boolean | UserDefaultArgs<ExtArgs>
+    directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
   }
 
   export type $ContractPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Contract"
     objects: {
-      user: Prisma.$UserPayload<ExtArgs>
+      owner: Prisma.$UserPayload<ExtArgs>
+      directory: Prisma.$DirectoryPayload<ExtArgs>
       category: Prisma.$CategoryPayload<ExtArgs> | null
       versions: Prisma.$ContractVersionPayload<ExtArgs>[]
-      attachments: Prisma.$AttachmentPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2724,7 +7586,8 @@ export namespace Prisma {
       endDate: Date | null
       createdAt: Date
       updatedAt: Date
-      userId: string
+      ownerId: string
+      directoryId: string
       categoryId: string | null
     }, ExtArgs["result"]["contract"]>
     composites: {}
@@ -3120,10 +7983,10 @@ export namespace Prisma {
    */
   export interface Prisma__ContractClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    directory<T extends DirectoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DirectoryDefaultArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     category<T extends Contract$categoryArgs<ExtArgs> = {}>(args?: Subset<T, Contract$categoryArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     versions<T extends Contract$versionsArgs<ExtArgs> = {}>(args?: Subset<T, Contract$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    attachments<T extends Contract$attachmentsArgs<ExtArgs> = {}>(args?: Subset<T, Contract$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3162,7 +8025,8 @@ export namespace Prisma {
     readonly endDate: FieldRef<"Contract", 'DateTime'>
     readonly createdAt: FieldRef<"Contract", 'DateTime'>
     readonly updatedAt: FieldRef<"Contract", 'DateTime'>
-    readonly userId: FieldRef<"Contract", 'String'>
+    readonly ownerId: FieldRef<"Contract", 'String'>
+    readonly directoryId: FieldRef<"Contract", 'String'>
     readonly categoryId: FieldRef<"Contract", 'String'>
   }
     
@@ -3600,30 +8464,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ContractVersionScalarFieldEnum | ContractVersionScalarFieldEnum[]
-  }
-
-  /**
-   * Contract.attachments
-   */
-  export type Contract$attachmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    where?: AttachmentWhereInput
-    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
-    cursor?: AttachmentWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
   }
 
   /**
@@ -5834,1137 +10674,6 @@ export namespace Prisma {
 
 
   /**
-   * Model Attachment
-   */
-
-  export type AggregateAttachment = {
-    _count: AttachmentCountAggregateOutputType | null
-    _avg: AttachmentAvgAggregateOutputType | null
-    _sum: AttachmentSumAggregateOutputType | null
-    _min: AttachmentMinAggregateOutputType | null
-    _max: AttachmentMaxAggregateOutputType | null
-  }
-
-  export type AttachmentAvgAggregateOutputType = {
-    size: number | null
-  }
-
-  export type AttachmentSumAggregateOutputType = {
-    size: number | null
-  }
-
-  export type AttachmentMinAggregateOutputType = {
-    id: string | null
-    filename: string | null
-    originalName: string | null
-    mimeType: string | null
-    size: number | null
-    path: string | null
-    createdAt: Date | null
-    contractId: string | null
-  }
-
-  export type AttachmentMaxAggregateOutputType = {
-    id: string | null
-    filename: string | null
-    originalName: string | null
-    mimeType: string | null
-    size: number | null
-    path: string | null
-    createdAt: Date | null
-    contractId: string | null
-  }
-
-  export type AttachmentCountAggregateOutputType = {
-    id: number
-    filename: number
-    originalName: number
-    mimeType: number
-    size: number
-    path: number
-    createdAt: number
-    contractId: number
-    _all: number
-  }
-
-
-  export type AttachmentAvgAggregateInputType = {
-    size?: true
-  }
-
-  export type AttachmentSumAggregateInputType = {
-    size?: true
-  }
-
-  export type AttachmentMinAggregateInputType = {
-    id?: true
-    filename?: true
-    originalName?: true
-    mimeType?: true
-    size?: true
-    path?: true
-    createdAt?: true
-    contractId?: true
-  }
-
-  export type AttachmentMaxAggregateInputType = {
-    id?: true
-    filename?: true
-    originalName?: true
-    mimeType?: true
-    size?: true
-    path?: true
-    createdAt?: true
-    contractId?: true
-  }
-
-  export type AttachmentCountAggregateInputType = {
-    id?: true
-    filename?: true
-    originalName?: true
-    mimeType?: true
-    size?: true
-    path?: true
-    createdAt?: true
-    contractId?: true
-    _all?: true
-  }
-
-  export type AttachmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Attachment to aggregate.
-     */
-    where?: AttachmentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Attachments to fetch.
-     */
-    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: AttachmentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Attachments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Attachments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned Attachments
-    **/
-    _count?: true | AttachmentCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: AttachmentAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: AttachmentSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: AttachmentMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: AttachmentMaxAggregateInputType
-  }
-
-  export type GetAttachmentAggregateType<T extends AttachmentAggregateArgs> = {
-        [P in keyof T & keyof AggregateAttachment]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAttachment[P]>
-      : GetScalarType<T[P], AggregateAttachment[P]>
-  }
-
-
-
-
-  export type AttachmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: AttachmentWhereInput
-    orderBy?: AttachmentOrderByWithAggregationInput | AttachmentOrderByWithAggregationInput[]
-    by: AttachmentScalarFieldEnum[] | AttachmentScalarFieldEnum
-    having?: AttachmentScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: AttachmentCountAggregateInputType | true
-    _avg?: AttachmentAvgAggregateInputType
-    _sum?: AttachmentSumAggregateInputType
-    _min?: AttachmentMinAggregateInputType
-    _max?: AttachmentMaxAggregateInputType
-  }
-
-  export type AttachmentGroupByOutputType = {
-    id: string
-    filename: string
-    originalName: string
-    mimeType: string
-    size: number
-    path: string
-    createdAt: Date
-    contractId: string
-    _count: AttachmentCountAggregateOutputType | null
-    _avg: AttachmentAvgAggregateOutputType | null
-    _sum: AttachmentSumAggregateOutputType | null
-    _min: AttachmentMinAggregateOutputType | null
-    _max: AttachmentMaxAggregateOutputType | null
-  }
-
-  type GetAttachmentGroupByPayload<T extends AttachmentGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<AttachmentGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof AttachmentGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], AttachmentGroupByOutputType[P]>
-            : GetScalarType<T[P], AttachmentGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type AttachmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    filename?: boolean
-    originalName?: boolean
-    mimeType?: boolean
-    size?: boolean
-    path?: boolean
-    createdAt?: boolean
-    contractId?: boolean
-    contract?: boolean | ContractDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["attachment"]>
-
-  export type AttachmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    filename?: boolean
-    originalName?: boolean
-    mimeType?: boolean
-    size?: boolean
-    path?: boolean
-    createdAt?: boolean
-    contractId?: boolean
-    contract?: boolean | ContractDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["attachment"]>
-
-  export type AttachmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    filename?: boolean
-    originalName?: boolean
-    mimeType?: boolean
-    size?: boolean
-    path?: boolean
-    createdAt?: boolean
-    contractId?: boolean
-    contract?: boolean | ContractDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["attachment"]>
-
-  export type AttachmentSelectScalar = {
-    id?: boolean
-    filename?: boolean
-    originalName?: boolean
-    mimeType?: boolean
-    size?: boolean
-    path?: boolean
-    createdAt?: boolean
-    contractId?: boolean
-  }
-
-  export type AttachmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "filename" | "originalName" | "mimeType" | "size" | "path" | "createdAt" | "contractId", ExtArgs["result"]["attachment"]>
-  export type AttachmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contract?: boolean | ContractDefaultArgs<ExtArgs>
-  }
-  export type AttachmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contract?: boolean | ContractDefaultArgs<ExtArgs>
-  }
-  export type AttachmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contract?: boolean | ContractDefaultArgs<ExtArgs>
-  }
-
-  export type $AttachmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "Attachment"
-    objects: {
-      contract: Prisma.$ContractPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      filename: string
-      originalName: string
-      mimeType: string
-      size: number
-      path: string
-      createdAt: Date
-      contractId: string
-    }, ExtArgs["result"]["attachment"]>
-    composites: {}
-  }
-
-  type AttachmentGetPayload<S extends boolean | null | undefined | AttachmentDefaultArgs> = $Result.GetResult<Prisma.$AttachmentPayload, S>
-
-  type AttachmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<AttachmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: AttachmentCountAggregateInputType | true
-    }
-
-  export interface AttachmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Attachment'], meta: { name: 'Attachment' } }
-    /**
-     * Find zero or one Attachment that matches the filter.
-     * @param {AttachmentFindUniqueArgs} args - Arguments to find a Attachment
-     * @example
-     * // Get one Attachment
-     * const attachment = await prisma.attachment.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends AttachmentFindUniqueArgs>(args: SelectSubset<T, AttachmentFindUniqueArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Attachment that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {AttachmentFindUniqueOrThrowArgs} args - Arguments to find a Attachment
-     * @example
-     * // Get one Attachment
-     * const attachment = await prisma.attachment.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends AttachmentFindUniqueOrThrowArgs>(args: SelectSubset<T, AttachmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Attachment that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AttachmentFindFirstArgs} args - Arguments to find a Attachment
-     * @example
-     * // Get one Attachment
-     * const attachment = await prisma.attachment.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends AttachmentFindFirstArgs>(args?: SelectSubset<T, AttachmentFindFirstArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Attachment that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AttachmentFindFirstOrThrowArgs} args - Arguments to find a Attachment
-     * @example
-     * // Get one Attachment
-     * const attachment = await prisma.attachment.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends AttachmentFindFirstOrThrowArgs>(args?: SelectSubset<T, AttachmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Attachments that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AttachmentFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Attachments
-     * const attachments = await prisma.attachment.findMany()
-     * 
-     * // Get first 10 Attachments
-     * const attachments = await prisma.attachment.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const attachmentWithIdOnly = await prisma.attachment.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends AttachmentFindManyArgs>(args?: SelectSubset<T, AttachmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Attachment.
-     * @param {AttachmentCreateArgs} args - Arguments to create a Attachment.
-     * @example
-     * // Create one Attachment
-     * const Attachment = await prisma.attachment.create({
-     *   data: {
-     *     // ... data to create a Attachment
-     *   }
-     * })
-     * 
-     */
-    create<T extends AttachmentCreateArgs>(args: SelectSubset<T, AttachmentCreateArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Attachments.
-     * @param {AttachmentCreateManyArgs} args - Arguments to create many Attachments.
-     * @example
-     * // Create many Attachments
-     * const attachment = await prisma.attachment.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends AttachmentCreateManyArgs>(args?: SelectSubset<T, AttachmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Attachments and returns the data saved in the database.
-     * @param {AttachmentCreateManyAndReturnArgs} args - Arguments to create many Attachments.
-     * @example
-     * // Create many Attachments
-     * const attachment = await prisma.attachment.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Attachments and only return the `id`
-     * const attachmentWithIdOnly = await prisma.attachment.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends AttachmentCreateManyAndReturnArgs>(args?: SelectSubset<T, AttachmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Attachment.
-     * @param {AttachmentDeleteArgs} args - Arguments to delete one Attachment.
-     * @example
-     * // Delete one Attachment
-     * const Attachment = await prisma.attachment.delete({
-     *   where: {
-     *     // ... filter to delete one Attachment
-     *   }
-     * })
-     * 
-     */
-    delete<T extends AttachmentDeleteArgs>(args: SelectSubset<T, AttachmentDeleteArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Attachment.
-     * @param {AttachmentUpdateArgs} args - Arguments to update one Attachment.
-     * @example
-     * // Update one Attachment
-     * const attachment = await prisma.attachment.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends AttachmentUpdateArgs>(args: SelectSubset<T, AttachmentUpdateArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Attachments.
-     * @param {AttachmentDeleteManyArgs} args - Arguments to filter Attachments to delete.
-     * @example
-     * // Delete a few Attachments
-     * const { count } = await prisma.attachment.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends AttachmentDeleteManyArgs>(args?: SelectSubset<T, AttachmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Attachments.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AttachmentUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Attachments
-     * const attachment = await prisma.attachment.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends AttachmentUpdateManyArgs>(args: SelectSubset<T, AttachmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Attachments and returns the data updated in the database.
-     * @param {AttachmentUpdateManyAndReturnArgs} args - Arguments to update many Attachments.
-     * @example
-     * // Update many Attachments
-     * const attachment = await prisma.attachment.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Attachments and only return the `id`
-     * const attachmentWithIdOnly = await prisma.attachment.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends AttachmentUpdateManyAndReturnArgs>(args: SelectSubset<T, AttachmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Attachment.
-     * @param {AttachmentUpsertArgs} args - Arguments to update or create a Attachment.
-     * @example
-     * // Update or create a Attachment
-     * const attachment = await prisma.attachment.upsert({
-     *   create: {
-     *     // ... data to create a Attachment
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Attachment we want to update
-     *   }
-     * })
-     */
-    upsert<T extends AttachmentUpsertArgs>(args: SelectSubset<T, AttachmentUpsertArgs<ExtArgs>>): Prisma__AttachmentClient<$Result.GetResult<Prisma.$AttachmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Attachments.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AttachmentCountArgs} args - Arguments to filter Attachments to count.
-     * @example
-     * // Count the number of Attachments
-     * const count = await prisma.attachment.count({
-     *   where: {
-     *     // ... the filter for the Attachments we want to count
-     *   }
-     * })
-    **/
-    count<T extends AttachmentCountArgs>(
-      args?: Subset<T, AttachmentCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], AttachmentCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Attachment.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AttachmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends AttachmentAggregateArgs>(args: Subset<T, AttachmentAggregateArgs>): Prisma.PrismaPromise<GetAttachmentAggregateType<T>>
-
-    /**
-     * Group by Attachment.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AttachmentGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends AttachmentGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: AttachmentGroupByArgs['orderBy'] }
-        : { orderBy?: AttachmentGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, AttachmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAttachmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the Attachment model
-   */
-  readonly fields: AttachmentFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for Attachment.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__AttachmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    contract<T extends ContractDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ContractDefaultArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the Attachment model
-   */
-  interface AttachmentFieldRefs {
-    readonly id: FieldRef<"Attachment", 'String'>
-    readonly filename: FieldRef<"Attachment", 'String'>
-    readonly originalName: FieldRef<"Attachment", 'String'>
-    readonly mimeType: FieldRef<"Attachment", 'String'>
-    readonly size: FieldRef<"Attachment", 'Int'>
-    readonly path: FieldRef<"Attachment", 'String'>
-    readonly createdAt: FieldRef<"Attachment", 'DateTime'>
-    readonly contractId: FieldRef<"Attachment", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * Attachment findUnique
-   */
-  export type AttachmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    /**
-     * Filter, which Attachment to fetch.
-     */
-    where: AttachmentWhereUniqueInput
-  }
-
-  /**
-   * Attachment findUniqueOrThrow
-   */
-  export type AttachmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    /**
-     * Filter, which Attachment to fetch.
-     */
-    where: AttachmentWhereUniqueInput
-  }
-
-  /**
-   * Attachment findFirst
-   */
-  export type AttachmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    /**
-     * Filter, which Attachment to fetch.
-     */
-    where?: AttachmentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Attachments to fetch.
-     */
-    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Attachments.
-     */
-    cursor?: AttachmentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Attachments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Attachments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Attachments.
-     */
-    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
-  }
-
-  /**
-   * Attachment findFirstOrThrow
-   */
-  export type AttachmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    /**
-     * Filter, which Attachment to fetch.
-     */
-    where?: AttachmentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Attachments to fetch.
-     */
-    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for Attachments.
-     */
-    cursor?: AttachmentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Attachments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Attachments.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of Attachments.
-     */
-    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
-  }
-
-  /**
-   * Attachment findMany
-   */
-  export type AttachmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    /**
-     * Filter, which Attachments to fetch.
-     */
-    where?: AttachmentWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of Attachments to fetch.
-     */
-    orderBy?: AttachmentOrderByWithRelationInput | AttachmentOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing Attachments.
-     */
-    cursor?: AttachmentWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` Attachments from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` Attachments.
-     */
-    skip?: number
-    distinct?: AttachmentScalarFieldEnum | AttachmentScalarFieldEnum[]
-  }
-
-  /**
-   * Attachment create
-   */
-  export type AttachmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    /**
-     * The data needed to create a Attachment.
-     */
-    data: XOR<AttachmentCreateInput, AttachmentUncheckedCreateInput>
-  }
-
-  /**
-   * Attachment createMany
-   */
-  export type AttachmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many Attachments.
-     */
-    data: AttachmentCreateManyInput | AttachmentCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * Attachment createManyAndReturn
-   */
-  export type AttachmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * The data used to create many Attachments.
-     */
-    data: AttachmentCreateManyInput | AttachmentCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Attachment update
-   */
-  export type AttachmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    /**
-     * The data needed to update a Attachment.
-     */
-    data: XOR<AttachmentUpdateInput, AttachmentUncheckedUpdateInput>
-    /**
-     * Choose, which Attachment to update.
-     */
-    where: AttachmentWhereUniqueInput
-  }
-
-  /**
-   * Attachment updateMany
-   */
-  export type AttachmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update Attachments.
-     */
-    data: XOR<AttachmentUpdateManyMutationInput, AttachmentUncheckedUpdateManyInput>
-    /**
-     * Filter which Attachments to update
-     */
-    where?: AttachmentWhereInput
-    /**
-     * Limit how many Attachments to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * Attachment updateManyAndReturn
-   */
-  export type AttachmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * The data used to update Attachments.
-     */
-    data: XOR<AttachmentUpdateManyMutationInput, AttachmentUncheckedUpdateManyInput>
-    /**
-     * Filter which Attachments to update
-     */
-    where?: AttachmentWhereInput
-    /**
-     * Limit how many Attachments to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * Attachment upsert
-   */
-  export type AttachmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    /**
-     * The filter to search for the Attachment to update in case it exists.
-     */
-    where: AttachmentWhereUniqueInput
-    /**
-     * In case the Attachment found by the `where` argument doesn't exist, create a new Attachment with this data.
-     */
-    create: XOR<AttachmentCreateInput, AttachmentUncheckedCreateInput>
-    /**
-     * In case the Attachment was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<AttachmentUpdateInput, AttachmentUncheckedUpdateInput>
-  }
-
-  /**
-   * Attachment delete
-   */
-  export type AttachmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-    /**
-     * Filter which Attachment to delete.
-     */
-    where: AttachmentWhereUniqueInput
-  }
-
-  /**
-   * Attachment deleteMany
-   */
-  export type AttachmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which Attachments to delete
-     */
-    where?: AttachmentWhereInput
-    /**
-     * Limit how many Attachments to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * Attachment without action
-   */
-  export type AttachmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Attachment
-     */
-    select?: AttachmentSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Attachment
-     */
-    omit?: AttachmentOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: AttachmentInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -6982,11 +10691,59 @@ export namespace Prisma {
     id: 'id',
     email: 'email',
     name: 'name',
+    isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const GroupScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GroupScalarFieldEnum = (typeof GroupScalarFieldEnum)[keyof typeof GroupScalarFieldEnum]
+
+
+  export const UserGroupScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    groupId: 'groupId',
+    joinedAt: 'joinedAt'
+  };
+
+  export type UserGroupScalarFieldEnum = (typeof UserGroupScalarFieldEnum)[keyof typeof UserGroupScalarFieldEnum]
+
+
+  export const DirectoryScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    parentId: 'parentId',
+    path: 'path',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DirectoryScalarFieldEnum = (typeof DirectoryScalarFieldEnum)[keyof typeof DirectoryScalarFieldEnum]
+
+
+  export const DirectoryAccessScalarFieldEnum: {
+    id: 'id',
+    directoryId: 'directoryId',
+    groupId: 'groupId',
+    permission: 'permission',
+    createdAt: 'createdAt'
+  };
+
+  export type DirectoryAccessScalarFieldEnum = (typeof DirectoryAccessScalarFieldEnum)[keyof typeof DirectoryAccessScalarFieldEnum]
 
 
   export const ContractScalarFieldEnum: {
@@ -6999,7 +10756,8 @@ export namespace Prisma {
     endDate: 'endDate',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
-    userId: 'userId',
+    ownerId: 'ownerId',
+    directoryId: 'directoryId',
     categoryId: 'categoryId'
   };
 
@@ -7028,20 +10786,6 @@ export namespace Prisma {
   };
 
   export type ContractVersionScalarFieldEnum = (typeof ContractVersionScalarFieldEnum)[keyof typeof ContractVersionScalarFieldEnum]
-
-
-  export const AttachmentScalarFieldEnum: {
-    id: 'id',
-    filename: 'filename',
-    originalName: 'originalName',
-    mimeType: 'mimeType',
-    size: 'size',
-    path: 'path',
-    createdAt: 'createdAt',
-    contractId: 'contractId'
-  };
-
-  export type AttachmentScalarFieldEnum = (typeof AttachmentScalarFieldEnum)[keyof typeof AttachmentScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7088,6 +10832,13 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -7098,6 +10849,20 @@ export namespace Prisma {
    * Reference to a field of type 'DateTime[]'
    */
   export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Permission'
+   */
+  export type EnumPermissionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Permission'>
+    
+
+
+  /**
+   * Reference to a field of type 'Permission[]'
+   */
+  export type ListEnumPermissionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Permission[]'>
     
 
 
@@ -7153,18 +10918,22 @@ export namespace Prisma {
     id?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     name?: StringNullableFilter<"User"> | string | null
+    isActive?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    contracts?: ContractListRelationFilter
+    ownedContracts?: ContractListRelationFilter
+    userGroups?: UserGroupListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     email?: SortOrder
     name?: SortOrderInput | SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    contracts?: ContractOrderByRelationAggregateInput
+    ownedContracts?: ContractOrderByRelationAggregateInput
+    userGroups?: UserGroupOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7174,15 +10943,18 @@ export namespace Prisma {
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
     name?: StringNullableFilter<"User"> | string | null
+    isActive?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
-    contracts?: ContractListRelationFilter
+    ownedContracts?: ContractListRelationFilter
+    userGroups?: UserGroupListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     email?: SortOrder
     name?: SortOrderInput | SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -7197,8 +10969,265 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     name?: StringNullableWithAggregatesFilter<"User"> | string | null
+    isActive?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type GroupWhereInput = {
+    AND?: GroupWhereInput | GroupWhereInput[]
+    OR?: GroupWhereInput[]
+    NOT?: GroupWhereInput | GroupWhereInput[]
+    id?: StringFilter<"Group"> | string
+    name?: StringFilter<"Group"> | string
+    description?: StringNullableFilter<"Group"> | string | null
+    isActive?: BoolFilter<"Group"> | boolean
+    createdAt?: DateTimeFilter<"Group"> | Date | string
+    updatedAt?: DateTimeFilter<"Group"> | Date | string
+    userGroups?: UserGroupListRelationFilter
+    directoryAccess?: DirectoryAccessListRelationFilter
+  }
+
+  export type GroupOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userGroups?: UserGroupOrderByRelationAggregateInput
+    directoryAccess?: DirectoryAccessOrderByRelationAggregateInput
+  }
+
+  export type GroupWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    name?: string
+    AND?: GroupWhereInput | GroupWhereInput[]
+    OR?: GroupWhereInput[]
+    NOT?: GroupWhereInput | GroupWhereInput[]
+    description?: StringNullableFilter<"Group"> | string | null
+    isActive?: BoolFilter<"Group"> | boolean
+    createdAt?: DateTimeFilter<"Group"> | Date | string
+    updatedAt?: DateTimeFilter<"Group"> | Date | string
+    userGroups?: UserGroupListRelationFilter
+    directoryAccess?: DirectoryAccessListRelationFilter
+  }, "id" | "name">
+
+  export type GroupOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GroupCountOrderByAggregateInput
+    _max?: GroupMaxOrderByAggregateInput
+    _min?: GroupMinOrderByAggregateInput
+  }
+
+  export type GroupScalarWhereWithAggregatesInput = {
+    AND?: GroupScalarWhereWithAggregatesInput | GroupScalarWhereWithAggregatesInput[]
+    OR?: GroupScalarWhereWithAggregatesInput[]
+    NOT?: GroupScalarWhereWithAggregatesInput | GroupScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Group"> | string
+    name?: StringWithAggregatesFilter<"Group"> | string
+    description?: StringNullableWithAggregatesFilter<"Group"> | string | null
+    isActive?: BoolWithAggregatesFilter<"Group"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Group"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Group"> | Date | string
+  }
+
+  export type UserGroupWhereInput = {
+    AND?: UserGroupWhereInput | UserGroupWhereInput[]
+    OR?: UserGroupWhereInput[]
+    NOT?: UserGroupWhereInput | UserGroupWhereInput[]
+    id?: StringFilter<"UserGroup"> | string
+    userId?: StringFilter<"UserGroup"> | string
+    groupId?: StringFilter<"UserGroup"> | string
+    joinedAt?: DateTimeFilter<"UserGroup"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+  }
+
+  export type UserGroupOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    groupId?: SortOrder
+    joinedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    group?: GroupOrderByWithRelationInput
+  }
+
+  export type UserGroupWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_groupId?: UserGroupUserIdGroupIdCompoundUniqueInput
+    AND?: UserGroupWhereInput | UserGroupWhereInput[]
+    OR?: UserGroupWhereInput[]
+    NOT?: UserGroupWhereInput | UserGroupWhereInput[]
+    userId?: StringFilter<"UserGroup"> | string
+    groupId?: StringFilter<"UserGroup"> | string
+    joinedAt?: DateTimeFilter<"UserGroup"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+  }, "id" | "userId_groupId">
+
+  export type UserGroupOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    groupId?: SortOrder
+    joinedAt?: SortOrder
+    _count?: UserGroupCountOrderByAggregateInput
+    _max?: UserGroupMaxOrderByAggregateInput
+    _min?: UserGroupMinOrderByAggregateInput
+  }
+
+  export type UserGroupScalarWhereWithAggregatesInput = {
+    AND?: UserGroupScalarWhereWithAggregatesInput | UserGroupScalarWhereWithAggregatesInput[]
+    OR?: UserGroupScalarWhereWithAggregatesInput[]
+    NOT?: UserGroupScalarWhereWithAggregatesInput | UserGroupScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserGroup"> | string
+    userId?: StringWithAggregatesFilter<"UserGroup"> | string
+    groupId?: StringWithAggregatesFilter<"UserGroup"> | string
+    joinedAt?: DateTimeWithAggregatesFilter<"UserGroup"> | Date | string
+  }
+
+  export type DirectoryWhereInput = {
+    AND?: DirectoryWhereInput | DirectoryWhereInput[]
+    OR?: DirectoryWhereInput[]
+    NOT?: DirectoryWhereInput | DirectoryWhereInput[]
+    id?: StringFilter<"Directory"> | string
+    name?: StringFilter<"Directory"> | string
+    description?: StringNullableFilter<"Directory"> | string | null
+    parentId?: StringNullableFilter<"Directory"> | string | null
+    path?: StringFilter<"Directory"> | string
+    isActive?: BoolFilter<"Directory"> | boolean
+    createdAt?: DateTimeFilter<"Directory"> | Date | string
+    updatedAt?: DateTimeFilter<"Directory"> | Date | string
+    parent?: XOR<DirectoryNullableScalarRelationFilter, DirectoryWhereInput> | null
+    children?: DirectoryListRelationFilter
+    contracts?: ContractListRelationFilter
+    directoryAccess?: DirectoryAccessListRelationFilter
+  }
+
+  export type DirectoryOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    parentId?: SortOrderInput | SortOrder
+    path?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    parent?: DirectoryOrderByWithRelationInput
+    children?: DirectoryOrderByRelationAggregateInput
+    contracts?: ContractOrderByRelationAggregateInput
+    directoryAccess?: DirectoryAccessOrderByRelationAggregateInput
+  }
+
+  export type DirectoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    path?: string
+    parentId_name?: DirectoryParentIdNameCompoundUniqueInput
+    AND?: DirectoryWhereInput | DirectoryWhereInput[]
+    OR?: DirectoryWhereInput[]
+    NOT?: DirectoryWhereInput | DirectoryWhereInput[]
+    name?: StringFilter<"Directory"> | string
+    description?: StringNullableFilter<"Directory"> | string | null
+    parentId?: StringNullableFilter<"Directory"> | string | null
+    isActive?: BoolFilter<"Directory"> | boolean
+    createdAt?: DateTimeFilter<"Directory"> | Date | string
+    updatedAt?: DateTimeFilter<"Directory"> | Date | string
+    parent?: XOR<DirectoryNullableScalarRelationFilter, DirectoryWhereInput> | null
+    children?: DirectoryListRelationFilter
+    contracts?: ContractListRelationFilter
+    directoryAccess?: DirectoryAccessListRelationFilter
+  }, "id" | "path" | "parentId_name">
+
+  export type DirectoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    parentId?: SortOrderInput | SortOrder
+    path?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DirectoryCountOrderByAggregateInput
+    _max?: DirectoryMaxOrderByAggregateInput
+    _min?: DirectoryMinOrderByAggregateInput
+  }
+
+  export type DirectoryScalarWhereWithAggregatesInput = {
+    AND?: DirectoryScalarWhereWithAggregatesInput | DirectoryScalarWhereWithAggregatesInput[]
+    OR?: DirectoryScalarWhereWithAggregatesInput[]
+    NOT?: DirectoryScalarWhereWithAggregatesInput | DirectoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Directory"> | string
+    name?: StringWithAggregatesFilter<"Directory"> | string
+    description?: StringNullableWithAggregatesFilter<"Directory"> | string | null
+    parentId?: StringNullableWithAggregatesFilter<"Directory"> | string | null
+    path?: StringWithAggregatesFilter<"Directory"> | string
+    isActive?: BoolWithAggregatesFilter<"Directory"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"Directory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Directory"> | Date | string
+  }
+
+  export type DirectoryAccessWhereInput = {
+    AND?: DirectoryAccessWhereInput | DirectoryAccessWhereInput[]
+    OR?: DirectoryAccessWhereInput[]
+    NOT?: DirectoryAccessWhereInput | DirectoryAccessWhereInput[]
+    id?: StringFilter<"DirectoryAccess"> | string
+    directoryId?: StringFilter<"DirectoryAccess"> | string
+    groupId?: StringFilter<"DirectoryAccess"> | string
+    permission?: EnumPermissionFilter<"DirectoryAccess"> | $Enums.Permission
+    createdAt?: DateTimeFilter<"DirectoryAccess"> | Date | string
+    directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
+    group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+  }
+
+  export type DirectoryAccessOrderByWithRelationInput = {
+    id?: SortOrder
+    directoryId?: SortOrder
+    groupId?: SortOrder
+    permission?: SortOrder
+    createdAt?: SortOrder
+    directory?: DirectoryOrderByWithRelationInput
+    group?: GroupOrderByWithRelationInput
+  }
+
+  export type DirectoryAccessWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    directoryId_groupId?: DirectoryAccessDirectoryIdGroupIdCompoundUniqueInput
+    AND?: DirectoryAccessWhereInput | DirectoryAccessWhereInput[]
+    OR?: DirectoryAccessWhereInput[]
+    NOT?: DirectoryAccessWhereInput | DirectoryAccessWhereInput[]
+    directoryId?: StringFilter<"DirectoryAccess"> | string
+    groupId?: StringFilter<"DirectoryAccess"> | string
+    permission?: EnumPermissionFilter<"DirectoryAccess"> | $Enums.Permission
+    createdAt?: DateTimeFilter<"DirectoryAccess"> | Date | string
+    directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
+    group?: XOR<GroupScalarRelationFilter, GroupWhereInput>
+  }, "id" | "directoryId_groupId">
+
+  export type DirectoryAccessOrderByWithAggregationInput = {
+    id?: SortOrder
+    directoryId?: SortOrder
+    groupId?: SortOrder
+    permission?: SortOrder
+    createdAt?: SortOrder
+    _count?: DirectoryAccessCountOrderByAggregateInput
+    _max?: DirectoryAccessMaxOrderByAggregateInput
+    _min?: DirectoryAccessMinOrderByAggregateInput
+  }
+
+  export type DirectoryAccessScalarWhereWithAggregatesInput = {
+    AND?: DirectoryAccessScalarWhereWithAggregatesInput | DirectoryAccessScalarWhereWithAggregatesInput[]
+    OR?: DirectoryAccessScalarWhereWithAggregatesInput[]
+    NOT?: DirectoryAccessScalarWhereWithAggregatesInput | DirectoryAccessScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DirectoryAccess"> | string
+    directoryId?: StringWithAggregatesFilter<"DirectoryAccess"> | string
+    groupId?: StringWithAggregatesFilter<"DirectoryAccess"> | string
+    permission?: EnumPermissionWithAggregatesFilter<"DirectoryAccess"> | $Enums.Permission
+    createdAt?: DateTimeWithAggregatesFilter<"DirectoryAccess"> | Date | string
   }
 
   export type ContractWhereInput = {
@@ -7214,12 +11243,13 @@ export namespace Prisma {
     endDate?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     updatedAt?: DateTimeFilter<"Contract"> | Date | string
-    userId?: StringFilter<"Contract"> | string
+    ownerId?: StringFilter<"Contract"> | string
+    directoryId?: StringFilter<"Contract"> | string
     categoryId?: StringNullableFilter<"Contract"> | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     versions?: ContractVersionListRelationFilter
-    attachments?: AttachmentListRelationFilter
   }
 
   export type ContractOrderByWithRelationInput = {
@@ -7232,12 +11262,13 @@ export namespace Prisma {
     endDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
+    directoryId?: SortOrder
     categoryId?: SortOrderInput | SortOrder
-    user?: UserOrderByWithRelationInput
+    owner?: UserOrderByWithRelationInput
+    directory?: DirectoryOrderByWithRelationInput
     category?: CategoryOrderByWithRelationInput
     versions?: ContractVersionOrderByRelationAggregateInput
-    attachments?: AttachmentOrderByRelationAggregateInput
   }
 
   export type ContractWhereUniqueInput = Prisma.AtLeast<{
@@ -7253,12 +11284,13 @@ export namespace Prisma {
     endDate?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     updatedAt?: DateTimeFilter<"Contract"> | Date | string
-    userId?: StringFilter<"Contract"> | string
+    ownerId?: StringFilter<"Contract"> | string
+    directoryId?: StringFilter<"Contract"> | string
     categoryId?: StringNullableFilter<"Contract"> | string | null
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    owner?: XOR<UserScalarRelationFilter, UserWhereInput>
+    directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     versions?: ContractVersionListRelationFilter
-    attachments?: AttachmentListRelationFilter
   }, "id" | "contractNumber">
 
   export type ContractOrderByWithAggregationInput = {
@@ -7271,7 +11303,8 @@ export namespace Prisma {
     endDate?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
+    directoryId?: SortOrder
     categoryId?: SortOrderInput | SortOrder
     _count?: ContractCountOrderByAggregateInput
     _max?: ContractMaxOrderByAggregateInput
@@ -7291,7 +11324,8 @@ export namespace Prisma {
     endDate?: DateTimeNullableWithAggregatesFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Contract"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Contract"> | Date | string
-    userId?: StringWithAggregatesFilter<"Contract"> | string
+    ownerId?: StringWithAggregatesFilter<"Contract"> | string
+    directoryId?: StringWithAggregatesFilter<"Contract"> | string
     categoryId?: StringNullableWithAggregatesFilter<"Contract"> | string | null
   }
 
@@ -7418,118 +11452,55 @@ export namespace Prisma {
     contractId?: StringWithAggregatesFilter<"ContractVersion"> | string
   }
 
-  export type AttachmentWhereInput = {
-    AND?: AttachmentWhereInput | AttachmentWhereInput[]
-    OR?: AttachmentWhereInput[]
-    NOT?: AttachmentWhereInput | AttachmentWhereInput[]
-    id?: StringFilter<"Attachment"> | string
-    filename?: StringFilter<"Attachment"> | string
-    originalName?: StringFilter<"Attachment"> | string
-    mimeType?: StringFilter<"Attachment"> | string
-    size?: IntFilter<"Attachment"> | number
-    path?: StringFilter<"Attachment"> | string
-    createdAt?: DateTimeFilter<"Attachment"> | Date | string
-    contractId?: StringFilter<"Attachment"> | string
-    contract?: XOR<ContractScalarRelationFilter, ContractWhereInput>
-  }
-
-  export type AttachmentOrderByWithRelationInput = {
-    id?: SortOrder
-    filename?: SortOrder
-    originalName?: SortOrder
-    mimeType?: SortOrder
-    size?: SortOrder
-    path?: SortOrder
-    createdAt?: SortOrder
-    contractId?: SortOrder
-    contract?: ContractOrderByWithRelationInput
-  }
-
-  export type AttachmentWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: AttachmentWhereInput | AttachmentWhereInput[]
-    OR?: AttachmentWhereInput[]
-    NOT?: AttachmentWhereInput | AttachmentWhereInput[]
-    filename?: StringFilter<"Attachment"> | string
-    originalName?: StringFilter<"Attachment"> | string
-    mimeType?: StringFilter<"Attachment"> | string
-    size?: IntFilter<"Attachment"> | number
-    path?: StringFilter<"Attachment"> | string
-    createdAt?: DateTimeFilter<"Attachment"> | Date | string
-    contractId?: StringFilter<"Attachment"> | string
-    contract?: XOR<ContractScalarRelationFilter, ContractWhereInput>
-  }, "id">
-
-  export type AttachmentOrderByWithAggregationInput = {
-    id?: SortOrder
-    filename?: SortOrder
-    originalName?: SortOrder
-    mimeType?: SortOrder
-    size?: SortOrder
-    path?: SortOrder
-    createdAt?: SortOrder
-    contractId?: SortOrder
-    _count?: AttachmentCountOrderByAggregateInput
-    _avg?: AttachmentAvgOrderByAggregateInput
-    _max?: AttachmentMaxOrderByAggregateInput
-    _min?: AttachmentMinOrderByAggregateInput
-    _sum?: AttachmentSumOrderByAggregateInput
-  }
-
-  export type AttachmentScalarWhereWithAggregatesInput = {
-    AND?: AttachmentScalarWhereWithAggregatesInput | AttachmentScalarWhereWithAggregatesInput[]
-    OR?: AttachmentScalarWhereWithAggregatesInput[]
-    NOT?: AttachmentScalarWhereWithAggregatesInput | AttachmentScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"Attachment"> | string
-    filename?: StringWithAggregatesFilter<"Attachment"> | string
-    originalName?: StringWithAggregatesFilter<"Attachment"> | string
-    mimeType?: StringWithAggregatesFilter<"Attachment"> | string
-    size?: IntWithAggregatesFilter<"Attachment"> | number
-    path?: StringWithAggregatesFilter<"Attachment"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"Attachment"> | Date | string
-    contractId?: StringWithAggregatesFilter<"Attachment"> | string
-  }
-
   export type UserCreateInput = {
     id?: string
     email: string
     name?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    contracts?: ContractCreateNestedManyWithoutUserInput
+    ownedContracts?: ContractCreateNestedManyWithoutOwnerInput
+    userGroups?: UserGroupCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
     email: string
     name?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    contracts?: ContractUncheckedCreateNestedManyWithoutUserInput
+    ownedContracts?: ContractUncheckedCreateNestedManyWithoutOwnerInput
+    userGroups?: UserGroupUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    contracts?: ContractUpdateManyWithoutUserNestedInput
+    ownedContracts?: ContractUpdateManyWithoutOwnerNestedInput
+    userGroups?: UserGroupUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    contracts?: ContractUncheckedUpdateManyWithoutUserNestedInput
+    ownedContracts?: ContractUncheckedUpdateManyWithoutOwnerNestedInput
+    userGroups?: UserGroupUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: string
     email: string
     name?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -7538,6 +11509,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -7546,8 +11518,269 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userGroups?: UserGroupCreateNestedManyWithoutGroupInput
+    directoryAccess?: DirectoryAccessCreateNestedManyWithoutGroupInput
+  }
+
+  export type GroupUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userGroups?: UserGroupUncheckedCreateNestedManyWithoutGroupInput
+    directoryAccess?: DirectoryAccessUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type GroupUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userGroups?: UserGroupUpdateManyWithoutGroupNestedInput
+    directoryAccess?: DirectoryAccessUpdateManyWithoutGroupNestedInput
+  }
+
+  export type GroupUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userGroups?: UserGroupUncheckedUpdateManyWithoutGroupNestedInput
+    directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type GroupCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GroupUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GroupUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserGroupCreateInput = {
+    id?: string
+    joinedAt?: Date | string
+    user: UserCreateNestedOneWithoutUserGroupsInput
+    group: GroupCreateNestedOneWithoutUserGroupsInput
+  }
+
+  export type UserGroupUncheckedCreateInput = {
+    id?: string
+    userId: string
+    groupId: string
+    joinedAt?: Date | string
+  }
+
+  export type UserGroupUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserGroupsNestedInput
+    group?: GroupUpdateOneRequiredWithoutUserGroupsNestedInput
+  }
+
+  export type UserGroupUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserGroupCreateManyInput = {
+    id?: string
+    userId: string
+    groupId: string
+    joinedAt?: Date | string
+  }
+
+  export type UserGroupUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserGroupUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DirectoryCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: DirectoryCreateNestedOneWithoutChildrenInput
+    children?: DirectoryCreateNestedManyWithoutParentInput
+    contracts?: ContractCreateNestedManyWithoutDirectoryInput
+    directoryAccess?: DirectoryAccessCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    parentId?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutDirectoryInput
+    directoryAccess?: DirectoryAccessUncheckedCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: DirectoryUpdateOneWithoutChildrenNestedInput
+    children?: DirectoryUpdateManyWithoutParentNestedInput
+    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
+    directoryAccess?: DirectoryAccessUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutDirectoryNestedInput
+    directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    parentId?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DirectoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DirectoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DirectoryAccessCreateInput = {
+    id?: string
+    permission?: $Enums.Permission
+    createdAt?: Date | string
+    directory: DirectoryCreateNestedOneWithoutDirectoryAccessInput
+    group: GroupCreateNestedOneWithoutDirectoryAccessInput
+  }
+
+  export type DirectoryAccessUncheckedCreateInput = {
+    id?: string
+    directoryId: string
+    groupId: string
+    permission?: $Enums.Permission
+    createdAt?: Date | string
+  }
+
+  export type DirectoryAccessUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directory?: DirectoryUpdateOneRequiredWithoutDirectoryAccessNestedInput
+    group?: GroupUpdateOneRequiredWithoutDirectoryAccessNestedInput
+  }
+
+  export type DirectoryAccessUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DirectoryAccessCreateManyInput = {
+    id?: string
+    directoryId: string
+    groupId: string
+    permission?: $Enums.Permission
+    createdAt?: Date | string
+  }
+
+  export type DirectoryAccessUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DirectoryAccessUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ContractCreateInput = {
@@ -7560,10 +11793,10 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutContractsInput
+    owner: UserCreateNestedOneWithoutOwnedContractsInput
+    directory: DirectoryCreateNestedOneWithoutContractsInput
     category?: CategoryCreateNestedOneWithoutContractsInput
     versions?: ContractVersionCreateNestedManyWithoutContractInput
-    attachments?: AttachmentCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateInput = {
@@ -7576,10 +11809,10 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId: string
+    ownerId: string
+    directoryId: string
     categoryId?: string | null
     versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
-    attachments?: AttachmentUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractUpdateInput = {
@@ -7592,10 +11825,10 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutContractsNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
+    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
     category?: CategoryUpdateOneWithoutContractsNestedInput
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
-    attachments?: AttachmentUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateInput = {
@@ -7608,10 +11841,10 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
-    attachments?: AttachmentUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractCreateManyInput = {
@@ -7624,7 +11857,8 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId: string
+    ownerId: string
+    directoryId: string
     categoryId?: string | null
   }
 
@@ -7650,7 +11884,8 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -7783,82 +12018,6 @@ export namespace Prisma {
     contractId?: StringFieldUpdateOperationsInput | string
   }
 
-  export type AttachmentCreateInput = {
-    id?: string
-    filename: string
-    originalName: string
-    mimeType: string
-    size: number
-    path: string
-    createdAt?: Date | string
-    contract: ContractCreateNestedOneWithoutAttachmentsInput
-  }
-
-  export type AttachmentUncheckedCreateInput = {
-    id?: string
-    filename: string
-    originalName: string
-    mimeType: string
-    size: number
-    path: string
-    createdAt?: Date | string
-    contractId: string
-  }
-
-  export type AttachmentUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    filename?: StringFieldUpdateOperationsInput | string
-    originalName?: StringFieldUpdateOperationsInput | string
-    mimeType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    path?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    contract?: ContractUpdateOneRequiredWithoutAttachmentsNestedInput
-  }
-
-  export type AttachmentUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    filename?: StringFieldUpdateOperationsInput | string
-    originalName?: StringFieldUpdateOperationsInput | string
-    mimeType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    path?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    contractId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type AttachmentCreateManyInput = {
-    id?: string
-    filename: string
-    originalName: string
-    mimeType: string
-    size: number
-    path: string
-    createdAt?: Date | string
-    contractId: string
-  }
-
-  export type AttachmentUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    filename?: StringFieldUpdateOperationsInput | string
-    originalName?: StringFieldUpdateOperationsInput | string
-    mimeType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    path?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AttachmentUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    filename?: StringFieldUpdateOperationsInput | string
-    originalName?: StringFieldUpdateOperationsInput | string
-    mimeType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    path?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    contractId?: StringFieldUpdateOperationsInput | string
-  }
-
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7889,6 +12048,11 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -7906,6 +12070,12 @@ export namespace Prisma {
     none?: ContractWhereInput
   }
 
+  export type UserGroupListRelationFilter = {
+    every?: UserGroupWhereInput
+    some?: UserGroupWhereInput
+    none?: UserGroupWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -7915,10 +12085,15 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type UserGroupOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
     name?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7927,6 +12102,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     name?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7935,6 +12111,7 @@ export namespace Prisma {
     id?: SortOrder
     email?: SortOrder
     name?: SortOrder
+    isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -7975,6 +12152,14 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -7987,6 +12172,183 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type DirectoryAccessListRelationFilter = {
+    every?: DirectoryAccessWhereInput
+    some?: DirectoryAccessWhereInput
+    none?: DirectoryAccessWhereInput
+  }
+
+  export type DirectoryAccessOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type GroupCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GroupMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GroupMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type GroupScalarRelationFilter = {
+    is?: GroupWhereInput
+    isNot?: GroupWhereInput
+  }
+
+  export type UserGroupUserIdGroupIdCompoundUniqueInput = {
+    userId: string
+    groupId: string
+  }
+
+  export type UserGroupCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    groupId?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type UserGroupMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    groupId?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type UserGroupMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    groupId?: SortOrder
+    joinedAt?: SortOrder
+  }
+
+  export type DirectoryNullableScalarRelationFilter = {
+    is?: DirectoryWhereInput | null
+    isNot?: DirectoryWhereInput | null
+  }
+
+  export type DirectoryListRelationFilter = {
+    every?: DirectoryWhereInput
+    some?: DirectoryWhereInput
+    none?: DirectoryWhereInput
+  }
+
+  export type DirectoryOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DirectoryParentIdNameCompoundUniqueInput = {
+    parentId: string
+    name: string
+  }
+
+  export type DirectoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    parentId?: SortOrder
+    path?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DirectoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    parentId?: SortOrder
+    path?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DirectoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    parentId?: SortOrder
+    path?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumPermissionFilter<$PrismaModel = never> = {
+    equals?: $Enums.Permission | EnumPermissionFieldRefInput<$PrismaModel>
+    in?: $Enums.Permission[] | ListEnumPermissionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Permission[] | ListEnumPermissionFieldRefInput<$PrismaModel>
+    not?: NestedEnumPermissionFilter<$PrismaModel> | $Enums.Permission
+  }
+
+  export type DirectoryScalarRelationFilter = {
+    is?: DirectoryWhereInput
+    isNot?: DirectoryWhereInput
+  }
+
+  export type DirectoryAccessDirectoryIdGroupIdCompoundUniqueInput = {
+    directoryId: string
+    groupId: string
+  }
+
+  export type DirectoryAccessCountOrderByAggregateInput = {
+    id?: SortOrder
+    directoryId?: SortOrder
+    groupId?: SortOrder
+    permission?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DirectoryAccessMaxOrderByAggregateInput = {
+    id?: SortOrder
+    directoryId?: SortOrder
+    groupId?: SortOrder
+    permission?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type DirectoryAccessMinOrderByAggregateInput = {
+    id?: SortOrder
+    directoryId?: SortOrder
+    groupId?: SortOrder
+    permission?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumPermissionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Permission | EnumPermissionFieldRefInput<$PrismaModel>
+    in?: $Enums.Permission[] | ListEnumPermissionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Permission[] | ListEnumPermissionFieldRefInput<$PrismaModel>
+    not?: NestedEnumPermissionWithAggregatesFilter<$PrismaModel> | $Enums.Permission
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPermissionFilter<$PrismaModel>
+    _max?: NestedEnumPermissionFilter<$PrismaModel>
   }
 
   export type EnumContractStatusFilter<$PrismaModel = never> = {
@@ -8007,11 +12369,6 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
-  export type UserScalarRelationFilter = {
-    is?: UserWhereInput
-    isNot?: UserWhereInput
-  }
-
   export type CategoryNullableScalarRelationFilter = {
     is?: CategoryWhereInput | null
     isNot?: CategoryWhereInput | null
@@ -8023,17 +12380,7 @@ export namespace Prisma {
     none?: ContractVersionWhereInput
   }
 
-  export type AttachmentListRelationFilter = {
-    every?: AttachmentWhereInput
-    some?: AttachmentWhereInput
-    none?: AttachmentWhereInput
-  }
-
   export type ContractVersionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type AttachmentOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -8047,7 +12394,8 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
+    directoryId?: SortOrder
     categoryId?: SortOrder
   }
 
@@ -8061,7 +12409,8 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
+    directoryId?: SortOrder
     categoryId?: SortOrder
   }
 
@@ -8075,7 +12424,8 @@ export namespace Prisma {
     endDate?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    userId?: SortOrder
+    ownerId?: SortOrder
+    directoryId?: SortOrder
     categoryId?: SortOrder
   }
 
@@ -8202,59 +12552,32 @@ export namespace Prisma {
     _max?: NestedIntFilter<$PrismaModel>
   }
 
-  export type AttachmentCountOrderByAggregateInput = {
-    id?: SortOrder
-    filename?: SortOrder
-    originalName?: SortOrder
-    mimeType?: SortOrder
-    size?: SortOrder
-    path?: SortOrder
-    createdAt?: SortOrder
-    contractId?: SortOrder
-  }
-
-  export type AttachmentAvgOrderByAggregateInput = {
-    size?: SortOrder
-  }
-
-  export type AttachmentMaxOrderByAggregateInput = {
-    id?: SortOrder
-    filename?: SortOrder
-    originalName?: SortOrder
-    mimeType?: SortOrder
-    size?: SortOrder
-    path?: SortOrder
-    createdAt?: SortOrder
-    contractId?: SortOrder
-  }
-
-  export type AttachmentMinOrderByAggregateInput = {
-    id?: SortOrder
-    filename?: SortOrder
-    originalName?: SortOrder
-    mimeType?: SortOrder
-    size?: SortOrder
-    path?: SortOrder
-    createdAt?: SortOrder
-    contractId?: SortOrder
-  }
-
-  export type AttachmentSumOrderByAggregateInput = {
-    size?: SortOrder
-  }
-
-  export type ContractCreateNestedManyWithoutUserInput = {
-    create?: XOR<ContractCreateWithoutUserInput, ContractUncheckedCreateWithoutUserInput> | ContractCreateWithoutUserInput[] | ContractUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ContractCreateOrConnectWithoutUserInput | ContractCreateOrConnectWithoutUserInput[]
-    createMany?: ContractCreateManyUserInputEnvelope
+  export type ContractCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<ContractCreateWithoutOwnerInput, ContractUncheckedCreateWithoutOwnerInput> | ContractCreateWithoutOwnerInput[] | ContractUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutOwnerInput | ContractCreateOrConnectWithoutOwnerInput[]
+    createMany?: ContractCreateManyOwnerInputEnvelope
     connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
   }
 
-  export type ContractUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<ContractCreateWithoutUserInput, ContractUncheckedCreateWithoutUserInput> | ContractCreateWithoutUserInput[] | ContractUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ContractCreateOrConnectWithoutUserInput | ContractCreateOrConnectWithoutUserInput[]
-    createMany?: ContractCreateManyUserInputEnvelope
+  export type UserGroupCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserGroupCreateWithoutUserInput, UserGroupUncheckedCreateWithoutUserInput> | UserGroupCreateWithoutUserInput[] | UserGroupUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserGroupCreateOrConnectWithoutUserInput | UserGroupCreateOrConnectWithoutUserInput[]
+    createMany?: UserGroupCreateManyUserInputEnvelope
+    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+  }
+
+  export type ContractUncheckedCreateNestedManyWithoutOwnerInput = {
+    create?: XOR<ContractCreateWithoutOwnerInput, ContractUncheckedCreateWithoutOwnerInput> | ContractCreateWithoutOwnerInput[] | ContractUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutOwnerInput | ContractCreateOrConnectWithoutOwnerInput[]
+    createMany?: ContractCreateManyOwnerInputEnvelope
     connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+  }
+
+  export type UserGroupUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserGroupCreateWithoutUserInput, UserGroupUncheckedCreateWithoutUserInput> | UserGroupCreateWithoutUserInput[] | UserGroupUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserGroupCreateOrConnectWithoutUserInput | UserGroupCreateOrConnectWithoutUserInput[]
+    createMany?: UserGroupCreateManyUserInputEnvelope
+    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -8265,42 +12588,366 @@ export namespace Prisma {
     set?: string | null
   }
 
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
 
-  export type ContractUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ContractCreateWithoutUserInput, ContractUncheckedCreateWithoutUserInput> | ContractCreateWithoutUserInput[] | ContractUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ContractCreateOrConnectWithoutUserInput | ContractCreateOrConnectWithoutUserInput[]
-    upsert?: ContractUpsertWithWhereUniqueWithoutUserInput | ContractUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ContractCreateManyUserInputEnvelope
+  export type ContractUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<ContractCreateWithoutOwnerInput, ContractUncheckedCreateWithoutOwnerInput> | ContractCreateWithoutOwnerInput[] | ContractUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutOwnerInput | ContractCreateOrConnectWithoutOwnerInput[]
+    upsert?: ContractUpsertWithWhereUniqueWithoutOwnerInput | ContractUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: ContractCreateManyOwnerInputEnvelope
     set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
     disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
     delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
     connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
-    update?: ContractUpdateWithWhereUniqueWithoutUserInput | ContractUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ContractUpdateManyWithWhereWithoutUserInput | ContractUpdateManyWithWhereWithoutUserInput[]
+    update?: ContractUpdateWithWhereUniqueWithoutOwnerInput | ContractUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: ContractUpdateManyWithWhereWithoutOwnerInput | ContractUpdateManyWithWhereWithoutOwnerInput[]
     deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
   }
 
-  export type ContractUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<ContractCreateWithoutUserInput, ContractUncheckedCreateWithoutUserInput> | ContractCreateWithoutUserInput[] | ContractUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: ContractCreateOrConnectWithoutUserInput | ContractCreateOrConnectWithoutUserInput[]
-    upsert?: ContractUpsertWithWhereUniqueWithoutUserInput | ContractUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: ContractCreateManyUserInputEnvelope
+  export type UserGroupUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserGroupCreateWithoutUserInput, UserGroupUncheckedCreateWithoutUserInput> | UserGroupCreateWithoutUserInput[] | UserGroupUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserGroupCreateOrConnectWithoutUserInput | UserGroupCreateOrConnectWithoutUserInput[]
+    upsert?: UserGroupUpsertWithWhereUniqueWithoutUserInput | UserGroupUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserGroupCreateManyUserInputEnvelope
+    set?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    disconnect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    delete?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    update?: UserGroupUpdateWithWhereUniqueWithoutUserInput | UserGroupUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserGroupUpdateManyWithWhereWithoutUserInput | UserGroupUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserGroupScalarWhereInput | UserGroupScalarWhereInput[]
+  }
+
+  export type ContractUncheckedUpdateManyWithoutOwnerNestedInput = {
+    create?: XOR<ContractCreateWithoutOwnerInput, ContractUncheckedCreateWithoutOwnerInput> | ContractCreateWithoutOwnerInput[] | ContractUncheckedCreateWithoutOwnerInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutOwnerInput | ContractCreateOrConnectWithoutOwnerInput[]
+    upsert?: ContractUpsertWithWhereUniqueWithoutOwnerInput | ContractUpsertWithWhereUniqueWithoutOwnerInput[]
+    createMany?: ContractCreateManyOwnerInputEnvelope
     set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
     disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
     delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
     connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
-    update?: ContractUpdateWithWhereUniqueWithoutUserInput | ContractUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: ContractUpdateManyWithWhereWithoutUserInput | ContractUpdateManyWithWhereWithoutUserInput[]
+    update?: ContractUpdateWithWhereUniqueWithoutOwnerInput | ContractUpdateWithWhereUniqueWithoutOwnerInput[]
+    updateMany?: ContractUpdateManyWithWhereWithoutOwnerInput | ContractUpdateManyWithWhereWithoutOwnerInput[]
     deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
   }
 
-  export type UserCreateNestedOneWithoutContractsInput = {
-    create?: XOR<UserCreateWithoutContractsInput, UserUncheckedCreateWithoutContractsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutContractsInput
+  export type UserGroupUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserGroupCreateWithoutUserInput, UserGroupUncheckedCreateWithoutUserInput> | UserGroupCreateWithoutUserInput[] | UserGroupUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserGroupCreateOrConnectWithoutUserInput | UserGroupCreateOrConnectWithoutUserInput[]
+    upsert?: UserGroupUpsertWithWhereUniqueWithoutUserInput | UserGroupUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserGroupCreateManyUserInputEnvelope
+    set?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    disconnect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    delete?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    update?: UserGroupUpdateWithWhereUniqueWithoutUserInput | UserGroupUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserGroupUpdateManyWithWhereWithoutUserInput | UserGroupUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserGroupScalarWhereInput | UserGroupScalarWhereInput[]
+  }
+
+  export type UserGroupCreateNestedManyWithoutGroupInput = {
+    create?: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput> | UserGroupCreateWithoutGroupInput[] | UserGroupUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: UserGroupCreateOrConnectWithoutGroupInput | UserGroupCreateOrConnectWithoutGroupInput[]
+    createMany?: UserGroupCreateManyGroupInputEnvelope
+    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+  }
+
+  export type DirectoryAccessCreateNestedManyWithoutGroupInput = {
+    create?: XOR<DirectoryAccessCreateWithoutGroupInput, DirectoryAccessUncheckedCreateWithoutGroupInput> | DirectoryAccessCreateWithoutGroupInput[] | DirectoryAccessUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: DirectoryAccessCreateOrConnectWithoutGroupInput | DirectoryAccessCreateOrConnectWithoutGroupInput[]
+    createMany?: DirectoryAccessCreateManyGroupInputEnvelope
+    connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+  }
+
+  export type UserGroupUncheckedCreateNestedManyWithoutGroupInput = {
+    create?: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput> | UserGroupCreateWithoutGroupInput[] | UserGroupUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: UserGroupCreateOrConnectWithoutGroupInput | UserGroupCreateOrConnectWithoutGroupInput[]
+    createMany?: UserGroupCreateManyGroupInputEnvelope
+    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+  }
+
+  export type DirectoryAccessUncheckedCreateNestedManyWithoutGroupInput = {
+    create?: XOR<DirectoryAccessCreateWithoutGroupInput, DirectoryAccessUncheckedCreateWithoutGroupInput> | DirectoryAccessCreateWithoutGroupInput[] | DirectoryAccessUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: DirectoryAccessCreateOrConnectWithoutGroupInput | DirectoryAccessCreateOrConnectWithoutGroupInput[]
+    createMany?: DirectoryAccessCreateManyGroupInputEnvelope
+    connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+  }
+
+  export type UserGroupUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput> | UserGroupCreateWithoutGroupInput[] | UserGroupUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: UserGroupCreateOrConnectWithoutGroupInput | UserGroupCreateOrConnectWithoutGroupInput[]
+    upsert?: UserGroupUpsertWithWhereUniqueWithoutGroupInput | UserGroupUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: UserGroupCreateManyGroupInputEnvelope
+    set?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    disconnect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    delete?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    update?: UserGroupUpdateWithWhereUniqueWithoutGroupInput | UserGroupUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: UserGroupUpdateManyWithWhereWithoutGroupInput | UserGroupUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: UserGroupScalarWhereInput | UserGroupScalarWhereInput[]
+  }
+
+  export type DirectoryAccessUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<DirectoryAccessCreateWithoutGroupInput, DirectoryAccessUncheckedCreateWithoutGroupInput> | DirectoryAccessCreateWithoutGroupInput[] | DirectoryAccessUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: DirectoryAccessCreateOrConnectWithoutGroupInput | DirectoryAccessCreateOrConnectWithoutGroupInput[]
+    upsert?: DirectoryAccessUpsertWithWhereUniqueWithoutGroupInput | DirectoryAccessUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: DirectoryAccessCreateManyGroupInputEnvelope
+    set?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    disconnect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    delete?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    update?: DirectoryAccessUpdateWithWhereUniqueWithoutGroupInput | DirectoryAccessUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: DirectoryAccessUpdateManyWithWhereWithoutGroupInput | DirectoryAccessUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: DirectoryAccessScalarWhereInput | DirectoryAccessScalarWhereInput[]
+  }
+
+  export type UserGroupUncheckedUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput> | UserGroupCreateWithoutGroupInput[] | UserGroupUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: UserGroupCreateOrConnectWithoutGroupInput | UserGroupCreateOrConnectWithoutGroupInput[]
+    upsert?: UserGroupUpsertWithWhereUniqueWithoutGroupInput | UserGroupUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: UserGroupCreateManyGroupInputEnvelope
+    set?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    disconnect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    delete?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    connect?: UserGroupWhereUniqueInput | UserGroupWhereUniqueInput[]
+    update?: UserGroupUpdateWithWhereUniqueWithoutGroupInput | UserGroupUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: UserGroupUpdateManyWithWhereWithoutGroupInput | UserGroupUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: UserGroupScalarWhereInput | UserGroupScalarWhereInput[]
+  }
+
+  export type DirectoryAccessUncheckedUpdateManyWithoutGroupNestedInput = {
+    create?: XOR<DirectoryAccessCreateWithoutGroupInput, DirectoryAccessUncheckedCreateWithoutGroupInput> | DirectoryAccessCreateWithoutGroupInput[] | DirectoryAccessUncheckedCreateWithoutGroupInput[]
+    connectOrCreate?: DirectoryAccessCreateOrConnectWithoutGroupInput | DirectoryAccessCreateOrConnectWithoutGroupInput[]
+    upsert?: DirectoryAccessUpsertWithWhereUniqueWithoutGroupInput | DirectoryAccessUpsertWithWhereUniqueWithoutGroupInput[]
+    createMany?: DirectoryAccessCreateManyGroupInputEnvelope
+    set?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    disconnect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    delete?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    update?: DirectoryAccessUpdateWithWhereUniqueWithoutGroupInput | DirectoryAccessUpdateWithWhereUniqueWithoutGroupInput[]
+    updateMany?: DirectoryAccessUpdateManyWithWhereWithoutGroupInput | DirectoryAccessUpdateManyWithWhereWithoutGroupInput[]
+    deleteMany?: DirectoryAccessScalarWhereInput | DirectoryAccessScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutUserGroupsInput = {
+    create?: XOR<UserCreateWithoutUserGroupsInput, UserUncheckedCreateWithoutUserGroupsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserGroupsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type GroupCreateNestedOneWithoutUserGroupsInput = {
+    create?: XOR<GroupCreateWithoutUserGroupsInput, GroupUncheckedCreateWithoutUserGroupsInput>
+    connectOrCreate?: GroupCreateOrConnectWithoutUserGroupsInput
+    connect?: GroupWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutUserGroupsNestedInput = {
+    create?: XOR<UserCreateWithoutUserGroupsInput, UserUncheckedCreateWithoutUserGroupsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutUserGroupsInput
+    upsert?: UserUpsertWithoutUserGroupsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUserGroupsInput, UserUpdateWithoutUserGroupsInput>, UserUncheckedUpdateWithoutUserGroupsInput>
+  }
+
+  export type GroupUpdateOneRequiredWithoutUserGroupsNestedInput = {
+    create?: XOR<GroupCreateWithoutUserGroupsInput, GroupUncheckedCreateWithoutUserGroupsInput>
+    connectOrCreate?: GroupCreateOrConnectWithoutUserGroupsInput
+    upsert?: GroupUpsertWithoutUserGroupsInput
+    connect?: GroupWhereUniqueInput
+    update?: XOR<XOR<GroupUpdateToOneWithWhereWithoutUserGroupsInput, GroupUpdateWithoutUserGroupsInput>, GroupUncheckedUpdateWithoutUserGroupsInput>
+  }
+
+  export type DirectoryCreateNestedOneWithoutChildrenInput = {
+    create?: XOR<DirectoryCreateWithoutChildrenInput, DirectoryUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: DirectoryCreateOrConnectWithoutChildrenInput
+    connect?: DirectoryWhereUniqueInput
+  }
+
+  export type DirectoryCreateNestedManyWithoutParentInput = {
+    create?: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput> | DirectoryCreateWithoutParentInput[] | DirectoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DirectoryCreateOrConnectWithoutParentInput | DirectoryCreateOrConnectWithoutParentInput[]
+    createMany?: DirectoryCreateManyParentInputEnvelope
+    connect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+  }
+
+  export type ContractCreateNestedManyWithoutDirectoryInput = {
+    create?: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput> | ContractCreateWithoutDirectoryInput[] | ContractUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutDirectoryInput | ContractCreateOrConnectWithoutDirectoryInput[]
+    createMany?: ContractCreateManyDirectoryInputEnvelope
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+  }
+
+  export type DirectoryAccessCreateNestedManyWithoutDirectoryInput = {
+    create?: XOR<DirectoryAccessCreateWithoutDirectoryInput, DirectoryAccessUncheckedCreateWithoutDirectoryInput> | DirectoryAccessCreateWithoutDirectoryInput[] | DirectoryAccessUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: DirectoryAccessCreateOrConnectWithoutDirectoryInput | DirectoryAccessCreateOrConnectWithoutDirectoryInput[]
+    createMany?: DirectoryAccessCreateManyDirectoryInputEnvelope
+    connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+  }
+
+  export type DirectoryUncheckedCreateNestedManyWithoutParentInput = {
+    create?: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput> | DirectoryCreateWithoutParentInput[] | DirectoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DirectoryCreateOrConnectWithoutParentInput | DirectoryCreateOrConnectWithoutParentInput[]
+    createMany?: DirectoryCreateManyParentInputEnvelope
+    connect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+  }
+
+  export type ContractUncheckedCreateNestedManyWithoutDirectoryInput = {
+    create?: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput> | ContractCreateWithoutDirectoryInput[] | ContractUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutDirectoryInput | ContractCreateOrConnectWithoutDirectoryInput[]
+    createMany?: ContractCreateManyDirectoryInputEnvelope
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+  }
+
+  export type DirectoryAccessUncheckedCreateNestedManyWithoutDirectoryInput = {
+    create?: XOR<DirectoryAccessCreateWithoutDirectoryInput, DirectoryAccessUncheckedCreateWithoutDirectoryInput> | DirectoryAccessCreateWithoutDirectoryInput[] | DirectoryAccessUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: DirectoryAccessCreateOrConnectWithoutDirectoryInput | DirectoryAccessCreateOrConnectWithoutDirectoryInput[]
+    createMany?: DirectoryAccessCreateManyDirectoryInputEnvelope
+    connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+  }
+
+  export type DirectoryUpdateOneWithoutChildrenNestedInput = {
+    create?: XOR<DirectoryCreateWithoutChildrenInput, DirectoryUncheckedCreateWithoutChildrenInput>
+    connectOrCreate?: DirectoryCreateOrConnectWithoutChildrenInput
+    upsert?: DirectoryUpsertWithoutChildrenInput
+    disconnect?: DirectoryWhereInput | boolean
+    delete?: DirectoryWhereInput | boolean
+    connect?: DirectoryWhereUniqueInput
+    update?: XOR<XOR<DirectoryUpdateToOneWithWhereWithoutChildrenInput, DirectoryUpdateWithoutChildrenInput>, DirectoryUncheckedUpdateWithoutChildrenInput>
+  }
+
+  export type DirectoryUpdateManyWithoutParentNestedInput = {
+    create?: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput> | DirectoryCreateWithoutParentInput[] | DirectoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DirectoryCreateOrConnectWithoutParentInput | DirectoryCreateOrConnectWithoutParentInput[]
+    upsert?: DirectoryUpsertWithWhereUniqueWithoutParentInput | DirectoryUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: DirectoryCreateManyParentInputEnvelope
+    set?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    disconnect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    delete?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    connect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    update?: DirectoryUpdateWithWhereUniqueWithoutParentInput | DirectoryUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: DirectoryUpdateManyWithWhereWithoutParentInput | DirectoryUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: DirectoryScalarWhereInput | DirectoryScalarWhereInput[]
+  }
+
+  export type ContractUpdateManyWithoutDirectoryNestedInput = {
+    create?: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput> | ContractCreateWithoutDirectoryInput[] | ContractUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutDirectoryInput | ContractCreateOrConnectWithoutDirectoryInput[]
+    upsert?: ContractUpsertWithWhereUniqueWithoutDirectoryInput | ContractUpsertWithWhereUniqueWithoutDirectoryInput[]
+    createMany?: ContractCreateManyDirectoryInputEnvelope
+    set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    update?: ContractUpdateWithWhereUniqueWithoutDirectoryInput | ContractUpdateWithWhereUniqueWithoutDirectoryInput[]
+    updateMany?: ContractUpdateManyWithWhereWithoutDirectoryInput | ContractUpdateManyWithWhereWithoutDirectoryInput[]
+    deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
+  }
+
+  export type DirectoryAccessUpdateManyWithoutDirectoryNestedInput = {
+    create?: XOR<DirectoryAccessCreateWithoutDirectoryInput, DirectoryAccessUncheckedCreateWithoutDirectoryInput> | DirectoryAccessCreateWithoutDirectoryInput[] | DirectoryAccessUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: DirectoryAccessCreateOrConnectWithoutDirectoryInput | DirectoryAccessCreateOrConnectWithoutDirectoryInput[]
+    upsert?: DirectoryAccessUpsertWithWhereUniqueWithoutDirectoryInput | DirectoryAccessUpsertWithWhereUniqueWithoutDirectoryInput[]
+    createMany?: DirectoryAccessCreateManyDirectoryInputEnvelope
+    set?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    disconnect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    delete?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    update?: DirectoryAccessUpdateWithWhereUniqueWithoutDirectoryInput | DirectoryAccessUpdateWithWhereUniqueWithoutDirectoryInput[]
+    updateMany?: DirectoryAccessUpdateManyWithWhereWithoutDirectoryInput | DirectoryAccessUpdateManyWithWhereWithoutDirectoryInput[]
+    deleteMany?: DirectoryAccessScalarWhereInput | DirectoryAccessScalarWhereInput[]
+  }
+
+  export type DirectoryUncheckedUpdateManyWithoutParentNestedInput = {
+    create?: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput> | DirectoryCreateWithoutParentInput[] | DirectoryUncheckedCreateWithoutParentInput[]
+    connectOrCreate?: DirectoryCreateOrConnectWithoutParentInput | DirectoryCreateOrConnectWithoutParentInput[]
+    upsert?: DirectoryUpsertWithWhereUniqueWithoutParentInput | DirectoryUpsertWithWhereUniqueWithoutParentInput[]
+    createMany?: DirectoryCreateManyParentInputEnvelope
+    set?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    disconnect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    delete?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    connect?: DirectoryWhereUniqueInput | DirectoryWhereUniqueInput[]
+    update?: DirectoryUpdateWithWhereUniqueWithoutParentInput | DirectoryUpdateWithWhereUniqueWithoutParentInput[]
+    updateMany?: DirectoryUpdateManyWithWhereWithoutParentInput | DirectoryUpdateManyWithWhereWithoutParentInput[]
+    deleteMany?: DirectoryScalarWhereInput | DirectoryScalarWhereInput[]
+  }
+
+  export type ContractUncheckedUpdateManyWithoutDirectoryNestedInput = {
+    create?: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput> | ContractCreateWithoutDirectoryInput[] | ContractUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: ContractCreateOrConnectWithoutDirectoryInput | ContractCreateOrConnectWithoutDirectoryInput[]
+    upsert?: ContractUpsertWithWhereUniqueWithoutDirectoryInput | ContractUpsertWithWhereUniqueWithoutDirectoryInput[]
+    createMany?: ContractCreateManyDirectoryInputEnvelope
+    set?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    disconnect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    delete?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    connect?: ContractWhereUniqueInput | ContractWhereUniqueInput[]
+    update?: ContractUpdateWithWhereUniqueWithoutDirectoryInput | ContractUpdateWithWhereUniqueWithoutDirectoryInput[]
+    updateMany?: ContractUpdateManyWithWhereWithoutDirectoryInput | ContractUpdateManyWithWhereWithoutDirectoryInput[]
+    deleteMany?: ContractScalarWhereInput | ContractScalarWhereInput[]
+  }
+
+  export type DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput = {
+    create?: XOR<DirectoryAccessCreateWithoutDirectoryInput, DirectoryAccessUncheckedCreateWithoutDirectoryInput> | DirectoryAccessCreateWithoutDirectoryInput[] | DirectoryAccessUncheckedCreateWithoutDirectoryInput[]
+    connectOrCreate?: DirectoryAccessCreateOrConnectWithoutDirectoryInput | DirectoryAccessCreateOrConnectWithoutDirectoryInput[]
+    upsert?: DirectoryAccessUpsertWithWhereUniqueWithoutDirectoryInput | DirectoryAccessUpsertWithWhereUniqueWithoutDirectoryInput[]
+    createMany?: DirectoryAccessCreateManyDirectoryInputEnvelope
+    set?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    disconnect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    delete?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    connect?: DirectoryAccessWhereUniqueInput | DirectoryAccessWhereUniqueInput[]
+    update?: DirectoryAccessUpdateWithWhereUniqueWithoutDirectoryInput | DirectoryAccessUpdateWithWhereUniqueWithoutDirectoryInput[]
+    updateMany?: DirectoryAccessUpdateManyWithWhereWithoutDirectoryInput | DirectoryAccessUpdateManyWithWhereWithoutDirectoryInput[]
+    deleteMany?: DirectoryAccessScalarWhereInput | DirectoryAccessScalarWhereInput[]
+  }
+
+  export type DirectoryCreateNestedOneWithoutDirectoryAccessInput = {
+    create?: XOR<DirectoryCreateWithoutDirectoryAccessInput, DirectoryUncheckedCreateWithoutDirectoryAccessInput>
+    connectOrCreate?: DirectoryCreateOrConnectWithoutDirectoryAccessInput
+    connect?: DirectoryWhereUniqueInput
+  }
+
+  export type GroupCreateNestedOneWithoutDirectoryAccessInput = {
+    create?: XOR<GroupCreateWithoutDirectoryAccessInput, GroupUncheckedCreateWithoutDirectoryAccessInput>
+    connectOrCreate?: GroupCreateOrConnectWithoutDirectoryAccessInput
+    connect?: GroupWhereUniqueInput
+  }
+
+  export type EnumPermissionFieldUpdateOperationsInput = {
+    set?: $Enums.Permission
+  }
+
+  export type DirectoryUpdateOneRequiredWithoutDirectoryAccessNestedInput = {
+    create?: XOR<DirectoryCreateWithoutDirectoryAccessInput, DirectoryUncheckedCreateWithoutDirectoryAccessInput>
+    connectOrCreate?: DirectoryCreateOrConnectWithoutDirectoryAccessInput
+    upsert?: DirectoryUpsertWithoutDirectoryAccessInput
+    connect?: DirectoryWhereUniqueInput
+    update?: XOR<XOR<DirectoryUpdateToOneWithWhereWithoutDirectoryAccessInput, DirectoryUpdateWithoutDirectoryAccessInput>, DirectoryUncheckedUpdateWithoutDirectoryAccessInput>
+  }
+
+  export type GroupUpdateOneRequiredWithoutDirectoryAccessNestedInput = {
+    create?: XOR<GroupCreateWithoutDirectoryAccessInput, GroupUncheckedCreateWithoutDirectoryAccessInput>
+    connectOrCreate?: GroupCreateOrConnectWithoutDirectoryAccessInput
+    upsert?: GroupUpsertWithoutDirectoryAccessInput
+    connect?: GroupWhereUniqueInput
+    update?: XOR<XOR<GroupUpdateToOneWithWhereWithoutDirectoryAccessInput, GroupUpdateWithoutDirectoryAccessInput>, GroupUncheckedUpdateWithoutDirectoryAccessInput>
+  }
+
+  export type UserCreateNestedOneWithoutOwnedContractsInput = {
+    create?: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOwnedContractsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type DirectoryCreateNestedOneWithoutContractsInput = {
+    create?: XOR<DirectoryCreateWithoutContractsInput, DirectoryUncheckedCreateWithoutContractsInput>
+    connectOrCreate?: DirectoryCreateOrConnectWithoutContractsInput
+    connect?: DirectoryWhereUniqueInput
   }
 
   export type CategoryCreateNestedOneWithoutContractsInput = {
@@ -8316,25 +12963,11 @@ export namespace Prisma {
     connect?: ContractVersionWhereUniqueInput | ContractVersionWhereUniqueInput[]
   }
 
-  export type AttachmentCreateNestedManyWithoutContractInput = {
-    create?: XOR<AttachmentCreateWithoutContractInput, AttachmentUncheckedCreateWithoutContractInput> | AttachmentCreateWithoutContractInput[] | AttachmentUncheckedCreateWithoutContractInput[]
-    connectOrCreate?: AttachmentCreateOrConnectWithoutContractInput | AttachmentCreateOrConnectWithoutContractInput[]
-    createMany?: AttachmentCreateManyContractInputEnvelope
-    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
-  }
-
   export type ContractVersionUncheckedCreateNestedManyWithoutContractInput = {
     create?: XOR<ContractVersionCreateWithoutContractInput, ContractVersionUncheckedCreateWithoutContractInput> | ContractVersionCreateWithoutContractInput[] | ContractVersionUncheckedCreateWithoutContractInput[]
     connectOrCreate?: ContractVersionCreateOrConnectWithoutContractInput | ContractVersionCreateOrConnectWithoutContractInput[]
     createMany?: ContractVersionCreateManyContractInputEnvelope
     connect?: ContractVersionWhereUniqueInput | ContractVersionWhereUniqueInput[]
-  }
-
-  export type AttachmentUncheckedCreateNestedManyWithoutContractInput = {
-    create?: XOR<AttachmentCreateWithoutContractInput, AttachmentUncheckedCreateWithoutContractInput> | AttachmentCreateWithoutContractInput[] | AttachmentUncheckedCreateWithoutContractInput[]
-    connectOrCreate?: AttachmentCreateOrConnectWithoutContractInput | AttachmentCreateOrConnectWithoutContractInput[]
-    createMany?: AttachmentCreateManyContractInputEnvelope
-    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
   }
 
   export type EnumContractStatusFieldUpdateOperationsInput = {
@@ -8345,12 +12978,20 @@ export namespace Prisma {
     set?: Date | string | null
   }
 
-  export type UserUpdateOneRequiredWithoutContractsNestedInput = {
-    create?: XOR<UserCreateWithoutContractsInput, UserUncheckedCreateWithoutContractsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutContractsInput
-    upsert?: UserUpsertWithoutContractsInput
+  export type UserUpdateOneRequiredWithoutOwnedContractsNestedInput = {
+    create?: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOwnedContractsInput
+    upsert?: UserUpsertWithoutOwnedContractsInput
     connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutContractsInput, UserUpdateWithoutContractsInput>, UserUncheckedUpdateWithoutContractsInput>
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOwnedContractsInput, UserUpdateWithoutOwnedContractsInput>, UserUncheckedUpdateWithoutOwnedContractsInput>
+  }
+
+  export type DirectoryUpdateOneRequiredWithoutContractsNestedInput = {
+    create?: XOR<DirectoryCreateWithoutContractsInput, DirectoryUncheckedCreateWithoutContractsInput>
+    connectOrCreate?: DirectoryCreateOrConnectWithoutContractsInput
+    upsert?: DirectoryUpsertWithoutContractsInput
+    connect?: DirectoryWhereUniqueInput
+    update?: XOR<XOR<DirectoryUpdateToOneWithWhereWithoutContractsInput, DirectoryUpdateWithoutContractsInput>, DirectoryUncheckedUpdateWithoutContractsInput>
   }
 
   export type CategoryUpdateOneWithoutContractsNestedInput = {
@@ -8377,20 +13018,6 @@ export namespace Prisma {
     deleteMany?: ContractVersionScalarWhereInput | ContractVersionScalarWhereInput[]
   }
 
-  export type AttachmentUpdateManyWithoutContractNestedInput = {
-    create?: XOR<AttachmentCreateWithoutContractInput, AttachmentUncheckedCreateWithoutContractInput> | AttachmentCreateWithoutContractInput[] | AttachmentUncheckedCreateWithoutContractInput[]
-    connectOrCreate?: AttachmentCreateOrConnectWithoutContractInput | AttachmentCreateOrConnectWithoutContractInput[]
-    upsert?: AttachmentUpsertWithWhereUniqueWithoutContractInput | AttachmentUpsertWithWhereUniqueWithoutContractInput[]
-    createMany?: AttachmentCreateManyContractInputEnvelope
-    set?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
-    disconnect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
-    delete?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
-    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
-    update?: AttachmentUpdateWithWhereUniqueWithoutContractInput | AttachmentUpdateWithWhereUniqueWithoutContractInput[]
-    updateMany?: AttachmentUpdateManyWithWhereWithoutContractInput | AttachmentUpdateManyWithWhereWithoutContractInput[]
-    deleteMany?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
-  }
-
   export type ContractVersionUncheckedUpdateManyWithoutContractNestedInput = {
     create?: XOR<ContractVersionCreateWithoutContractInput, ContractVersionUncheckedCreateWithoutContractInput> | ContractVersionCreateWithoutContractInput[] | ContractVersionUncheckedCreateWithoutContractInput[]
     connectOrCreate?: ContractVersionCreateOrConnectWithoutContractInput | ContractVersionCreateOrConnectWithoutContractInput[]
@@ -8403,20 +13030,6 @@ export namespace Prisma {
     update?: ContractVersionUpdateWithWhereUniqueWithoutContractInput | ContractVersionUpdateWithWhereUniqueWithoutContractInput[]
     updateMany?: ContractVersionUpdateManyWithWhereWithoutContractInput | ContractVersionUpdateManyWithWhereWithoutContractInput[]
     deleteMany?: ContractVersionScalarWhereInput | ContractVersionScalarWhereInput[]
-  }
-
-  export type AttachmentUncheckedUpdateManyWithoutContractNestedInput = {
-    create?: XOR<AttachmentCreateWithoutContractInput, AttachmentUncheckedCreateWithoutContractInput> | AttachmentCreateWithoutContractInput[] | AttachmentUncheckedCreateWithoutContractInput[]
-    connectOrCreate?: AttachmentCreateOrConnectWithoutContractInput | AttachmentCreateOrConnectWithoutContractInput[]
-    upsert?: AttachmentUpsertWithWhereUniqueWithoutContractInput | AttachmentUpsertWithWhereUniqueWithoutContractInput[]
-    createMany?: AttachmentCreateManyContractInputEnvelope
-    set?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
-    disconnect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
-    delete?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
-    connect?: AttachmentWhereUniqueInput | AttachmentWhereUniqueInput[]
-    update?: AttachmentUpdateWithWhereUniqueWithoutContractInput | AttachmentUpdateWithWhereUniqueWithoutContractInput[]
-    updateMany?: AttachmentUpdateManyWithWhereWithoutContractInput | AttachmentUpdateManyWithWhereWithoutContractInput[]
-    deleteMany?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
   }
 
   export type ContractCreateNestedManyWithoutCategoryInput = {
@@ -8483,20 +13096,6 @@ export namespace Prisma {
     update?: XOR<XOR<ContractUpdateToOneWithWhereWithoutVersionsInput, ContractUpdateWithoutVersionsInput>, ContractUncheckedUpdateWithoutVersionsInput>
   }
 
-  export type ContractCreateNestedOneWithoutAttachmentsInput = {
-    create?: XOR<ContractCreateWithoutAttachmentsInput, ContractUncheckedCreateWithoutAttachmentsInput>
-    connectOrCreate?: ContractCreateOrConnectWithoutAttachmentsInput
-    connect?: ContractWhereUniqueInput
-  }
-
-  export type ContractUpdateOneRequiredWithoutAttachmentsNestedInput = {
-    create?: XOR<ContractCreateWithoutAttachmentsInput, ContractUncheckedCreateWithoutAttachmentsInput>
-    connectOrCreate?: ContractCreateOrConnectWithoutAttachmentsInput
-    upsert?: ContractUpsertWithoutAttachmentsInput
-    connect?: ContractWhereUniqueInput
-    update?: XOR<XOR<ContractUpdateToOneWithWhereWithoutAttachmentsInput, ContractUpdateWithoutAttachmentsInput>, ContractUncheckedUpdateWithoutAttachmentsInput>
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -8523,6 +13122,11 @@ export namespace Prisma {
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -8592,6 +13196,14 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -8604,6 +13216,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPermissionFilter<$PrismaModel = never> = {
+    equals?: $Enums.Permission | EnumPermissionFieldRefInput<$PrismaModel>
+    in?: $Enums.Permission[] | ListEnumPermissionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Permission[] | ListEnumPermissionFieldRefInput<$PrismaModel>
+    not?: NestedEnumPermissionFilter<$PrismaModel> | $Enums.Permission
+  }
+
+  export type NestedEnumPermissionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Permission | EnumPermissionFieldRefInput<$PrismaModel>
+    in?: $Enums.Permission[] | ListEnumPermissionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Permission[] | ListEnumPermissionFieldRefInput<$PrismaModel>
+    not?: NestedEnumPermissionWithAggregatesFilter<$PrismaModel> | $Enums.Permission
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPermissionFilter<$PrismaModel>
+    _max?: NestedEnumPermissionFilter<$PrismaModel>
   }
 
   export type NestedEnumContractStatusFilter<$PrismaModel = never> = {
@@ -8675,7 +13304,7 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type ContractCreateWithoutUserInput = {
+  export type ContractCreateWithoutOwnerInput = {
     id?: string
     title: string
     content: string
@@ -8685,12 +13314,12 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    directory: DirectoryCreateNestedOneWithoutContractsInput
     category?: CategoryCreateNestedOneWithoutContractsInput
     versions?: ContractVersionCreateNestedManyWithoutContractInput
-    attachments?: AttachmentCreateNestedManyWithoutContractInput
   }
 
-  export type ContractUncheckedCreateWithoutUserInput = {
+  export type ContractUncheckedCreateWithoutOwnerInput = {
     id?: string
     title: string
     content: string
@@ -8700,35 +13329,57 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    directoryId: string
     categoryId?: string | null
     versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
-    attachments?: AttachmentUncheckedCreateNestedManyWithoutContractInput
   }
 
-  export type ContractCreateOrConnectWithoutUserInput = {
+  export type ContractCreateOrConnectWithoutOwnerInput = {
     where: ContractWhereUniqueInput
-    create: XOR<ContractCreateWithoutUserInput, ContractUncheckedCreateWithoutUserInput>
+    create: XOR<ContractCreateWithoutOwnerInput, ContractUncheckedCreateWithoutOwnerInput>
   }
 
-  export type ContractCreateManyUserInputEnvelope = {
-    data: ContractCreateManyUserInput | ContractCreateManyUserInput[]
+  export type ContractCreateManyOwnerInputEnvelope = {
+    data: ContractCreateManyOwnerInput | ContractCreateManyOwnerInput[]
     skipDuplicates?: boolean
   }
 
-  export type ContractUpsertWithWhereUniqueWithoutUserInput = {
-    where: ContractWhereUniqueInput
-    update: XOR<ContractUpdateWithoutUserInput, ContractUncheckedUpdateWithoutUserInput>
-    create: XOR<ContractCreateWithoutUserInput, ContractUncheckedCreateWithoutUserInput>
+  export type UserGroupCreateWithoutUserInput = {
+    id?: string
+    joinedAt?: Date | string
+    group: GroupCreateNestedOneWithoutUserGroupsInput
   }
 
-  export type ContractUpdateWithWhereUniqueWithoutUserInput = {
-    where: ContractWhereUniqueInput
-    data: XOR<ContractUpdateWithoutUserInput, ContractUncheckedUpdateWithoutUserInput>
+  export type UserGroupUncheckedCreateWithoutUserInput = {
+    id?: string
+    groupId: string
+    joinedAt?: Date | string
   }
 
-  export type ContractUpdateManyWithWhereWithoutUserInput = {
+  export type UserGroupCreateOrConnectWithoutUserInput = {
+    where: UserGroupWhereUniqueInput
+    create: XOR<UserGroupCreateWithoutUserInput, UserGroupUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserGroupCreateManyUserInputEnvelope = {
+    data: UserGroupCreateManyUserInput | UserGroupCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ContractUpsertWithWhereUniqueWithoutOwnerInput = {
+    where: ContractWhereUniqueInput
+    update: XOR<ContractUpdateWithoutOwnerInput, ContractUncheckedUpdateWithoutOwnerInput>
+    create: XOR<ContractCreateWithoutOwnerInput, ContractUncheckedCreateWithoutOwnerInput>
+  }
+
+  export type ContractUpdateWithWhereUniqueWithoutOwnerInput = {
+    where: ContractWhereUniqueInput
+    data: XOR<ContractUpdateWithoutOwnerInput, ContractUncheckedUpdateWithoutOwnerInput>
+  }
+
+  export type ContractUpdateManyWithWhereWithoutOwnerInput = {
     where: ContractScalarWhereInput
-    data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyWithoutUserInput>
+    data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyWithoutOwnerInput>
   }
 
   export type ContractScalarWhereInput = {
@@ -8744,29 +13395,646 @@ export namespace Prisma {
     endDate?: DateTimeNullableFilter<"Contract"> | Date | string | null
     createdAt?: DateTimeFilter<"Contract"> | Date | string
     updatedAt?: DateTimeFilter<"Contract"> | Date | string
-    userId?: StringFilter<"Contract"> | string
+    ownerId?: StringFilter<"Contract"> | string
+    directoryId?: StringFilter<"Contract"> | string
     categoryId?: StringNullableFilter<"Contract"> | string | null
   }
 
-  export type UserCreateWithoutContractsInput = {
+  export type UserGroupUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserGroupWhereUniqueInput
+    update: XOR<UserGroupUpdateWithoutUserInput, UserGroupUncheckedUpdateWithoutUserInput>
+    create: XOR<UserGroupCreateWithoutUserInput, UserGroupUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserGroupUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserGroupWhereUniqueInput
+    data: XOR<UserGroupUpdateWithoutUserInput, UserGroupUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserGroupUpdateManyWithWhereWithoutUserInput = {
+    where: UserGroupScalarWhereInput
+    data: XOR<UserGroupUpdateManyMutationInput, UserGroupUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserGroupScalarWhereInput = {
+    AND?: UserGroupScalarWhereInput | UserGroupScalarWhereInput[]
+    OR?: UserGroupScalarWhereInput[]
+    NOT?: UserGroupScalarWhereInput | UserGroupScalarWhereInput[]
+    id?: StringFilter<"UserGroup"> | string
+    userId?: StringFilter<"UserGroup"> | string
+    groupId?: StringFilter<"UserGroup"> | string
+    joinedAt?: DateTimeFilter<"UserGroup"> | Date | string
+  }
+
+  export type UserGroupCreateWithoutGroupInput = {
+    id?: string
+    joinedAt?: Date | string
+    user: UserCreateNestedOneWithoutUserGroupsInput
+  }
+
+  export type UserGroupUncheckedCreateWithoutGroupInput = {
+    id?: string
+    userId: string
+    joinedAt?: Date | string
+  }
+
+  export type UserGroupCreateOrConnectWithoutGroupInput = {
+    where: UserGroupWhereUniqueInput
+    create: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput>
+  }
+
+  export type UserGroupCreateManyGroupInputEnvelope = {
+    data: UserGroupCreateManyGroupInput | UserGroupCreateManyGroupInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DirectoryAccessCreateWithoutGroupInput = {
+    id?: string
+    permission?: $Enums.Permission
+    createdAt?: Date | string
+    directory: DirectoryCreateNestedOneWithoutDirectoryAccessInput
+  }
+
+  export type DirectoryAccessUncheckedCreateWithoutGroupInput = {
+    id?: string
+    directoryId: string
+    permission?: $Enums.Permission
+    createdAt?: Date | string
+  }
+
+  export type DirectoryAccessCreateOrConnectWithoutGroupInput = {
+    where: DirectoryAccessWhereUniqueInput
+    create: XOR<DirectoryAccessCreateWithoutGroupInput, DirectoryAccessUncheckedCreateWithoutGroupInput>
+  }
+
+  export type DirectoryAccessCreateManyGroupInputEnvelope = {
+    data: DirectoryAccessCreateManyGroupInput | DirectoryAccessCreateManyGroupInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserGroupUpsertWithWhereUniqueWithoutGroupInput = {
+    where: UserGroupWhereUniqueInput
+    update: XOR<UserGroupUpdateWithoutGroupInput, UserGroupUncheckedUpdateWithoutGroupInput>
+    create: XOR<UserGroupCreateWithoutGroupInput, UserGroupUncheckedCreateWithoutGroupInput>
+  }
+
+  export type UserGroupUpdateWithWhereUniqueWithoutGroupInput = {
+    where: UserGroupWhereUniqueInput
+    data: XOR<UserGroupUpdateWithoutGroupInput, UserGroupUncheckedUpdateWithoutGroupInput>
+  }
+
+  export type UserGroupUpdateManyWithWhereWithoutGroupInput = {
+    where: UserGroupScalarWhereInput
+    data: XOR<UserGroupUpdateManyMutationInput, UserGroupUncheckedUpdateManyWithoutGroupInput>
+  }
+
+  export type DirectoryAccessUpsertWithWhereUniqueWithoutGroupInput = {
+    where: DirectoryAccessWhereUniqueInput
+    update: XOR<DirectoryAccessUpdateWithoutGroupInput, DirectoryAccessUncheckedUpdateWithoutGroupInput>
+    create: XOR<DirectoryAccessCreateWithoutGroupInput, DirectoryAccessUncheckedCreateWithoutGroupInput>
+  }
+
+  export type DirectoryAccessUpdateWithWhereUniqueWithoutGroupInput = {
+    where: DirectoryAccessWhereUniqueInput
+    data: XOR<DirectoryAccessUpdateWithoutGroupInput, DirectoryAccessUncheckedUpdateWithoutGroupInput>
+  }
+
+  export type DirectoryAccessUpdateManyWithWhereWithoutGroupInput = {
+    where: DirectoryAccessScalarWhereInput
+    data: XOR<DirectoryAccessUpdateManyMutationInput, DirectoryAccessUncheckedUpdateManyWithoutGroupInput>
+  }
+
+  export type DirectoryAccessScalarWhereInput = {
+    AND?: DirectoryAccessScalarWhereInput | DirectoryAccessScalarWhereInput[]
+    OR?: DirectoryAccessScalarWhereInput[]
+    NOT?: DirectoryAccessScalarWhereInput | DirectoryAccessScalarWhereInput[]
+    id?: StringFilter<"DirectoryAccess"> | string
+    directoryId?: StringFilter<"DirectoryAccess"> | string
+    groupId?: StringFilter<"DirectoryAccess"> | string
+    permission?: EnumPermissionFilter<"DirectoryAccess"> | $Enums.Permission
+    createdAt?: DateTimeFilter<"DirectoryAccess"> | Date | string
+  }
+
+  export type UserCreateWithoutUserGroupsInput = {
     id?: string
     email: string
     name?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    ownedContracts?: ContractCreateNestedManyWithoutOwnerInput
   }
 
-  export type UserUncheckedCreateWithoutContractsInput = {
+  export type UserUncheckedCreateWithoutUserGroupsInput = {
     id?: string
     email: string
     name?: string | null
+    isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
+    ownedContracts?: ContractUncheckedCreateNestedManyWithoutOwnerInput
   }
 
-  export type UserCreateOrConnectWithoutContractsInput = {
+  export type UserCreateOrConnectWithoutUserGroupsInput = {
     where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutContractsInput, UserUncheckedCreateWithoutContractsInput>
+    create: XOR<UserCreateWithoutUserGroupsInput, UserUncheckedCreateWithoutUserGroupsInput>
+  }
+
+  export type GroupCreateWithoutUserGroupsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directoryAccess?: DirectoryAccessCreateNestedManyWithoutGroupInput
+  }
+
+  export type GroupUncheckedCreateWithoutUserGroupsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directoryAccess?: DirectoryAccessUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type GroupCreateOrConnectWithoutUserGroupsInput = {
+    where: GroupWhereUniqueInput
+    create: XOR<GroupCreateWithoutUserGroupsInput, GroupUncheckedCreateWithoutUserGroupsInput>
+  }
+
+  export type UserUpsertWithoutUserGroupsInput = {
+    update: XOR<UserUpdateWithoutUserGroupsInput, UserUncheckedUpdateWithoutUserGroupsInput>
+    create: XOR<UserCreateWithoutUserGroupsInput, UserUncheckedCreateWithoutUserGroupsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutUserGroupsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutUserGroupsInput, UserUncheckedUpdateWithoutUserGroupsInput>
+  }
+
+  export type UserUpdateWithoutUserGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownedContracts?: ContractUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutUserGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownedContracts?: ContractUncheckedUpdateManyWithoutOwnerNestedInput
+  }
+
+  export type GroupUpsertWithoutUserGroupsInput = {
+    update: XOR<GroupUpdateWithoutUserGroupsInput, GroupUncheckedUpdateWithoutUserGroupsInput>
+    create: XOR<GroupCreateWithoutUserGroupsInput, GroupUncheckedCreateWithoutUserGroupsInput>
+    where?: GroupWhereInput
+  }
+
+  export type GroupUpdateToOneWithWhereWithoutUserGroupsInput = {
+    where?: GroupWhereInput
+    data: XOR<GroupUpdateWithoutUserGroupsInput, GroupUncheckedUpdateWithoutUserGroupsInput>
+  }
+
+  export type GroupUpdateWithoutUserGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directoryAccess?: DirectoryAccessUpdateManyWithoutGroupNestedInput
+  }
+
+  export type GroupUncheckedUpdateWithoutUserGroupsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type DirectoryCreateWithoutChildrenInput = {
+    id?: string
+    name: string
+    description?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: DirectoryCreateNestedOneWithoutChildrenInput
+    contracts?: ContractCreateNestedManyWithoutDirectoryInput
+    directoryAccess?: DirectoryAccessCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryUncheckedCreateWithoutChildrenInput = {
+    id?: string
+    name: string
+    description?: string | null
+    parentId?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    contracts?: ContractUncheckedCreateNestedManyWithoutDirectoryInput
+    directoryAccess?: DirectoryAccessUncheckedCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryCreateOrConnectWithoutChildrenInput = {
+    where: DirectoryWhereUniqueInput
+    create: XOR<DirectoryCreateWithoutChildrenInput, DirectoryUncheckedCreateWithoutChildrenInput>
+  }
+
+  export type DirectoryCreateWithoutParentInput = {
+    id?: string
+    name: string
+    description?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: DirectoryCreateNestedManyWithoutParentInput
+    contracts?: ContractCreateNestedManyWithoutDirectoryInput
+    directoryAccess?: DirectoryAccessCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryUncheckedCreateWithoutParentInput = {
+    id?: string
+    name: string
+    description?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutDirectoryInput
+    directoryAccess?: DirectoryAccessUncheckedCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryCreateOrConnectWithoutParentInput = {
+    where: DirectoryWhereUniqueInput
+    create: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput>
+  }
+
+  export type DirectoryCreateManyParentInputEnvelope = {
+    data: DirectoryCreateManyParentInput | DirectoryCreateManyParentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ContractCreateWithoutDirectoryInput = {
+    id?: string
+    title: string
+    content: string
+    status?: $Enums.ContractStatus
+    contractNumber?: string | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    owner: UserCreateNestedOneWithoutOwnedContractsInput
+    category?: CategoryCreateNestedOneWithoutContractsInput
+    versions?: ContractVersionCreateNestedManyWithoutContractInput
+  }
+
+  export type ContractUncheckedCreateWithoutDirectoryInput = {
+    id?: string
+    title: string
+    content: string
+    status?: $Enums.ContractStatus
+    contractNumber?: string | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ownerId: string
+    categoryId?: string | null
+    versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
+  }
+
+  export type ContractCreateOrConnectWithoutDirectoryInput = {
+    where: ContractWhereUniqueInput
+    create: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput>
+  }
+
+  export type ContractCreateManyDirectoryInputEnvelope = {
+    data: ContractCreateManyDirectoryInput | ContractCreateManyDirectoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DirectoryAccessCreateWithoutDirectoryInput = {
+    id?: string
+    permission?: $Enums.Permission
+    createdAt?: Date | string
+    group: GroupCreateNestedOneWithoutDirectoryAccessInput
+  }
+
+  export type DirectoryAccessUncheckedCreateWithoutDirectoryInput = {
+    id?: string
+    groupId: string
+    permission?: $Enums.Permission
+    createdAt?: Date | string
+  }
+
+  export type DirectoryAccessCreateOrConnectWithoutDirectoryInput = {
+    where: DirectoryAccessWhereUniqueInput
+    create: XOR<DirectoryAccessCreateWithoutDirectoryInput, DirectoryAccessUncheckedCreateWithoutDirectoryInput>
+  }
+
+  export type DirectoryAccessCreateManyDirectoryInputEnvelope = {
+    data: DirectoryAccessCreateManyDirectoryInput | DirectoryAccessCreateManyDirectoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DirectoryUpsertWithoutChildrenInput = {
+    update: XOR<DirectoryUpdateWithoutChildrenInput, DirectoryUncheckedUpdateWithoutChildrenInput>
+    create: XOR<DirectoryCreateWithoutChildrenInput, DirectoryUncheckedCreateWithoutChildrenInput>
+    where?: DirectoryWhereInput
+  }
+
+  export type DirectoryUpdateToOneWithWhereWithoutChildrenInput = {
+    where?: DirectoryWhereInput
+    data: XOR<DirectoryUpdateWithoutChildrenInput, DirectoryUncheckedUpdateWithoutChildrenInput>
+  }
+
+  export type DirectoryUpdateWithoutChildrenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: DirectoryUpdateOneWithoutChildrenNestedInput
+    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
+    directoryAccess?: DirectoryAccessUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryUncheckedUpdateWithoutChildrenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    contracts?: ContractUncheckedUpdateManyWithoutDirectoryNestedInput
+    directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryUpsertWithWhereUniqueWithoutParentInput = {
+    where: DirectoryWhereUniqueInput
+    update: XOR<DirectoryUpdateWithoutParentInput, DirectoryUncheckedUpdateWithoutParentInput>
+    create: XOR<DirectoryCreateWithoutParentInput, DirectoryUncheckedCreateWithoutParentInput>
+  }
+
+  export type DirectoryUpdateWithWhereUniqueWithoutParentInput = {
+    where: DirectoryWhereUniqueInput
+    data: XOR<DirectoryUpdateWithoutParentInput, DirectoryUncheckedUpdateWithoutParentInput>
+  }
+
+  export type DirectoryUpdateManyWithWhereWithoutParentInput = {
+    where: DirectoryScalarWhereInput
+    data: XOR<DirectoryUpdateManyMutationInput, DirectoryUncheckedUpdateManyWithoutParentInput>
+  }
+
+  export type DirectoryScalarWhereInput = {
+    AND?: DirectoryScalarWhereInput | DirectoryScalarWhereInput[]
+    OR?: DirectoryScalarWhereInput[]
+    NOT?: DirectoryScalarWhereInput | DirectoryScalarWhereInput[]
+    id?: StringFilter<"Directory"> | string
+    name?: StringFilter<"Directory"> | string
+    description?: StringNullableFilter<"Directory"> | string | null
+    parentId?: StringNullableFilter<"Directory"> | string | null
+    path?: StringFilter<"Directory"> | string
+    isActive?: BoolFilter<"Directory"> | boolean
+    createdAt?: DateTimeFilter<"Directory"> | Date | string
+    updatedAt?: DateTimeFilter<"Directory"> | Date | string
+  }
+
+  export type ContractUpsertWithWhereUniqueWithoutDirectoryInput = {
+    where: ContractWhereUniqueInput
+    update: XOR<ContractUpdateWithoutDirectoryInput, ContractUncheckedUpdateWithoutDirectoryInput>
+    create: XOR<ContractCreateWithoutDirectoryInput, ContractUncheckedCreateWithoutDirectoryInput>
+  }
+
+  export type ContractUpdateWithWhereUniqueWithoutDirectoryInput = {
+    where: ContractWhereUniqueInput
+    data: XOR<ContractUpdateWithoutDirectoryInput, ContractUncheckedUpdateWithoutDirectoryInput>
+  }
+
+  export type ContractUpdateManyWithWhereWithoutDirectoryInput = {
+    where: ContractScalarWhereInput
+    data: XOR<ContractUpdateManyMutationInput, ContractUncheckedUpdateManyWithoutDirectoryInput>
+  }
+
+  export type DirectoryAccessUpsertWithWhereUniqueWithoutDirectoryInput = {
+    where: DirectoryAccessWhereUniqueInput
+    update: XOR<DirectoryAccessUpdateWithoutDirectoryInput, DirectoryAccessUncheckedUpdateWithoutDirectoryInput>
+    create: XOR<DirectoryAccessCreateWithoutDirectoryInput, DirectoryAccessUncheckedCreateWithoutDirectoryInput>
+  }
+
+  export type DirectoryAccessUpdateWithWhereUniqueWithoutDirectoryInput = {
+    where: DirectoryAccessWhereUniqueInput
+    data: XOR<DirectoryAccessUpdateWithoutDirectoryInput, DirectoryAccessUncheckedUpdateWithoutDirectoryInput>
+  }
+
+  export type DirectoryAccessUpdateManyWithWhereWithoutDirectoryInput = {
+    where: DirectoryAccessScalarWhereInput
+    data: XOR<DirectoryAccessUpdateManyMutationInput, DirectoryAccessUncheckedUpdateManyWithoutDirectoryInput>
+  }
+
+  export type DirectoryCreateWithoutDirectoryAccessInput = {
+    id?: string
+    name: string
+    description?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: DirectoryCreateNestedOneWithoutChildrenInput
+    children?: DirectoryCreateNestedManyWithoutParentInput
+    contracts?: ContractCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryUncheckedCreateWithoutDirectoryAccessInput = {
+    id?: string
+    name: string
+    description?: string | null
+    parentId?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
+    contracts?: ContractUncheckedCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryCreateOrConnectWithoutDirectoryAccessInput = {
+    where: DirectoryWhereUniqueInput
+    create: XOR<DirectoryCreateWithoutDirectoryAccessInput, DirectoryUncheckedCreateWithoutDirectoryAccessInput>
+  }
+
+  export type GroupCreateWithoutDirectoryAccessInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userGroups?: UserGroupCreateNestedManyWithoutGroupInput
+  }
+
+  export type GroupUncheckedCreateWithoutDirectoryAccessInput = {
+    id?: string
+    name: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userGroups?: UserGroupUncheckedCreateNestedManyWithoutGroupInput
+  }
+
+  export type GroupCreateOrConnectWithoutDirectoryAccessInput = {
+    where: GroupWhereUniqueInput
+    create: XOR<GroupCreateWithoutDirectoryAccessInput, GroupUncheckedCreateWithoutDirectoryAccessInput>
+  }
+
+  export type DirectoryUpsertWithoutDirectoryAccessInput = {
+    update: XOR<DirectoryUpdateWithoutDirectoryAccessInput, DirectoryUncheckedUpdateWithoutDirectoryAccessInput>
+    create: XOR<DirectoryCreateWithoutDirectoryAccessInput, DirectoryUncheckedCreateWithoutDirectoryAccessInput>
+    where?: DirectoryWhereInput
+  }
+
+  export type DirectoryUpdateToOneWithWhereWithoutDirectoryAccessInput = {
+    where?: DirectoryWhereInput
+    data: XOR<DirectoryUpdateWithoutDirectoryAccessInput, DirectoryUncheckedUpdateWithoutDirectoryAccessInput>
+  }
+
+  export type DirectoryUpdateWithoutDirectoryAccessInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: DirectoryUpdateOneWithoutChildrenNestedInput
+    children?: DirectoryUpdateManyWithoutParentNestedInput
+    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryUncheckedUpdateWithoutDirectoryAccessInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type GroupUpsertWithoutDirectoryAccessInput = {
+    update: XOR<GroupUpdateWithoutDirectoryAccessInput, GroupUncheckedUpdateWithoutDirectoryAccessInput>
+    create: XOR<GroupCreateWithoutDirectoryAccessInput, GroupUncheckedCreateWithoutDirectoryAccessInput>
+    where?: GroupWhereInput
+  }
+
+  export type GroupUpdateToOneWithWhereWithoutDirectoryAccessInput = {
+    where?: GroupWhereInput
+    data: XOR<GroupUpdateWithoutDirectoryAccessInput, GroupUncheckedUpdateWithoutDirectoryAccessInput>
+  }
+
+  export type GroupUpdateWithoutDirectoryAccessInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userGroups?: UserGroupUpdateManyWithoutGroupNestedInput
+  }
+
+  export type GroupUncheckedUpdateWithoutDirectoryAccessInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userGroups?: UserGroupUncheckedUpdateManyWithoutGroupNestedInput
+  }
+
+  export type UserCreateWithoutOwnedContractsInput = {
+    id?: string
+    email: string
+    name?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userGroups?: UserGroupCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutOwnedContractsInput = {
+    id?: string
+    email: string
+    name?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userGroups?: UserGroupUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutOwnedContractsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
+  }
+
+  export type DirectoryCreateWithoutContractsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    parent?: DirectoryCreateNestedOneWithoutChildrenInput
+    children?: DirectoryCreateNestedManyWithoutParentInput
+    directoryAccess?: DirectoryAccessCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryUncheckedCreateWithoutContractsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    parentId?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    children?: DirectoryUncheckedCreateNestedManyWithoutParentInput
+    directoryAccess?: DirectoryAccessUncheckedCreateNestedManyWithoutDirectoryInput
+  }
+
+  export type DirectoryCreateOrConnectWithoutContractsInput = {
+    where: DirectoryWhereUniqueInput
+    create: XOR<DirectoryCreateWithoutContractsInput, DirectoryUncheckedCreateWithoutContractsInput>
   }
 
   export type CategoryCreateWithoutContractsInput = {
@@ -8818,61 +14086,72 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type AttachmentCreateWithoutContractInput = {
-    id?: string
-    filename: string
-    originalName: string
-    mimeType: string
-    size: number
-    path: string
-    createdAt?: Date | string
-  }
-
-  export type AttachmentUncheckedCreateWithoutContractInput = {
-    id?: string
-    filename: string
-    originalName: string
-    mimeType: string
-    size: number
-    path: string
-    createdAt?: Date | string
-  }
-
-  export type AttachmentCreateOrConnectWithoutContractInput = {
-    where: AttachmentWhereUniqueInput
-    create: XOR<AttachmentCreateWithoutContractInput, AttachmentUncheckedCreateWithoutContractInput>
-  }
-
-  export type AttachmentCreateManyContractInputEnvelope = {
-    data: AttachmentCreateManyContractInput | AttachmentCreateManyContractInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type UserUpsertWithoutContractsInput = {
-    update: XOR<UserUpdateWithoutContractsInput, UserUncheckedUpdateWithoutContractsInput>
-    create: XOR<UserCreateWithoutContractsInput, UserUncheckedCreateWithoutContractsInput>
+  export type UserUpsertWithoutOwnedContractsInput = {
+    update: XOR<UserUpdateWithoutOwnedContractsInput, UserUncheckedUpdateWithoutOwnedContractsInput>
+    create: XOR<UserCreateWithoutOwnedContractsInput, UserUncheckedCreateWithoutOwnedContractsInput>
     where?: UserWhereInput
   }
 
-  export type UserUpdateToOneWithWhereWithoutContractsInput = {
+  export type UserUpdateToOneWithWhereWithoutOwnedContractsInput = {
     where?: UserWhereInput
-    data: XOR<UserUpdateWithoutContractsInput, UserUncheckedUpdateWithoutContractsInput>
+    data: XOR<UserUpdateWithoutOwnedContractsInput, UserUncheckedUpdateWithoutOwnedContractsInput>
   }
 
-  export type UserUpdateWithoutContractsInput = {
+  export type UserUpdateWithoutOwnedContractsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userGroups?: UserGroupUpdateManyWithoutUserNestedInput
   }
 
-  export type UserUncheckedUpdateWithoutContractsInput = {
+  export type UserUncheckedUpdateWithoutOwnedContractsInput = {
     id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userGroups?: UserGroupUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type DirectoryUpsertWithoutContractsInput = {
+    update: XOR<DirectoryUpdateWithoutContractsInput, DirectoryUncheckedUpdateWithoutContractsInput>
+    create: XOR<DirectoryCreateWithoutContractsInput, DirectoryUncheckedCreateWithoutContractsInput>
+    where?: DirectoryWhereInput
+  }
+
+  export type DirectoryUpdateToOneWithWhereWithoutContractsInput = {
+    where?: DirectoryWhereInput
+    data: XOR<DirectoryUpdateWithoutContractsInput, DirectoryUncheckedUpdateWithoutContractsInput>
+  }
+
+  export type DirectoryUpdateWithoutContractsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    parent?: DirectoryUpdateOneWithoutChildrenNestedInput
+    children?: DirectoryUpdateManyWithoutParentNestedInput
+    directoryAccess?: DirectoryAccessUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryUncheckedUpdateWithoutContractsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    parentId?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
+    directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput
   }
 
   export type CategoryUpsertWithoutContractsInput = {
@@ -8931,36 +14210,6 @@ export namespace Prisma {
     contractId?: StringFilter<"ContractVersion"> | string
   }
 
-  export type AttachmentUpsertWithWhereUniqueWithoutContractInput = {
-    where: AttachmentWhereUniqueInput
-    update: XOR<AttachmentUpdateWithoutContractInput, AttachmentUncheckedUpdateWithoutContractInput>
-    create: XOR<AttachmentCreateWithoutContractInput, AttachmentUncheckedCreateWithoutContractInput>
-  }
-
-  export type AttachmentUpdateWithWhereUniqueWithoutContractInput = {
-    where: AttachmentWhereUniqueInput
-    data: XOR<AttachmentUpdateWithoutContractInput, AttachmentUncheckedUpdateWithoutContractInput>
-  }
-
-  export type AttachmentUpdateManyWithWhereWithoutContractInput = {
-    where: AttachmentScalarWhereInput
-    data: XOR<AttachmentUpdateManyMutationInput, AttachmentUncheckedUpdateManyWithoutContractInput>
-  }
-
-  export type AttachmentScalarWhereInput = {
-    AND?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
-    OR?: AttachmentScalarWhereInput[]
-    NOT?: AttachmentScalarWhereInput | AttachmentScalarWhereInput[]
-    id?: StringFilter<"Attachment"> | string
-    filename?: StringFilter<"Attachment"> | string
-    originalName?: StringFilter<"Attachment"> | string
-    mimeType?: StringFilter<"Attachment"> | string
-    size?: IntFilter<"Attachment"> | number
-    path?: StringFilter<"Attachment"> | string
-    createdAt?: DateTimeFilter<"Attachment"> | Date | string
-    contractId?: StringFilter<"Attachment"> | string
-  }
-
   export type ContractCreateWithoutCategoryInput = {
     id?: string
     title: string
@@ -8971,9 +14220,9 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutContractsInput
+    owner: UserCreateNestedOneWithoutOwnedContractsInput
+    directory: DirectoryCreateNestedOneWithoutContractsInput
     versions?: ContractVersionCreateNestedManyWithoutContractInput
-    attachments?: AttachmentCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateWithoutCategoryInput = {
@@ -8986,9 +14235,9 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId: string
+    ownerId: string
+    directoryId: string
     versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
-    attachments?: AttachmentUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutCategoryInput = {
@@ -9027,9 +14276,9 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutContractsInput
+    owner: UserCreateNestedOneWithoutOwnedContractsInput
+    directory: DirectoryCreateNestedOneWithoutContractsInput
     category?: CategoryCreateNestedOneWithoutContractsInput
-    attachments?: AttachmentCreateNestedManyWithoutContractInput
   }
 
   export type ContractUncheckedCreateWithoutVersionsInput = {
@@ -9042,9 +14291,9 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId: string
+    ownerId: string
+    directoryId: string
     categoryId?: string | null
-    attachments?: AttachmentUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutVersionsInput = {
@@ -9073,9 +14322,9 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutContractsNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
+    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
     category?: CategoryUpdateOneWithoutContractsNestedInput
-    attachments?: AttachmentUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutVersionsInput = {
@@ -9088,12 +14337,12 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
-    attachments?: AttachmentUncheckedUpdateManyWithoutContractNestedInput
   }
 
-  export type ContractCreateWithoutAttachmentsInput = {
+  export type ContractCreateManyOwnerInput = {
     id?: string
     title: string
     content: string
@@ -9103,73 +14352,141 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutContractsInput
-    category?: CategoryCreateNestedOneWithoutContractsInput
-    versions?: ContractVersionCreateNestedManyWithoutContractInput
+    directoryId: string
+    categoryId?: string | null
   }
 
-  export type ContractUncheckedCreateWithoutAttachmentsInput = {
+  export type UserGroupCreateManyUserInput = {
     id?: string
-    title: string
-    content: string
-    status?: $Enums.ContractStatus
-    contractNumber?: string | null
-    startDate?: Date | string | null
-    endDate?: Date | string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
+    groupId: string
+    joinedAt?: Date | string
+  }
+
+  export type ContractUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    contractNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
+    category?: CategoryUpdateOneWithoutContractsNestedInput
+    versions?: ContractVersionUpdateManyWithoutContractNestedInput
+  }
+
+  export type ContractUncheckedUpdateWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    contractNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
+  }
+
+  export type ContractUncheckedUpdateManyWithoutOwnerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    contractNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type UserGroupUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: GroupUpdateOneRequiredWithoutUserGroupsNestedInput
+  }
+
+  export type UserGroupUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserGroupUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserGroupCreateManyGroupInput = {
+    id?: string
     userId: string
-    categoryId?: string | null
-    versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
+    joinedAt?: Date | string
   }
 
-  export type ContractCreateOrConnectWithoutAttachmentsInput = {
-    where: ContractWhereUniqueInput
-    create: XOR<ContractCreateWithoutAttachmentsInput, ContractUncheckedCreateWithoutAttachmentsInput>
+  export type DirectoryAccessCreateManyGroupInput = {
+    id?: string
+    directoryId: string
+    permission?: $Enums.Permission
+    createdAt?: Date | string
   }
 
-  export type ContractUpsertWithoutAttachmentsInput = {
-    update: XOR<ContractUpdateWithoutAttachmentsInput, ContractUncheckedUpdateWithoutAttachmentsInput>
-    create: XOR<ContractCreateWithoutAttachmentsInput, ContractUncheckedCreateWithoutAttachmentsInput>
-    where?: ContractWhereInput
-  }
-
-  export type ContractUpdateToOneWithWhereWithoutAttachmentsInput = {
-    where?: ContractWhereInput
-    data: XOR<ContractUpdateWithoutAttachmentsInput, ContractUncheckedUpdateWithoutAttachmentsInput>
-  }
-
-  export type ContractUpdateWithoutAttachmentsInput = {
+  export type UserGroupUpdateWithoutGroupInput = {
     id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
-    contractNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutContractsNestedInput
-    category?: CategoryUpdateOneWithoutContractsNestedInput
-    versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutUserGroupsNestedInput
   }
 
-  export type ContractUncheckedUpdateWithoutAttachmentsInput = {
+  export type UserGroupUncheckedUpdateWithoutGroupInput = {
     id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    content?: StringFieldUpdateOperationsInput | string
-    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
-    contractNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
-    categoryId?: NullableStringFieldUpdateOperationsInput | string | null
-    versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type ContractCreateManyUserInput = {
+  export type UserGroupUncheckedUpdateManyWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DirectoryAccessUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directory?: DirectoryUpdateOneRequiredWithoutDirectoryAccessNestedInput
+  }
+
+  export type DirectoryAccessUncheckedUpdateWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DirectoryAccessUncheckedUpdateManyWithoutGroupInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DirectoryCreateManyParentInput = {
+    id?: string
+    name: string
+    description?: string | null
+    path: string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ContractCreateManyDirectoryInput = {
     id?: string
     title: string
     content: string
@@ -9179,10 +14496,54 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    ownerId: string
     categoryId?: string | null
   }
 
-  export type ContractUpdateWithoutUserInput = {
+  export type DirectoryAccessCreateManyDirectoryInput = {
+    id?: string
+    groupId: string
+    permission?: $Enums.Permission
+    createdAt?: Date | string
+  }
+
+  export type DirectoryUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: DirectoryUpdateManyWithoutParentNestedInput
+    contracts?: ContractUpdateManyWithoutDirectoryNestedInput
+    directoryAccess?: DirectoryAccessUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryUncheckedUpdateWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    children?: DirectoryUncheckedUpdateManyWithoutParentNestedInput
+    contracts?: ContractUncheckedUpdateManyWithoutDirectoryNestedInput
+    directoryAccess?: DirectoryAccessUncheckedUpdateManyWithoutDirectoryNestedInput
+  }
+
+  export type DirectoryUncheckedUpdateManyWithoutParentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    path?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ContractUpdateWithoutDirectoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -9192,12 +14553,12 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
     category?: CategoryUpdateOneWithoutContractsNestedInput
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
-    attachments?: AttachmentUpdateManyWithoutContractNestedInput
   }
 
-  export type ContractUncheckedUpdateWithoutUserInput = {
+  export type ContractUncheckedUpdateWithoutDirectoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -9207,12 +14568,12 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
-    attachments?: AttachmentUncheckedUpdateManyWithoutContractNestedInput
   }
 
-  export type ContractUncheckedUpdateManyWithoutUserInput = {
+  export type ContractUncheckedUpdateManyWithoutDirectoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
@@ -9222,7 +14583,29 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type DirectoryAccessUpdateWithoutDirectoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    group?: GroupUpdateOneRequiredWithoutDirectoryAccessNestedInput
+  }
+
+  export type DirectoryAccessUncheckedUpdateWithoutDirectoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DirectoryAccessUncheckedUpdateManyWithoutDirectoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    groupId?: StringFieldUpdateOperationsInput | string
+    permission?: EnumPermissionFieldUpdateOperationsInput | $Enums.Permission
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ContractVersionCreateManyContractInput = {
@@ -9231,16 +14614,6 @@ export namespace Prisma {
     title: string
     content: string
     changeNote?: string | null
-    createdAt?: Date | string
-  }
-
-  export type AttachmentCreateManyContractInput = {
-    id?: string
-    filename: string
-    originalName: string
-    mimeType: string
-    size: number
-    path: string
     createdAt?: Date | string
   }
 
@@ -9271,36 +14644,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type AttachmentUpdateWithoutContractInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    filename?: StringFieldUpdateOperationsInput | string
-    originalName?: StringFieldUpdateOperationsInput | string
-    mimeType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    path?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AttachmentUncheckedUpdateWithoutContractInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    filename?: StringFieldUpdateOperationsInput | string
-    originalName?: StringFieldUpdateOperationsInput | string
-    mimeType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    path?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type AttachmentUncheckedUpdateManyWithoutContractInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    filename?: StringFieldUpdateOperationsInput | string
-    originalName?: StringFieldUpdateOperationsInput | string
-    mimeType?: StringFieldUpdateOperationsInput | string
-    size?: IntFieldUpdateOperationsInput | number
-    path?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type ContractCreateManyCategoryInput = {
     id?: string
     title: string
@@ -9311,7 +14654,8 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    userId: string
+    ownerId: string
+    directoryId: string
   }
 
   export type ContractUpdateWithoutCategoryInput = {
@@ -9324,9 +14668,9 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutContractsNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
+    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
-    attachments?: AttachmentUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateWithoutCategoryInput = {
@@ -9339,9 +14683,9 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
     versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
-    attachments?: AttachmentUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateManyWithoutCategoryInput = {
@@ -9354,7 +14698,8 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
   }
 
 
