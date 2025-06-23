@@ -8,20 +8,186 @@ alwaysApply: true
 契約書管理サービス
 OSSとして公開する
 
-## Backend
+## 技術スタック
 
-- next.js
-- typescript
-- prisma
-- serverside
-- postgresql
+### Backend
 
-## Frontend
+- **Framework**: Next.js
+- **Language**: TypeScript
+- **ORM**: Prisma
+- **Database**: PostgreSQL
+- **Architecture**: Serverside
 
-- next.js
-- typescript
-- shadcn
-- tailwindcss
+### Frontend
+
+- **Framework**: Next.js + React
+- **Language**: TypeScript
+- **UI Library**: shadcn/ui
+- **Styling**: Tailwind CSS
+
+## データベーススキーマ
+
+### 主要なモデル
+
+#### User（ユーザー）
+
+- id: ユーザーID
+- email: メールアドレス
+- name: 名前
+- isActive: アクティブ状態
+
+#### Group（グループ）
+
+- id: グループID
+- name: グループ名
+- description: 説明
+- isActive: アクティブ状態
+
+#### Directory（ディレクトリ）
+
+- id: ディレクトリID
+- name: ディレクトリ名
+- parentId: 親ディレクトリID（階層構造）
+- path: パス
+- description: 説明
+
+#### Contract（契約書）
+
+- id: 契約書ID
+- title: タイトル
+- content: Markdownコンテンツ
+- status: ステータス（DRAFT, REVIEW, ACTIVE, EXPIRED, TERMINATED）
+- contractNumber: 契約書番号
+- startDate: 開始日
+- endDate: 終了日
+- ownerId: 作成者ID
+- directoryId: ディレクトリID
+- categoryId: カテゴリID
+
+#### Category（カテゴリ）
+
+- id: カテゴリID
+- name: カテゴリ名
+- color: カテゴリの色
+
+#### ContractVersion（契約書バージョン）
+
+- id: バージョンID
+- version: バージョン番号
+- title: そのバージョンのタイトル
+- content: その時点のコンテンツ
+- changeNote: 変更メモ
+- contractId: 契約書ID
+
+#### DirectoryAccess（ディレクトリアクセス権限）
+
+- id: アクセス権限ID
+- directoryId: ディレクトリID
+- groupId: グループID
+- permission: 権限（READ, WRITE）
+
+#### UserGroup（ユーザーグループ関連）
+
+- id: 関連ID
+- userId: ユーザーID
+- groupId: グループID
+- joinedAt: 参加日時
+
+## セットアップ手順
+
+### 依存関係のインストール
+
+```bash
+npm install
+```
+
+### 環境変数の設定
+
+`.env`ファイルを作成し、以下の内容を追加：
+
+```env
+# Database
+DATABASE_URL="postgresql://keiyakusho:password123@localhost:5432/keiyakusho_db?schema=public"
+
+# Next.js
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-secret-key-here"
+```
+
+### PostgreSQLの起動
+
+```bash
+docker-compose up -d
+```
+
+### データベースマイグレーション
+
+```bash
+# 初回のマイグレーション
+npm run db:migrate
+
+# Prisma Clientの生成
+npm run db:generate
+```
+
+### 初期データの投入
+
+```bash
+npm run db:seed
+```
+
+### テスト環境の確認
+
+```bash
+# 単体テストの実行
+npm run test
+
+# E2Eテスト用ブラウザのインストール（初回のみ）
+npx playwright install
+
+# コードフォーマット
+npm run format
+```
+
+### 開発サーバーの起動
+
+```bash
+npm run dev
+```
+
+## 利用可能なスクリプト
+
+### データベース関連
+
+- `npm run db:generate` - Prisma Clientの生成
+- `npm run db:migrate` - マイグレーションの実行
+- `npm run db:push` - スキーマをデータベースにプッシュ
+- `npm run db:studio` - Prisma Studioの起動（データベースの可視化）
+- `npm run db:seed` - 初期データの投入
+- `npm run db:reset` - データベースのリセット
+
+### テスト関連
+
+- `npm run test` - 単体テストの実行
+- `npm run test:watch` - 単体テストの監視モード
+- `npm run test:coverage` - カバレッジ付きでテスト実行
+- `npm run test:ui` - Vitestの UIモード
+- `npm run test:e2e` - E2Eテストの実行
+- `npm run test:e2e:ui` - E2EテストのUIモード
+- `npm run test:e2e:headed` - ブラウザを表示してE2Eテスト実行
+
+### コード品質
+
+- `npm run lint` - ESLintの実行
+- `npm run format` - Prettierでコードフォーマット
+- `npm run format:check` - フォーマットチェック
+- `npm run type-check` - TypeScriptの型チェック
+
+### 開発
+
+- `npm run dev` - 開発サーバーの起動
+- `npm run build` - プロダクションビルド
+- `npm run start` - プロダクションサーバーの起動
 
 ## Testing
 
@@ -50,6 +216,11 @@ test/
 ├── components/             # コンポーネントテスト
 ├── api/                    # API routes テスト
 ├── hooks/                  # カスタムフックテスト
+├── factories/              # テストファクトリーシステム
+│   ├── index.ts           # 基本ファクトリー
+│   ├── user.factory.ts    # ユーザーファクトリー
+│   ├── contract.factory.ts # 契約書ファクトリー
+│   └── all.ts             # ファクトリー統合
 └── e2e/                    # E2Eテスト
     ├── auth.spec.ts        # 認証フロー
     ├── contracts.spec.ts   # 契約書管理
@@ -72,15 +243,137 @@ test/
 ### テスト作成の基本方針
 - **1機能1テスト**: 機能ごとに対応するテストファイルを作成
 - **エッジケース**: 正常系だけでなく異常系もテスト
-- **モック**: 外部依存は適切にモック化
+- **実際のデータベース使用**: PostgreSQLが用意されているため、モックより実際のDBを使用
 - **可読性**: テストコードも本番コードと同様に可読性を重視
 - **保守性**: テストが壊れにくい設計を心がける
 
-### テスト実行コマンド
-- `npm run test` - 単体テスト実行
-- `npm run test:e2e` - E2Eテスト実行  
-- `npm run test:coverage` - カバレッジ付きテスト
-- `npm run lint` - コード品質チェック
+### テストファクトリーシステム（重要）
+
+#### 基本理念
+- **Rails factory_bot**のような機能をTypeScript/Next.js/Prismaで実現
+- **実際のデータベース**を使用した統合テスト
+- **データ分離**によるテスト間の独立性確保
+- **関連データの自動生成**による効率的なテストデータ作成
+
+#### ファクトリーシステムの構成
+
+```typescript
+// 基本的な使用
+import { factories, scenarios, TestDataCleaner } from './factories/all'
+
+// 単体ファクトリー
+const user = await factories.user.build()
+const contract = await factories.contract.createNDA()
+
+// シナリオベース
+const { owner, contract } = await scenarios.setupPermissionTest()
+const env = await scenarios.setupCompleteEnvironment()
+
+// クリーンアップ
+afterEach(async () => {
+  await TestDataCleaner.cleanByPrefix('test')
+})
+```
+
+#### 重要な実装パターン
+
+1. **BaseFactoryクラス**による共通構造
+   ```typescript
+   export abstract class BaseFactory<T> {
+     protected abstract defaultAttributes(): Partial<T>
+     protected abstract create(attributes: Partial<T>): Promise<T>
+     
+     async build(overrides: Partial<T> = {}): Promise<T>
+     async buildList(count: number, overrides: Partial<T> = {}): Promise<T[]>
+   }
+   ```
+
+2. **関連データの自動生成**
+   ```typescript
+   // 契約書作成時にオーナー、ディレクトリ、カテゴリを自動生成
+   protected async create(attributes: Partial<Contract>): Promise<Contract> {
+     if (!attributes.ownerId) {
+       const owner = await userFactory.build()
+       attributes.ownerId = owner.id
+     }
+     // 以下同様...
+   }
+   ```
+
+3. **プレフィックスベースのデータ分離**
+   ```typescript
+   // ランダムなプレフィックス付きデータ生成
+   const faker = {
+     string: (prefix = 'test', length = 8) => {
+       // ランダム文字列生成でデータ競合を回避
+     }
+   }
+   ```
+
+4. **外部キー制約を考慮したクリーンアップ**
+   ```typescript
+   static async cleanByPrefix(prefix: string) {
+     // 依存関係の順序でデータ削除
+     await testPrisma.contractVersion.deleteMany({...})
+     await testPrisma.contract.deleteMany({...})
+     await testPrisma.directoryAccess.deleteMany({...})
+     // ...
+   }
+   ```
+
+#### テストシナリオヘルパー
+
+- **setupPermissionTest()**: 権限テスト用の基本環境
+- **setupCompleteEnvironment()**: 完全なテスト環境（ユーザー、グループ、権限設定等）
+- **setupPerformanceTest()**: パフォーマンステスト用の大量データ
+
+#### ファクトリーのベストプラクティス
+
+1. **データの一意性**: ランダム値生成による制約違反の回避
+2. **関連データの自動生成**: 必要に応じて関連オブジェクトを自動作成
+3. **業務特化メソッド**: `createNDA()`, `createAdmin()`等の専用メソッド
+4. **階層構造の考慮**: ディレクトリ等の親子関係を適切に処理
+5. **テスト分離**: プレフィックスによるテストデータの分離
+
+#### 学んだ重要な教訓
+
+1. **モックより実DB**: PostgreSQLが利用可能な場合は実際のDBを使う方がテスト品質向上
+2. **データベース制約**: 一意制約、外部キー制約を考慮したテストデータ設計
+3. **テスト間分離**: 固定値ではなくランダム値でテスト間の競合を回避
+4. **クリーンアップ戦略**: テスト後の確実なデータクリーンアップ
+5. **シナリオ駆動**: 共通のテストパターンはシナリオヘルパーとして抽出
+
+### 開発時の注意事項
+
+1. `.env`ファイルは`.gitignore`に含まれているため、各環境で個別に作成
+2. データベースの変更時は`npm run db:migrate`を実行
+3. Prisma Studioで`npm run db:studio`を実行すると、ブラウザでデータベースの内容を確認可能
+4. コミット前に`npm run test`と`npm run lint`を実行
+5. Huskyによって、コミット時に自動的にlint-stagedが実行
+6. E2Eテストを実行する前に、開発サーバーが起動していることを確認
+7. **テストファクトリー**を使用してテストデータを作成し、テスト後は必ずクリーンアップ
+8. **プレフィックス**を使用してテストデータを分離し、競合を回避
+
+### トラブルシューティング
+
+#### データベース接続エラー
+
+1. PostgreSQLが起動しているか確認：`docker-compose ps`
+2. 環境変数が正しく設定されているか確認
+3. データベース名・ユーザー名・パスワードが正しいか確認
+
+#### マイグレーションエラー
+
+1. 既存のマイグレーションファイルを削除：`rm -rf prisma/migrations`
+2. データベースをリセット：`npm run db:reset`
+3. 新しいマイグレーションを作成：`npm run db:migrate`
+
+#### テスト関連エラー
+
+1. **データベース制約違反**: ファクトリーでランダム値を使用し、テスト間でデータを分離
+2. **テストデータ残存**: `TestDataCleaner.cleanByPrefix('test')`で適切にクリーンアップ
+3. **関連データ不足**: ファクトリーの自動生成機能を活用し、必要な関連データを確保
+4. **権限エラー**: `scenarios.setupPermissionTest()`を使用し、適切な権限設定を構築
 
 ## 開発ガイドライン
 
