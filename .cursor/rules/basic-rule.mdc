@@ -11,12 +11,18 @@ OSSとして公開する
 ## Backend
 
 - next.js
+- typescript
+- prisma
 - serverside
 - postgresql
 
 ## Frontend
 
 - next.js
+- typescript
 - shadcn
 - tailwindcss
 
+## Testing
+
+- 

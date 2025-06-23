@@ -45,3 +45,11 @@ uploads/
 
 # docker
 docker-compose.override.yml
+
+# test coverage
+coverage/
+
+# playwright
+test-results/
+playwright-report/
+playwright/.cache/

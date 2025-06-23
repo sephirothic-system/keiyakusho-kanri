@@ -1,4 +1,4 @@
-import { PrismaClient, ContractStatus } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -86,7 +86,7 @@ async function main() {
 
 ## 第5条（秘密保持）
 両当事者は、本契約の履行に関して知り得た相手方の秘密情報を第三者に開示してはならない。`,
-        status: ContractStatus.ACTIVE,
+        status: 'ACTIVE',
         contractNumber: 'BC-2024-001',
         startDate: new Date('2024-01-01'),
         endDate: new Date('2024-12-31'),
@@ -110,7 +110,7 @@ async function main() {
 
 ## 第4条（契約期間）
 本契約の有効期間は、契約締結日から5年間とする。`,
-        status: ContractStatus.DRAFT,
+        status: 'DRAFT',
         userId: testUser.id,
         categoryId: categories[4].id, // NDA
       },
@@ -131,15 +131,15 @@ async function main() {
   })
 
   console.log('Contract version created')
-  
+
   console.log('Seed completed successfully!')
 }
 
 main()
-  .catch((e) => {
+  .catch(e => {
     console.error('Error during seed:', e)
     process.exit(1)
   })
   .finally(async () => {
     await prisma.$disconnect()
-  }) 
+  })
