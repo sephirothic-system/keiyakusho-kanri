@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ユーザーモデル
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // リレーション
+  contracts Contract[]
+
+  @@map("users")
+}
+
+// 契約書モデル
+model Contract {
+  id             String         @id @default(cuid())
+  title          String
+  content        String // Markdownコンテンツ
+  status         ContractStatus @default(DRAFT)
+  contractNumber String?        @unique // 契約書番号
+
+  // 契約期間
+  startDate DateTime?
+  endDate   DateTime?
+
+  // メタデータ
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // リレーション
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // 契約書のカテゴリ
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  // 契約書のバージョン履歴
+  versions ContractVersion[]
+
+  // 関連する添付ファイル
+  attachments Attachment[]
+
+  @@map("contracts")
+}
+
+// 契約書のステータス
+enum ContractStatus {
+  DRAFT // 下書き
+  REVIEW // レビュー中
+  ACTIVE // 有効
+  EXPIRED // 期限切れ
+  TERMINATED // 終了
+}
+
+// 契約書のカテゴリ
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  color     String? // カテゴリの色
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // リレーション
+  contracts Contract[]
+
+  @@map("categories")
+}
+
+// 契約書のバージョン履歴
+model ContractVersion {
+  id         String   @id @default(cuid())
+  version    Int // バージョン番号
+  title      String
+  content    String // その時点でのMarkdownコンテンツ
+  changeNote String? // 変更点のメモ
+  createdAt  DateTime @default(now())
+
+  // リレーション
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  @@unique([contractId, version])
+  @@map("contract_versions")
+}
+
+// 添付ファイル
+model Attachment {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int // ファイルサイズ（bytes）
+  path         String // ファイルパス
+  createdAt    DateTime @default(now())
+
+  // リレーション
+  contractId String
+  contract   Contract @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  @@map("attachments")
+}

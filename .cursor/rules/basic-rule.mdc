@@ -3,7 +3,10 @@ description:
 globs: 
 alwaysApply: true
 ---
+## 概要
+
 契約書管理サービス
+OSSとして公開する
 
 ## Backend
 
@@ -16,5 +19,4 @@ alwaysApply: true
 - next.js
 - shadcn
 - tailwindcss
-
 
