@@ -26,6 +26,10 @@ export default function Home() {
     router.push('/directories')
   }
 
+  const handleManageGroups = () => {
+    router.push('/groups')
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* ヘッダー */}
@@ -126,7 +130,10 @@ export default function Home() {
                   <CardDescription>契約書を整理するためのフォルダを管理</CardDescription>
                 </CardHeader>
               </Card>
-              <Card className="cursor-pointer transition-colors hover:bg-gray-50">
+              <Card 
+                className="cursor-pointer transition-colors hover:bg-gray-50"
+                onClick={handleManageGroups}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center text-base">
                     <Users className="mr-2 h-5 w-5" />
