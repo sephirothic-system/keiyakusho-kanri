@@ -15,17 +15,17 @@ export default withAuth(
   }
 )
 
-// 認証が必要なパス（ログインページ以外の全てのページ）
+// 認証が必要なパス
 export const config = {
   matcher: [
     /*
      * 以下のパスを除く全てのパスで認証をチェック:
-     * - api (API routes)
+     * - api/auth/* (NextAuth認証関連のAPI)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - auth (認証関連のページ)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|auth).*)',
+    '/((?!api/auth|_next/static|_next/image|favicon.ico|auth).*)',
   ],
 } 

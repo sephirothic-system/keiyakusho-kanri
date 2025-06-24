@@ -441,17 +441,17 @@ describe('契約書APIルートの統合テスト', () => {
       expect(data.error).toBe('契約書の削除は作成者のみ可能です')
     })
 
-    it('存在しない契約書で500エラーになる', async () => {
+    it('存在しない契約書で404エラーになる', async () => {
       // 認証用のユーザーだけ作成
       const user = await factories.user.build()
       
       const request = createMockRequest(user.id)
       const response = await DELETE(request, { params: { id: 'nonexistent-id' } })
 
-      expect(response.status).toBe(500)
+      expect(response.status).toBe(404)
 
       const data = await response.json()
-      expect(data.error).toBe('サーバーエラーが発生しました')
+      expect(data.error).toBe('契約書が見つかりません')
     })
   })
 })

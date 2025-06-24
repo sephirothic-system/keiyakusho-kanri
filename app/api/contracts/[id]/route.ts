@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@/lib/generated/prisma'
 import { checkContractPermission } from '@/lib/contract-permissions'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
@@ -8,8 +10,21 @@ const prisma = new PrismaClient()
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const contractId = params.id
-    // 実際の実装では認証からuserIdを取得
-    const userId = request.headers.get('x-user-id') || 'mock-user-id'
+    let userId: string
+
+    // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
+    if (process.env.NODE_ENV === 'test') {
+      userId = request.headers.get('x-user-id') || 'test-user-id'
+    } else {
+      // セッション情報を取得
+      const session = await getServerSession(authOptions)
+      
+      if (!session?.user?.id) {
+        return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
+      }
+
+      userId = session.user.id
+    }
 
     // まず契約書の存在をチェック
     const contractExists = await prisma.contract.findUnique({
@@ -59,7 +74,22 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const contractId = params.id
-    const userId = request.headers.get('x-user-id') || 'mock-user-id'
+    let userId: string
+
+    // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
+    if (process.env.NODE_ENV === 'test') {
+      userId = request.headers.get('x-user-id') || 'test-user-id'
+    } else {
+      // セッション情報を取得
+      const session = await getServerSession(authOptions)
+      
+      if (!session?.user?.id) {
+        return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
+      }
+
+      userId = session.user.id
+    }
+
     const body = await request.json()
 
     // まず契約書の存在をチェック
@@ -133,7 +163,21 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const contractId = params.id
-    const userId = request.headers.get('x-user-id') || 'mock-user-id'
+    let userId: string
+
+    // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
+    if (process.env.NODE_ENV === 'test') {
+      userId = request.headers.get('x-user-id') || 'test-user-id'
+    } else {
+      // セッション情報を取得
+      const session = await getServerSession(authOptions)
+      
+      if (!session?.user?.id) {
+        return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
+      }
+
+      userId = session.user.id
+    }
 
     // まず契約書の存在をチェック
     const contractExists = await prisma.contract.findUnique({

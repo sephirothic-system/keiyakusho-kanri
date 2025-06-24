@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@/lib/generated/prisma'
 import { z } from 'zod'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
 
 const prisma = new PrismaClient()
 
@@ -19,7 +21,22 @@ const createContractSchema = z.object({
 // 契約書の作成
 export async function POST(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'mock-user-id'
+    let userId: string
+
+    // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
+    if (process.env.NODE_ENV === 'test') {
+      userId = request.headers.get('x-user-id') || 'test-user-id'
+    } else {
+      // セッション情報を取得
+      const session = await getServerSession(authOptions)
+      
+      if (!session?.user?.id) {
+        return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
+      }
+
+      userId = session.user.id
+    }
+
     const body = await request.json()
 
     // バリデーション
@@ -112,7 +129,22 @@ export async function POST(request: NextRequest) {
 // 契約書一覧の取得
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id') || 'mock-user-id'
+    let userId: string
+
+    // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
+    if (process.env.NODE_ENV === 'test') {
+      userId = request.headers.get('x-user-id') || 'test-user-id'
+    } else {
+      // セッション情報を取得
+      const session = await getServerSession(authOptions)
+      
+      if (!session?.user?.id) {
+        return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
+      }
+
+      userId = session.user.id
+    }
+
     const url = new URL(request.url)
     const directoryId = url.searchParams.get('directoryId')
     const status = url.searchParams.get('status')
