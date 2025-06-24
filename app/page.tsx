@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { FileText, Users, FolderOpen, Plus } from 'lucide-react'
+import StatsCards from '@/components/dashboard/StatsCards'
+import RecentContractsList from '@/components/contracts/RecentContractsList'
 
 export default function Home() {
   const { data: session, status } = useSession()
@@ -59,47 +61,8 @@ export default function Home() {
       <main className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           {/* 統計カード */}
-          <div className="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">総契約書数</CardTitle>
-                <FileText className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">前月比 +0%</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">アクティブ契約</CardTitle>
-                <FileText className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">現在有効な契約書</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">ディレクトリ数</CardTitle>
-                <FolderOpen className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">整理されたフォルダ</p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">参加グループ</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">0</div>
-                <p className="text-xs text-muted-foreground">アクセス可能なグループ</p>
-              </CardContent>
-            </Card>
+          <div className="mb-8">
+            <StatsCards />
           </div>
 
           {/* クイックアクション */}
@@ -145,20 +108,9 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 最近の活動 */}
+          {/* 直近編集した契約書 */}
           <div>
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">最近の活動</h2>
-            <Card>
-              <CardContent className="p-6">
-                <div className="text-center text-gray-500">
-                  <FileText className="mx-auto h-12 w-12 text-gray-400" />
-                  <h3 className="mt-2 text-sm font-medium text-gray-900">アクティビティがありません</h3>
-                  <p className="mt-1 text-sm text-gray-500">
-                    契約書を作成すると、ここに最近の活動が表示されます。
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <RecentContractsList />
           </div>
         </div>
       </main>
