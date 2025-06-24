@@ -3,6 +3,7 @@ import { PrismaClient } from '@/lib/generated/prisma'
 import { z } from 'zod'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
+import { getAccessibleContracts } from '@/lib/contract-permissions'
 
 const prisma = new PrismaClient()
 
@@ -152,43 +153,31 @@ export async function GET(request: NextRequest) {
     const page = parseInt(url.searchParams.get('page') || '1')
     const limit = parseInt(url.searchParams.get('limit') || '20')
 
-    // フィルター条件を構築
-    const where: any = {}
+    // 権限チェック済みの契約書一覧を取得
+    let accessibleContracts = await getAccessibleContracts(userId)
 
+    // フィルタリング
     if (directoryId) {
-      where.directoryId = directoryId
+      accessibleContracts = accessibleContracts.filter(c => c.directoryId === directoryId)
     }
 
     if (status) {
-      where.status = status
+      accessibleContracts = accessibleContracts.filter(c => c.status === status)
     }
 
     if (search) {
-      where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { content: { contains: search, mode: 'insensitive' } },
-        { contractNumber: { contains: search, mode: 'insensitive' } },
-      ]
+      const searchLower = search.toLowerCase()
+      accessibleContracts = accessibleContracts.filter(c => 
+        c.title.toLowerCase().includes(searchLower) ||
+        c.content.toLowerCase().includes(searchLower) ||
+        (c.contractNumber && c.contractNumber.toLowerCase().includes(searchLower))
+      )
     }
 
     // ページネーション
+    const total = accessibleContracts.length
     const skip = (page - 1) * limit
-
-    // 契約書一覧を取得
-    const [contracts, total] = await Promise.all([
-      prisma.contract.findMany({
-        where,
-        include: {
-          owner: { select: { name: true, email: true } },
-          directory: { select: { name: true, path: true } },
-          category: { select: { name: true, color: true } },
-        },
-        orderBy: { updatedAt: 'desc' },
-        skip,
-        take: limit,
-      }),
-      prisma.contract.count({ where }),
-    ])
+    const contracts = accessibleContracts.slice(skip, skip + limit)
 
     return NextResponse.json({
       contracts,
