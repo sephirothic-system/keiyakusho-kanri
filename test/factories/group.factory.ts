@@ -26,7 +26,7 @@ export class GroupFactory extends BaseFactory<Group> {
   async createLegalGroup(overrides: Partial<Group> = {}): Promise<Group> {
     const uniqueSuffix = faker.string('', 8)
     return this.build({
-      name: faker.string(`test-legal-group-${uniqueSuffix}`, 6),
+      name: `Legal-Group-${uniqueSuffix}`,
       description: '法務部門グループ',
       ...overrides,
     })
@@ -35,7 +35,7 @@ export class GroupFactory extends BaseFactory<Group> {
   async createBusinessGroup(overrides: Partial<Group> = {}): Promise<Group> {
     const uniqueSuffix = faker.string('', 8)
     return this.build({
-      name: faker.string(`test-business-group-${uniqueSuffix}`, 6),
+      name: `Business-Group-${uniqueSuffix}`,
       description: '営業部門グループ',
       ...overrides,
     })
@@ -44,7 +44,7 @@ export class GroupFactory extends BaseFactory<Group> {
   async createAdminGroup(overrides: Partial<Group> = {}): Promise<Group> {
     const uniqueSuffix = faker.string('', 8)
     return this.build({
-      name: faker.string(`test-admin-group-${uniqueSuffix}`, 6),
+      name: `Admin-Group-${uniqueSuffix}`,
       description: '管理者グループ',
       ...overrides,
     })

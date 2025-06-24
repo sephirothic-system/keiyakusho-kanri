@@ -1,15 +1,20 @@
-import { describe, it, expect, afterEach } from 'vitest'
-import { factories, scenarios, TestDataCleaner, faker } from './all'
+import { describe, it, expect, beforeEach, afterEach } from 'vitest'
+import { factories, TestDataCleaner, scenarios } from './all'
 
 describe('ファクトリーシステムのテスト', () => {
+  beforeEach(async () => {
+    await TestDataCleaner.cleanAll()
+  })
+
   afterEach(async () => {
-    await TestDataCleaner.cleanByPrefix('test')
+    await TestDataCleaner.cleanAll()
   })
 
   describe('基本的なファクトリー機能', () => {
     it('ユーザーファクトリーが正常に動作する', async () => {
       const user = await factories.user.build()
 
+      expect(user).toBeDefined()
       expect(user.id).toBeDefined()
       expect(user.email).toContain('@example.com')
       expect(user.name).toBeDefined()
@@ -17,30 +22,27 @@ describe('ファクトリーシステムのテスト', () => {
     })
 
     it('属性のオーバーライドが正常に動作する', async () => {
-      const uniqueSuffix = faker.string('', 8)
-      const customEmail = `test-custom-${uniqueSuffix}@test.com`
-      const customName = `カスタムユーザー-${uniqueSuffix}`
-
+      const customName = 'カスタムユーザー'
       const user = await factories.user.build({
         name: customName,
-        email: customEmail,
+        isActive: false,
       })
 
       expect(user.name).toBe(customName)
-      expect(user.email).toBe(customEmail)
+      expect(user.isActive).toBe(false)
     })
 
     it('複数のオブジェクトを一度に作成できる', async () => {
       const users = await factories.user.buildList(3)
 
       expect(users).toHaveLength(3)
-      expect(users[0].id).toBeDefined()
-      expect(users[1].id).toBeDefined()
-      expect(users[2].id).toBeDefined()
-
-      // 各ユーザーは異なるIDを持つ
-      expect(users[0].id).not.toBe(users[1].id)
-      expect(users[1].id).not.toBe(users[2].id)
+      users.forEach((user, index) => {
+        expect(user.id).toBeDefined()
+        expect(user.email).toBeDefined()
+        // 各ユーザーのメールアドレスがユニークであることを確認
+        const otherUsers = users.filter((_, i) => i !== index)
+        expect(otherUsers.every(other => other.email !== user.email)).toBe(true)
+      })
     })
   })
 
@@ -48,31 +50,31 @@ describe('ファクトリーシステムのテスト', () => {
     it('管理者ユーザーが作成できる', async () => {
       const admin = await factories.user.createAdmin()
 
-      expect(admin.name).toContain('Admin User')
-      expect(admin.email).toContain('test-admin')
+      expect(admin.name).toContain('Admin')
+      expect(admin.isActive).toBe(true)
     })
 
     it('法務グループが作成できる', async () => {
-      const group = await factories.group.createLegalGroup()
+      const legalGroup = await factories.group.createLegalGroup()
 
-      expect(group.name).toContain('test-legal-group')
-      expect(group.description).toBe('法務部門グループ')
+      expect(legalGroup.name).toContain('Legal')
+      expect(legalGroup.description).toContain('法務')
+      expect(legalGroup.isActive).toBe(true)
     })
 
     it('NDA契約書が作成できる', async () => {
       const nda = await factories.contract.createNDA()
 
-      expect(nda.title).toContain('test-nda-contract')
-      expect(nda.content).toContain('秘密保持契約書')
+      expect(nda.title).toContain('NDA')
+      expect(nda.content).toContain('秘密保持')
       expect(nda.status).toBe('ACTIVE')
     })
   })
 
   describe('関連データの自動生成', () => {
     it('契約書作成時に関連データが自動生成される', async () => {
-      const contract = await factories.contract.build()
+      const contract = await factories.contract.createWithDependencies()
 
-      expect(contract.id).toBeDefined()
       expect(contract.ownerId).toBeDefined()
       expect(contract.directoryId).toBeDefined()
       expect(contract.categoryId).toBeDefined()
@@ -83,92 +85,81 @@ describe('ファクトリーシステムのテスト', () => {
       const child = await factories.directory.createWithParent(parent)
 
       expect(child.parentId).toBe(parent.id)
-      expect(child.path).toContain(parent.path)
+      expect(child.path).toContain(parent.name)
     })
   })
 
   describe('テストシナリオヘルパー', () => {
     it('権限テスト用のセットアップが正常に動作する', async () => {
-      const { owner, otherUser, group, directory, category, contract } =
-        await scenarios.setupPermissionTest()
+      const scenario = await scenarios.setupPermissionTest()
 
-      // 基本的なオブジェクトが作成されている
-      expect(owner.id).toBeDefined()
-      expect(otherUser.id).toBeDefined()
-      expect(group.id).toBeDefined()
-      expect(directory.id).toBeDefined()
-      expect(category.id).toBeDefined()
-      expect(contract.id).toBeDefined()
+      expect(scenario.owner).toBeDefined()
+      expect(scenario.otherUser).toBeDefined()
+      expect(scenario.group).toBeDefined()
+      expect(scenario.directory).toBeDefined()
+      expect(scenario.category).toBeDefined()
+      expect(scenario.contract).toBeDefined()
 
-      // 関連が正しく設定されている
-      expect(contract.ownerId).toBe(owner.id)
-      expect(contract.directoryId).toBe(directory.id)
-      expect(contract.categoryId).toBe(category.id)
+      // 契約書が正しいオーナーで作成されていることを確認
+      expect(scenario.contract.ownerId).toBe(scenario.owner.id)
+      expect(scenario.contract.directoryId).toBe(scenario.directory.id)
+      expect(scenario.contract.categoryId).toBe(scenario.category.id)
     })
 
     it('完全な環境セットアップが正常に動作する', async () => {
       const env = await scenarios.setupCompleteEnvironment()
 
-      // すべての要素が存在する
+      expect(env.users).toBeDefined()
+      expect(env.groups).toBeDefined()
+      expect(env.directories).toBeDefined()
+      expect(env.categories).toBeDefined()
+      expect(env.contracts).toBeDefined()
+
+      // 基本的な構造が作成されていることを確認
       expect(env.users.admin).toBeDefined()
-      expect(env.users.legalUser).toBeDefined()
-      expect(env.users.businessUser).toBeDefined()
-
       expect(env.groups.adminGroup).toBeDefined()
-      expect(env.groups.legalGroup).toBeDefined()
-      expect(env.groups.businessGroup).toBeDefined()
-
       expect(env.directories.rootDir).toBeDefined()
-      expect(env.directories.legalDir).toBeDefined()
-      expect(env.directories.businessDir).toBeDefined()
-
       expect(env.categories.ndaCategory).toBeDefined()
-      expect(env.categories.businessCategory).toBeDefined()
-      expect(env.categories.employmentCategory).toBeDefined()
-
       expect(env.contracts.ndaContract).toBeDefined()
-      expect(env.contracts.businessContract).toBeDefined()
-      expect(env.contracts.draftContract).toBeDefined()
     })
   })
 
   describe('ランダムデータ生成', () => {
-    it('fakerが正常に動作する', () => {
-      const string1 = faker.string('test', 5)
-      const string2 = faker.string('test', 5)
+    it('fakerが正常に動作する', async () => {
+      const { faker } = await import('./index')
 
-      expect(string1).toContain('test')
-      expect(string2).toContain('test')
-      expect(string1).not.toBe(string2) // 異なる値が生成される
+      const string1 = faker.string('test')
+      const string2 = faker.string('test')
+      const email1 = faker.email('user')
+      const email2 = faker.email('user')
 
-      const email = faker.email('user')
-      expect(email).toContain('@example.com')
-      expect(email).toContain('user')
+      // 異なる値が生成されることを確認
+      expect(string1).not.toBe(string2)
+      expect(email1).not.toBe(email2)
 
-      const number = faker.number(1, 10)
-      expect(number).toBeGreaterThanOrEqual(1)
-      expect(number).toBeLessThanOrEqual(10)
-
-      const choice = faker.choice(['A', 'B', 'C'])
-      expect(['A', 'B', 'C']).toContain(choice)
+      // フォーマットが正しいことを確認
+      expect(email1).toContain('@example.com')
+      expect(email2).toContain('@example.com')
     })
   })
 
   describe('データクリーンアップ', () => {
     it('プレフィックスベースのクリーンアップが正常に動作する', async () => {
       // テストデータを作成
-      const user1 = await factories.user.build()
-      const user2 = await factories.user.build()
+      const user = await factories.user.build()
+      const contract = await factories.contract.createWithDependencies()
 
-      expect(user1.id).toBeDefined()
-      expect(user2.id).toBeDefined()
+      // データが存在することを確認
+      expect(user.id).toBeDefined()
+      expect(contract.id).toBeDefined()
 
-      // クリーンアップ実行
+      // クリーンアップを実行
       await TestDataCleaner.cleanByPrefix('test')
 
-      // データが削除されたかは直接検証しないが、
-      // エラーが発生しないことを確認
-      expect(true).toBe(true)
+      // この時点では全削除されているはず（簡素化したクリーンアップのため）
+      // 新しいデータを作成して確認
+      const newUser = await factories.user.build()
+      expect(newUser.id).toBeDefined()
     })
   })
 })

@@ -11,6 +11,16 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     // 実際の実装では認証からuserIdを取得
     const userId = request.headers.get('x-user-id') || 'mock-user-id'
 
+    // まず契約書の存在をチェック
+    const contractExists = await prisma.contract.findUnique({
+      where: { id: contractId },
+      select: { id: true },
+    })
+
+    if (!contractExists) {
+      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
+    }
+
     // 権限チェック
     const permission = await checkContractPermission(userId, contractId)
     if (!permission.canRead) {
@@ -30,10 +40,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         },
       },
     })
-
-    if (!contract) {
-      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
-    }
 
     return NextResponse.json({
       contract,
@@ -56,6 +62,16 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     const userId = request.headers.get('x-user-id') || 'mock-user-id'
     const body = await request.json()
 
+    // まず契約書の存在をチェック
+    const contractExists = await prisma.contract.findUnique({
+      where: { id: contractId },
+      select: { id: true },
+    })
+
+    if (!contractExists) {
+      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
+    }
+
     // 権限チェック
     const permission = await checkContractPermission(userId, contractId)
     if (!permission.canWrite) {
@@ -67,10 +83,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       where: { id: contractId },
       include: { versions: { orderBy: { version: 'desc' }, take: 1 } },
     })
-
-    if (!currentContract) {
-      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
-    }
 
     // トランザクションで契約書更新とバージョン履歴を保存
     const result = await prisma.$transaction(async tx => {
@@ -93,7 +105,10 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       })
 
       // バージョン履歴を保存
-      const nextVersion = Math.max(...currentContract.versions.map(v => v.version), 0) + 1
+      const versions = currentContract?.versions || []
+      const maxVersion = versions.length > 0 ? Math.max(...versions.map(v => v.version)) : 0
+      const nextVersion = maxVersion + 1
+      
       await tx.contractVersion.create({
         data: {
           contractId,
@@ -119,6 +134,16 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
   try {
     const contractId = params.id
     const userId = request.headers.get('x-user-id') || 'mock-user-id'
+
+    // まず契約書の存在をチェック
+    const contractExists = await prisma.contract.findUnique({
+      where: { id: contractId },
+      select: { id: true },
+    })
+
+    if (!contractExists) {
+      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
+    }
 
     // 権限チェック（削除はオーナーのみ可能）
     const permission = await checkContractPermission(userId, contractId)

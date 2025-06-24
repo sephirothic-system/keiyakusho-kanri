@@ -1,8 +1,5 @@
 import { Contract, ContractStatus, User, Directory, Category } from '@/lib/generated/prisma'
 import { BaseFactory, faker, testPrisma } from './index'
-import { userFactory } from './user.factory'
-import { directoryFactory } from './directory.factory'
-import { categoryFactory } from './category.factory'
 
 export class ContractFactory extends BaseFactory<Contract> {
   protected defaultAttributes(): Partial<Contract> {
@@ -24,40 +21,62 @@ export class ContractFactory extends BaseFactory<Contract> {
   }
 
   protected async create(attributes: Partial<Contract>): Promise<Contract> {
-    // 必要に応じて関連データを自動生成
+    // 関連データが指定されていない場合は、明示的に作成して待機
     const finalAttributes = { ...attributes }
 
     // オーナーが指定されていない場合は作成
     if (!finalAttributes.ownerId) {
+      const { userFactory } = await import('./user.factory')
       const owner = await userFactory.build()
       finalAttributes.ownerId = owner.id
     }
 
     // ディレクトリが指定されていない場合は作成
     if (!finalAttributes.directoryId) {
+      const { directoryFactory } = await import('./directory.factory')
       const directory = await directoryFactory.build()
       finalAttributes.directoryId = directory.id
     }
 
     // カテゴリが指定されていない場合は作成
     if (finalAttributes.categoryId === undefined) {
+      const { categoryFactory } = await import('./category.factory')
       const category = await categoryFactory.build()
       finalAttributes.categoryId = category.id
     }
 
-    return testPrisma.contract.create({
+    const defaultAttrs = this.defaultAttributes()
+    return await testPrisma.contract.create({
       data: {
-        title: finalAttributes.title || this.defaultAttributes().title!,
-        content: finalAttributes.content || this.defaultAttributes().content!,
-        status: finalAttributes.status || this.defaultAttributes().status!,
-        contractNumber: finalAttributes.contractNumber || this.defaultAttributes().contractNumber,
+        title: finalAttributes.title || defaultAttrs.title!,
+        content: finalAttributes.content || defaultAttrs.content!,
+        status: finalAttributes.status || defaultAttrs.status!,
+        contractNumber: finalAttributes.contractNumber || defaultAttrs.contractNumber,
         ownerId: finalAttributes.ownerId!,
         directoryId: finalAttributes.directoryId!,
         categoryId: finalAttributes.categoryId,
-        startDate: finalAttributes.startDate || this.defaultAttributes().startDate,
-        endDate: finalAttributes.endDate || this.defaultAttributes().endDate,
-        ...finalAttributes,
+        startDate: finalAttributes.startDate || defaultAttrs.startDate,
+        endDate: finalAttributes.endDate || defaultAttrs.endDate,
       },
+    })
+  }
+
+  // 関連データを事前に用意して作成するヘルパー
+  async createWithDependencies(overrides: Partial<Contract> = {}): Promise<Contract> {
+    const { userFactory } = await import('./user.factory')
+    const { directoryFactory } = await import('./directory.factory')
+    const { categoryFactory } = await import('./category.factory')
+
+    // 確実に依存関係を作成
+    const owner = await userFactory.build()
+    const directory = await directoryFactory.build()
+    const category = await categoryFactory.build()
+
+    return this.build({
+      ownerId: owner.id,
+      directoryId: directory.id,
+      categoryId: category.id,
+      ...overrides,
     })
   }
 
@@ -109,8 +128,8 @@ export class ContractFactory extends BaseFactory<Contract> {
   // NDA契約書作成
   async createNDA(overrides: Partial<Contract> = {}): Promise<Contract> {
     const uniqueSuffix = faker.string('', 8)
-    return this.build({
-      title: faker.string(`test-nda-contract-${uniqueSuffix}`, 10),
+    return this.createWithDependencies({
+      title: `NDA-Contract-${uniqueSuffix}`,
       content: this.generateNDAContent(),
       status: 'ACTIVE',
       ...overrides,
@@ -120,7 +139,7 @@ export class ContractFactory extends BaseFactory<Contract> {
   // 業務委託契約書作成
   async createBusinessContract(overrides: Partial<Contract> = {}): Promise<Contract> {
     const uniqueSuffix = faker.string('', 8)
-    return this.build({
+    return this.createWithDependencies({
       title: faker.string(`test-business-contract-${uniqueSuffix}`, 10),
       content: this.generateBusinessContent(),
       status: 'ACTIVE',
@@ -132,7 +151,7 @@ export class ContractFactory extends BaseFactory<Contract> {
   // ドラフト状態の契約書作成
   async createDraft(overrides: Partial<Contract> = {}): Promise<Contract> {
     const uniqueSuffix = faker.string('', 8)
-    return this.build({
+    return this.createWithDependencies({
       title: faker.string(`test-draft-contract-${uniqueSuffix}`, 10),
       status: 'DRAFT',
       contractNumber: null,
@@ -145,7 +164,7 @@ export class ContractFactory extends BaseFactory<Contract> {
   // 期限切れ契約書作成
   async createExpired(overrides: Partial<Contract> = {}): Promise<Contract> {
     const uniqueSuffix = faker.string('', 8)
-    return this.build({
+    return this.createWithDependencies({
       title: faker.string(`test-expired-contract-${uniqueSuffix}`, 10),
       status: 'EXPIRED',
       startDate: faker.date(-365), // 1年前
