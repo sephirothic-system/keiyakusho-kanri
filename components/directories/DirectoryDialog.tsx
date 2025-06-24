@@ -197,8 +197,11 @@ export function DirectoryDialog({
                 <FormItem>
                   <FormLabel>親ディレクトリ</FormLabel>
                   <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
+                    onValueChange={(value) => {
+                      // "root"が選択された場合は空文字列に変換
+                      field.onChange(value === "root" ? "" : value);
+                    }}
+                    value={field.value || "root"}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -206,7 +209,7 @@ export function DirectoryDialog({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="">ルートディレクトリ</SelectItem>
+                      <SelectItem value="root">ルートディレクトリ</SelectItem>
                       {availableParents.map((parent) => (
                         <SelectItem key={parent.id} value={parent.id}>
                           {getParentDisplayName(parent)}
