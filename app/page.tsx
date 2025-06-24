@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { FileText, Users, FolderOpen, Plus, Shield } from 'lucide-react'
+import { FileText, Users, FolderOpen, Plus, Search, Shield } from 'lucide-react'
 import StatsCards from '@/components/dashboard/StatsCards'
 import RecentContractsList from '@/components/contracts/RecentContractsList'
 
@@ -64,6 +64,10 @@ export default function Home() {
 
   const handleManagePermissions = () => {
     router.push('/admin/permissions')
+  }
+
+  const handleBrowseContracts = () => {
+    router.push('/directories')
   }
 
   return (
@@ -156,6 +160,18 @@ export default function Home() {
                   </CardHeader>
                 </Card>
               )}
+              <Card 
+                className="cursor-pointer transition-colors hover:bg-gray-50"
+                onClick={handleBrowseContracts}
+              >
+                <CardHeader>
+                  <CardTitle className="flex items-center text-base">
+                    <Search className="mr-2 h-5 w-5" />
+                    契約書を閲覧
+                  </CardTitle>
+                  <CardDescription>ディレクトリ内の契約書を検索・閲覧</CardDescription>
+                </CardHeader>
+              </Card>
             </div>
           </div>
 

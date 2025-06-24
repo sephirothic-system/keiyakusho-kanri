@@ -160,6 +160,11 @@ export default function DirectoriesPage() {
     setIsDialogOpen(true)
   }
 
+  // 契約書一覧に遷移
+  const handleViewContracts = (directoryId: string) => {
+    router.push(`/directories/${directoryId}/contracts`)
+  }
+
   // フラットなディレクトリリストを取得（親ディレクトリ選択用）
   const getFlatDirectoryList = (directories: Directory[], excludeId?: string): Directory[] => {
     const result: Directory[] = []
@@ -244,6 +249,7 @@ export default function DirectoriesPage() {
               onEdit={openEditDialog}
               onDelete={handleDeleteDirectory}
               onCreateChild={openCreateDialog}
+              onViewContracts={handleViewContracts}
             />
           )}
         </CardContent>
