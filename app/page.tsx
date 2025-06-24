@@ -22,6 +22,10 @@ export default function Home() {
     router.push('/contracts/new')
   }
 
+  const handleManageDirectories = () => {
+    router.push('/directories')
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* ヘッダー */}
@@ -110,7 +114,10 @@ export default function Home() {
                   <CardDescription>新しい契約書を作成して管理を開始</CardDescription>
                 </CardHeader>
               </Card>
-              <Card className="cursor-pointer transition-colors hover:bg-gray-50">
+              <Card 
+                className="cursor-pointer transition-colors hover:bg-gray-50"
+                onClick={handleManageDirectories}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center text-base">
                     <FolderOpen className="mr-2 h-5 w-5" />
