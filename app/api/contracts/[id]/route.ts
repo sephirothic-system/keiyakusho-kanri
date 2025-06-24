@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { PrismaClient } from '@/lib/generated/prisma'
-import { checkContractPermission } from '@/lib/contract-permissions'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
@@ -26,22 +25,6 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       userId = session.user.id
     }
 
-    // まず契約書の存在をチェック
-    const contractExists = await prisma.contract.findUnique({
-      where: { id: contractId },
-      select: { id: true },
-    })
-
-    if (!contractExists) {
-      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
-    }
-
-    // 権限チェック
-    const permission = await checkContractPermission(userId, contractId)
-    if (!permission.canRead) {
-      return NextResponse.json({ error: 'この契約書へのアクセス権限がありません' }, { status: 403 })
-    }
-
     // 契約書を取得
     const contract = await prisma.contract.findUnique({
       where: { id: contractId },
@@ -56,14 +39,11 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
       },
     })
 
-    return NextResponse.json({
-      contract,
-      permission: {
-        canRead: permission.canRead,
-        canWrite: permission.canWrite,
-        accessType: permission.accessType,
-      },
-    })
+    if (!contract) {
+      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
+    }
+
+    return NextResponse.json({ contract })
   } catch (error) {
     console.error('Contract GET error:', error)
     return NextResponse.json({ error: 'サーバーエラーが発生しました' }, { status: 500 })
@@ -92,27 +72,20 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     const body = await request.json()
 
-    // まず契約書の存在をチェック
-    const contractExists = await prisma.contract.findUnique({
-      where: { id: contractId },
-      select: { id: true },
-    })
-
-    if (!contractExists) {
-      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
-    }
-
-    // 権限チェック
-    const permission = await checkContractPermission(userId, contractId)
-    if (!permission.canWrite) {
-      return NextResponse.json({ error: 'この契約書の編集権限がありません' }, { status: 403 })
-    }
-
-    // 現在の契約書を取得（バージョン管理のため）
-    const currentContract = await prisma.contract.findUnique({
+    // 契約書の存在チェック
+    const contract = await prisma.contract.findUnique({
       where: { id: contractId },
       include: { versions: { orderBy: { version: 'desc' }, take: 1 } },
     })
+
+    if (!contract) {
+      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
+    }
+
+    // 基本的な権限チェック（作成者のみ編集可能）
+    if (contract.ownerId !== userId) {
+      return NextResponse.json({ error: 'この契約書の編集権限がありません' }, { status: 403 })
+    }
 
     // トランザクションで契約書更新とバージョン履歴を保存
     const result = await prisma.$transaction(async tx => {
@@ -135,7 +108,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       })
 
       // バージョン履歴を保存
-      const versions = currentContract?.versions || []
+      const versions = contract.versions || []
       const maxVersion = versions.length > 0 ? Math.max(...versions.map(v => v.version)) : 0
       const nextVersion = maxVersion + 1
       
@@ -179,20 +152,19 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       userId = session.user.id
     }
 
-    // まず契約書の存在をチェック
-    const contractExists = await prisma.contract.findUnique({
+    // 契約書の存在チェック
+    const contract = await prisma.contract.findUnique({
       where: { id: contractId },
-      select: { id: true },
+      select: { id: true, ownerId: true },
     })
 
-    if (!contractExists) {
+    if (!contract) {
       return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
     }
 
-    // 権限チェック（削除はオーナーまたは管理者のみ可能）
-    const permission = await checkContractPermission(userId, contractId)
-    if (permission.accessType !== 'owner' && permission.accessType !== 'admin') {
-      return NextResponse.json({ error: '契約書の削除は作成者または管理者のみ可能です' }, { status: 403 })
+    // 削除は作成者のみ可能
+    if (contract.ownerId !== userId) {
+      return NextResponse.json({ error: '契約書の削除は作成者のみ可能です' }, { status: 403 })
     }
 
     // 契約書を削除（Cascadeで関連データも削除される）
