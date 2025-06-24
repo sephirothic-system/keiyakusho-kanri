@@ -1,12 +1,14 @@
 'use client'
 
 import { useSession, signOut } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { FileText, Users, FolderOpen, Plus } from 'lucide-react'
 
 export default function Home() {
   const { data: session, status } = useSession()
+  const router = useRouter()
 
   if (status === 'loading') {
     return (
@@ -14,6 +16,10 @@ export default function Home() {
         <div className="text-lg">読み込み中...</div>
       </div>
     )
+  }
+
+  const handleCreateContract = () => {
+    router.push('/contracts/new')
   }
 
   return (
@@ -92,7 +98,10 @@ export default function Home() {
           <div className="mb-8">
             <h2 className="mb-4 text-lg font-semibold text-gray-900">クイックアクション</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              <Card className="cursor-pointer transition-colors hover:bg-gray-50">
+              <Card 
+                className="cursor-pointer transition-colors hover:bg-gray-50"
+                onClick={handleCreateContract}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center text-base">
                     <Plus className="mr-2 h-5 w-5" />

@@ -9,6 +9,14 @@ vi.mock('next-auth/react', () => ({
   signOut: vi.fn(),
 }))
 
+// Next/navigation のモック
+const mockPush = vi.fn()
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: mockPush,
+  }),
+}))
+
 const { useSession, signOut } = await import('next-auth/react')
 
 // テストデータ
@@ -127,6 +135,7 @@ describe('Home (Dashboard)', () => {
         status: 'authenticated',
         update: vi.fn(),
       })
+      mockPush.mockClear()
     })
 
     it('ログアウトボタンをクリックするとsignOutが呼ばれる', async () => {
@@ -137,6 +146,19 @@ describe('Home (Dashboard)', () => {
       await user.click(logoutButton)
 
       expect(vi.mocked(signOut)).toHaveBeenCalledTimes(1)
+    })
+
+    it('「新しい契約書を作成」カードをクリックすると契約書作成画面に遷移する', async () => {
+      const user = userEvent.setup()
+      render(<Home />)
+
+      const createContractCard = screen.getByText('新しい契約書を作成').closest('[class*="cursor-pointer"]')
+      expect(createContractCard).toBeInTheDocument()
+
+      await user.click(createContractCard!)
+
+      expect(mockPush).toHaveBeenCalledTimes(1)
+      expect(mockPush).toHaveBeenCalledWith('/contracts/new')
     })
 
     it('クイックアクションカードがクリック可能に設定されている', () => {
