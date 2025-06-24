@@ -8,15 +8,21 @@ export class UserFactory extends BaseFactory<User> {
       email: faker.email(`test-user-${uniqueSuffix}`),
       name: faker.string('test-user', 10),
       isActive: true,
+      password: null, // デフォルトではパスワードなし
     }
   }
 
   protected async create(attributes: Partial<User>): Promise<User> {
+    const defaultAttrs = this.defaultAttributes()
     return testPrisma.user.create({
       data: {
-        email: attributes.email || this.defaultAttributes().email!,
-        name: attributes.name || this.defaultAttributes().name!,
-        isActive: attributes.isActive ?? this.defaultAttributes().isActive,
+        email: attributes.email || defaultAttrs.email!,
+        name: attributes.name || defaultAttrs.name!,
+        isActive: attributes.isActive ?? defaultAttrs.isActive,
+        password: attributes.password !== undefined ? attributes.password : defaultAttrs.password,
+        // その他のフィールドも含める
+        emailVerified: attributes.emailVerified,
+        image: attributes.image,
         ...attributes,
       },
     })
@@ -47,6 +53,14 @@ export class UserFactory extends BaseFactory<User> {
       name: `Inactive User ${uniqueSuffix}`,
       email: faker.email(`test-inactive-${uniqueSuffix}`),
       isActive: false,
+      ...overrides,
+    })
+  }
+
+  // パスワード付きユーザー作成
+  async createWithPassword(password: string, overrides: Partial<User> = {}): Promise<User> {
+    return this.build({
+      password,
       ...overrides,
     })
   }

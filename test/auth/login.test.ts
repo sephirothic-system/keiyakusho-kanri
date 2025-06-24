@@ -2,7 +2,6 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import bcrypt from 'bcryptjs'
 import { authOptions } from '@/lib/auth'
 import { factories, TestDataCleaner } from '../factories/all'
-import { testPrisma } from '../factories/index'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 type AuthorizeResult = {
@@ -19,25 +18,20 @@ type CredentialsProviderType = ReturnType<typeof CredentialsProvider> & {
 
 describe('ログイン機能', () => {
   beforeEach(async () => {
-    // テストデータをクリーンアップ
-    await TestDataCleaner.cleanByPrefix('test')
+    await TestDataCleaner.cleanAll()
   })
 
   afterEach(async () => {
-    // テスト後のクリーンアップ
-    await TestDataCleaner.cleanByPrefix('test')
+    await TestDataCleaner.cleanAll()
   })
 
   describe('認証成功ケース', () => {
     it('正しいメールアドレスとパスワードでログインできる', async () => {
-      // テストユーザーを作成
       const password = 'testpassword123'
-      const hashedPassword = await bcrypt.hash(password, 12)
-
+      const hashedPassword = await bcrypt.hash(password, 10)
+      
       const user = await factories.user.build({
-        email: 'test-login@example.com',
         password: hashedPassword,
-        name: 'テストユーザー',
         isActive: true,
       })
 
@@ -59,26 +53,36 @@ describe('ログイン機能', () => {
 
     it('アクティブなユーザーのみログインできる', async () => {
       const password = 'testpassword123'
-      const hashedPassword = await bcrypt.hash(password, 12)
-
-      const user = await factories.user.build({
-        email: 'test-active@example.com',
+      const hashedPassword = await bcrypt.hash(password, 10)
+      
+      const activeUser = await factories.user.build({
         password: hashedPassword,
-        name: 'アクティブユーザー',
         isActive: true,
+      })
+
+      const inactiveUser = await factories.user.build({
+        password: hashedPassword,
+        isActive: false,
       })
 
       const credentialsProvider = authOptions.providers.find(
         provider => provider.id === 'credentials'
       ) as CredentialsProviderType
 
-      const result = await credentialsProvider.options.authorize({
-        email: user.email,
+      // アクティブなユーザーはログインできる
+      const activeResult = await credentialsProvider.options.authorize({
+        email: activeUser.email,
         password: password,
       })
+      expect(activeResult).toBeTruthy()
+      expect(activeResult.id).toBe(activeUser.id)
 
-      expect(result).toBeTruthy()
-      expect(result.id).toBe(user.id)
+      // 非アクティブなユーザーはログインできない
+      const inactiveResult = await credentialsProvider.options.authorize({
+        email: inactiveUser.email,
+        password: password,
+      })
+      expect(inactiveResult).toBeNull()
     })
   })
 
@@ -97,13 +101,12 @@ describe('ログイン機能', () => {
     })
 
     it('間違ったパスワードではログインできない', async () => {
-      const password = 'correctpassword'
-      const hashedPassword = await bcrypt.hash(password, 12)
-
+      const correctPassword = 'correctpassword123'
+      const wrongPassword = 'wrongpassword123'
+      const hashedPassword = await bcrypt.hash(correctPassword, 10)
+      
       const user = await factories.user.build({
-        email: 'test-wrong-password@example.com',
         password: hashedPassword,
-        name: 'テストユーザー',
         isActive: true,
       })
 
@@ -113,7 +116,7 @@ describe('ログイン機能', () => {
 
       const result = await credentialsProvider.options.authorize({
         email: user.email,
-        password: 'wrongpassword',
+        password: wrongPassword,
       })
 
       expect(result).toBeNull()
@@ -121,12 +124,10 @@ describe('ログイン機能', () => {
 
     it('非アクティブなユーザーはログインできない', async () => {
       const password = 'testpassword123'
-      const hashedPassword = await bcrypt.hash(password, 12)
-
+      const hashedPassword = await bcrypt.hash(password, 10)
+      
       const user = await factories.user.build({
-        email: 'test-inactive@example.com',
         password: hashedPassword,
-        name: '非アクティブユーザー',
         isActive: false,
       })
 
@@ -144,9 +145,7 @@ describe('ログイン機能', () => {
 
     it('パスワードが設定されていないユーザーはログインできない', async () => {
       const user = await factories.user.build({
-        email: 'test-no-password@example.com',
         password: null,
-        name: 'パスワードなしユーザー',
         isActive: true,
       })
 
@@ -168,54 +167,47 @@ describe('ログイン機能', () => {
       ) as CredentialsProviderType
 
       // メールアドレスが空
-      const result1 = await credentialsProvider.options.authorize({
+      let result = await credentialsProvider.options.authorize({
         email: '',
-        password: 'password',
+        password: 'anypassword',
       })
-      expect(result1).toBeNull()
+      expect(result).toBeNull()
 
       // パスワードが空
-      const result2 = await credentialsProvider.options.authorize({
+      result = await credentialsProvider.options.authorize({
         email: 'test@example.com',
         password: '',
       })
-      expect(result2).toBeNull()
+      expect(result).toBeNull()
 
       // 両方が空
-      const result3 = await credentialsProvider.options.authorize({
+      result = await credentialsProvider.options.authorize({
         email: '',
         password: '',
       })
-      expect(result3).toBeNull()
+      expect(result).toBeNull()
 
       // undefinedの場合
-      const result4 = await credentialsProvider.options.authorize(undefined)
-      expect(result4).toBeNull()
+      result = await credentialsProvider.options.authorize(undefined)
+      expect(result).toBeNull()
     })
   })
 
   describe('セキュリティテスト', () => {
     it('パスワードがハッシュ化されて保存されている', async () => {
-      const password = 'plainpassword123'
-      const hashedPassword = await bcrypt.hash(password, 12)
-
+      const plainPassword = 'mysecretpassword'
+      const hashedPassword = await bcrypt.hash(plainPassword, 10)
+      
       const user = await factories.user.build({
-        email: 'test-hash@example.com',
         password: hashedPassword,
-        name: 'ハッシュテストユーザー',
-        isActive: true,
       })
 
-      // データベースから直接ユーザーを取得
-      const dbUser = await testPrisma.user.findUnique({
-        where: { email: user.email },
-      })
+      // パスワードがハッシュ化されていることを確認
+      expect(user.password).not.toBe(plainPassword)
+      expect(user.password).toBe(hashedPassword)
 
-      expect(dbUser?.password).not.toBe(password)
-      expect(dbUser?.password).toBe(hashedPassword)
-
-      // ハッシュが正しく比較できることを確認
-      const isValid = await bcrypt.compare(password, dbUser?.password || '')
+      // ハッシュが正しく検証できることを確認
+      const isValid = await bcrypt.compare(plainPassword, user.password!)
       expect(isValid).toBe(true)
     })
 
@@ -224,17 +216,13 @@ describe('ログイン機能', () => {
         provider => provider.id === 'credentials'
       ) as CredentialsProviderType
 
-      // SQLインジェクション攻撃を試行
+      // SQLインジェクション試行
       const result = await credentialsProvider.options.authorize({
-        email: "'; DROP TABLE users; --",
-        password: "' OR '1'='1",
+        email: "admin'; DROP TABLE users; --",
+        password: 'anypassword',
       })
 
       expect(result).toBeNull()
-
-      // usersテーブルが存在することを確認（削除されていない）
-      const userCount = await testPrisma.user.count()
-      expect(userCount).toBeGreaterThanOrEqual(0)
     })
   })
 })

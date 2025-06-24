@@ -21,17 +21,24 @@ export class TestScenarioBuilder {
    * ユーザー、グループ、ディレクトリ、カテゴリ、契約書を一括作成
    */
   static async setupCompleteEnvironment() {
+    console.log('Setting up complete environment...')
+    
     // ユーザー作成
+    console.log('Creating users...')
     const admin = await userFactory.createAdmin()
     const legalUser = await userFactory.createRegularUser({ name: 'Legal User' })
     const businessUser = await userFactory.createRegularUser({ name: 'Business User' })
+    console.log('Users created:', { admin: admin.id, legalUser: legalUser.id, businessUser: businessUser.id })
 
     // グループ作成
+    console.log('Creating groups...')
     const adminGroup = await groupFactory.createAdminGroup()
     const legalGroup = await groupFactory.createLegalGroup()
     const businessGroup = await groupFactory.createBusinessGroup()
+    console.log('Groups created:', { adminGroup: adminGroup.id, legalGroup: legalGroup.id, businessGroup: businessGroup.id })
 
     // ユーザーとグループの関連付け
+    console.log('Creating user-group relationships...')
     await testPrisma.userGroup.createMany({
       data: [
         { userId: admin.id, groupId: adminGroup.id },
@@ -39,13 +46,17 @@ export class TestScenarioBuilder {
         { userId: businessUser.id, groupId: businessGroup.id },
       ],
     })
+    console.log('User-group relationships created')
 
     // ディレクトリ構造作成
+    console.log('Creating directories...')
     const rootDir = await directoryFactory.createRoot({ name: 'test-root' })
     const legalDir = await directoryFactory.createLegalDirectory(rootDir)
     const businessDir = await directoryFactory.createBusinessDirectory(rootDir)
+    console.log('Directories created:', { rootDir: rootDir.id, legalDir: legalDir.id, businessDir: businessDir.id })
 
     // ディレクトリアクセス権限設定
+    console.log('Creating directory access permissions...')
     await testPrisma.directoryAccess.createMany({
       data: [
         // 管理者はすべてに書き込み権限
@@ -60,13 +71,17 @@ export class TestScenarioBuilder {
         { directoryId: legalDir.id, groupId: businessGroup.id, permission: 'READ' },
       ],
     })
+    console.log('Directory access permissions created')
 
     // カテゴリ作成
+    console.log('Creating categories...')
     const ndaCategory = await categoryFactory.createNDACategory()
     const businessCategory = await categoryFactory.createBusinessCategory()
     const employmentCategory = await categoryFactory.createEmploymentCategory()
+    console.log('Categories created:', { ndaCategory: ndaCategory.id, businessCategory: businessCategory.id, employmentCategory: employmentCategory.id })
 
     // 契約書作成
+    console.log('Creating contracts...')
     const ndaContract = await contractFactory.createNDA({
       ownerId: legalUser.id,
       directoryId: legalDir.id,
@@ -84,6 +99,9 @@ export class TestScenarioBuilder {
       directoryId: legalDir.id,
       categoryId: employmentCategory.id,
     })
+    console.log('Contracts created:', { ndaContract: ndaContract.id, businessContract: businessContract.id, draftContract: draftContract.id })
+
+    console.log('Complete environment setup finished')
 
     return {
       users: { admin, legalUser, businessUser },
@@ -98,19 +116,32 @@ export class TestScenarioBuilder {
    * 権限テスト用のシンプルなセットアップ
    */
   static async setupPermissionTest() {
+    console.log('Setting up permission test environment...')
+    
+    // 基本データ作成
+    console.log('Creating basic entities...')
     const owner = await userFactory.build()
     const otherUser = await userFactory.build()
-
     const group = await groupFactory.build()
     const directory = await directoryFactory.build()
     const category = await categoryFactory.build()
+    
+    console.log('Basic entities created:', {
+      owner: owner.id,
+      otherUser: otherUser.id, 
+      group: group.id,
+      directory: directory.id,
+      category: category.id
+    })
 
     // オーナーをグループに追加
+    console.log('Adding owner to group...')
     await testPrisma.userGroup.create({
       data: { userId: owner.id, groupId: group.id },
     })
 
     // グループにディレクトリアクセス権限を付与
+    console.log('Creating directory access for group...')
     await testPrisma.directoryAccess.create({
       data: {
         directoryId: directory.id,
@@ -119,7 +150,15 @@ export class TestScenarioBuilder {
       },
     })
 
-    const contract = await contractFactory.createWithRelations(owner, directory, category)
+    // 契約書作成
+    console.log('Creating contract...')
+    const contract = await contractFactory.build({
+      ownerId: owner.id,
+      directoryId: directory.id,
+      categoryId: category.id,
+    })
+    
+    console.log('Permission test environment setup finished')
 
     return {
       owner,

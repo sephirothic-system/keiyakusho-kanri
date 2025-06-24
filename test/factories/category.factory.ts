@@ -26,7 +26,7 @@ export class CategoryFactory extends BaseFactory<Category> {
   async createNDACategory(overrides: Partial<Category> = {}): Promise<Category> {
     const uniqueSuffix = faker.string('', 8)
     return this.build({
-      name: faker.string(`test-nda-category-${uniqueSuffix}`, 6),
+      name: `NDA-Category-${uniqueSuffix}`,
       color: '#8B5CF6',
       ...overrides,
     })
@@ -35,7 +35,7 @@ export class CategoryFactory extends BaseFactory<Category> {
   async createBusinessCategory(overrides: Partial<Category> = {}): Promise<Category> {
     const uniqueSuffix = faker.string('', 8)
     return this.build({
-      name: faker.string(`test-business-category-${uniqueSuffix}`, 6),
+      name: `Business-Category-${uniqueSuffix}`,
       color: '#3B82F6',
       ...overrides,
     })
@@ -44,7 +44,7 @@ export class CategoryFactory extends BaseFactory<Category> {
   async createEmploymentCategory(overrides: Partial<Category> = {}): Promise<Category> {
     const uniqueSuffix = faker.string('', 8)
     return this.build({
-      name: faker.string(`test-employment-category-${uniqueSuffix}`, 6),
+      name: `Employment-Category-${uniqueSuffix}`,
       color: '#EF4444',
       ...overrides,
     })

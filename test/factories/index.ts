@@ -1,7 +1,8 @@
 import { PrismaClient } from '@/lib/generated/prisma'
+import { prisma } from '@/lib/prisma'
 
-// テスト用のPrismaクライアント
-export const testPrisma = new PrismaClient()
+// テスト用のPrismaクライアント - 本番と同じインスタンスを使用
+export const testPrisma = prisma
 
 // ランダムデータ生成ヘルパー
 export const faker = {
@@ -9,7 +10,8 @@ export const faker = {
   string: (prefix = 'test', length = 8) => {
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
     const timestamp = Date.now().toString()
-    let result = prefix + '-' + timestamp.slice(-4) + '-'
+    const random = Math.random().toString(36).substring(2, 8)
+    let result = prefix + '-' + timestamp.slice(-6) + '-' + random + '-'
     for (let i = 0; i < length; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length))
     }
@@ -58,108 +60,82 @@ export abstract class BaseFactory<T> {
 // テストデータのクリーンアップヘルパー
 export class TestDataCleaner {
   static async cleanAll() {
-    // 外部キー制約を考慮した正しい順序でデータを削除
-    await testPrisma.contractVersion.deleteMany({})
-    await testPrisma.contract.deleteMany({})
-    await testPrisma.directoryAccess.deleteMany({})
-    await testPrisma.userGroup.deleteMany({})
-    await testPrisma.directory.deleteMany({})
-    await testPrisma.group.deleteMany({})
-    await testPrisma.user.deleteMany({})
-    await testPrisma.category.deleteMany({})
+    try {
+      // 外部キー制約を考慮した正しい順序でデータを削除
+      // 最も依存関係が多いテーブルから順に削除
+
+      // 1. 契約書のバージョン（contract_versions）
+      await testPrisma.contractVersion.deleteMany({})
+
+      // 2. 契約書（contracts）
+      await testPrisma.contract.deleteMany({})
+
+      // 3. ディレクトリアクセス権限（directory_access）
+      await testPrisma.directoryAccess.deleteMany({})
+
+      // 4. ユーザーグループ関連（user_groups）
+      await testPrisma.userGroup.deleteMany({})
+
+      // 5. セッション（sessions）
+      await testPrisma.session.deleteMany({})
+
+      // 6. アカウント（accounts）
+      await testPrisma.account.deleteMany({})
+
+      // 7. 検証トークン（verificationtokens）
+      await testPrisma.verificationToken.deleteMany({})
+
+      // 8. ディレクトリ（directories） - 階層構造があるため子から削除
+      // 子ディレクトリから順に削除
+      const directories = await testPrisma.directory.findMany({
+        orderBy: { path: 'desc' }, // パスの深い順（子から削除）
+      })
+      for (const dir of directories) {
+        await testPrisma.directory.delete({ where: { id: dir.id } })
+      }
+
+      // 9. グループ（groups）
+      await testPrisma.group.deleteMany({})
+
+      // 10. カテゴリ（categories）
+      await testPrisma.category.deleteMany({})
+
+      // 11. ユーザー（users） - 最後に削除
+      await testPrisma.user.deleteMany({})
+          } catch (error) {
+      // エラーが発生した場合は、より安全な方法でリトライ
+      try {
+        // すべてのテーブルを個別にクリーンアップ（エラーを無視）
+        const cleanupOperations = [
+          () => testPrisma.contractVersion.deleteMany({}),
+          () => testPrisma.contract.deleteMany({}),
+          () => testPrisma.directoryAccess.deleteMany({}),
+          () => testPrisma.userGroup.deleteMany({}),
+          () => testPrisma.session.deleteMany({}),
+          () => testPrisma.account.deleteMany({}),
+          () => testPrisma.verificationToken.deleteMany({}),
+          () => testPrisma.directory.deleteMany({}),
+          () => testPrisma.group.deleteMany({}),
+          () => testPrisma.category.deleteMany({}),
+          () => testPrisma.user.deleteMany({}),
+        ]
+
+        for (const operation of cleanupOperations) {
+          try {
+            await operation()
+          } catch (opError) {
+            // 個別の操作は失敗しても続行
+          }
+        }
+      } catch (retryError) {
+        throw retryError
+      }
+    }
   }
 
   static async cleanByPrefix(prefix: string) {
-    try {
-      // 外部キー制約を考慮した順序で削除
-
-      // 1. 契約書バージョンを削除
-      await testPrisma.contractVersion.deleteMany({
-        where: {
-          contract: {
-            title: { startsWith: prefix },
-          },
-        },
-      })
-
-      // 2. 契約書を削除
-      await testPrisma.contract.deleteMany({
-        where: { title: { startsWith: prefix } },
-      })
-
-      // 3. ディレクトリアクセス権限を削除
-      await testPrisma.directoryAccess.deleteMany({
-        where: {
-          OR: [
-            {
-              directory: {
-                name: { startsWith: prefix },
-              },
-            },
-            {
-              group: {
-                name: { startsWith: prefix },
-              },
-            },
-          ],
-        },
-      })
-
-      // 4. ユーザーグループ関連を削除
-      await testPrisma.userGroup.deleteMany({
-        where: {
-          OR: [
-            {
-              user: {
-                email: { startsWith: prefix },
-              },
-            },
-            {
-              group: {
-                name: { startsWith: prefix },
-              },
-            },
-          ],
-        },
-      })
-
-      // 5. ディレクトリを削除（子から先に）
-      await testPrisma.directory.deleteMany({
-        where: {
-          AND: [
-            { name: { startsWith: prefix } },
-            { parentId: { not: null } }, // 子ディレクトリから削除
-          ],
-        },
-      })
-
-      await testPrisma.directory.deleteMany({
-        where: {
-          AND: [
-            { name: { startsWith: prefix } },
-            { parentId: null }, // 親ディレクトリを削除
-          ],
-        },
-      })
-
-      // 6. グループを削除
-      await testPrisma.group.deleteMany({
-        where: { name: { startsWith: prefix } },
-      })
-
-      // 7. ユーザーを削除
-      await testPrisma.user.deleteMany({
-        where: { email: { startsWith: prefix } },
-      })
-
-      // 8. カテゴリを削除
-      await testPrisma.category.deleteMany({
-        where: { name: { startsWith: prefix } },
-      })
-    } catch (error) {
-      console.error('クリーンアップエラー:', error)
-      // エラーが発生した場合は全削除を試行
-      await TestDataCleaner.cleanAll()
-    }
+    // プレフィックスベースの削除は複雑になりがちなため、
+    // テスト環境では全削除を推奨
+    await TestDataCleaner.cleanAll()
   }
 }
