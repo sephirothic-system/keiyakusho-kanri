@@ -11,6 +11,13 @@ export default defineConfig({
     watch: false,
     include: ['test/**/*.{test,spec}.{js,ts,jsx,tsx}'],
     exclude: ['test/e2e/**/*', 'node_modules/**/*'],
+    // 並行実行を無効にしてデータベース競合を回避
+    pool: 'forks',
+    poolOptions: {
+      forks: {
+        singleFork: true,
+      },
+    },
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
