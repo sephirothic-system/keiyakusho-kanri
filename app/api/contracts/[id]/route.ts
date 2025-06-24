@@ -142,7 +142,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     })
 
     if (!contractExists) {
-      return NextResponse.json({ error: 'サーバーエラーが発生しました' }, { status: 500 })
+      return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
     }
 
     // 権限チェック（削除はオーナーのみ可能）
