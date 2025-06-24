@@ -1,13 +1,14 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { GroupList } from '@/components/groups/GroupList'
 import { GroupDialog } from '@/components/groups/GroupDialog'
 import { MemberDialog } from '@/components/groups/MemberDialog'
 import { toast } from 'sonner'
-import { Plus, Users } from 'lucide-react'
+import { Plus, Users, Home } from 'lucide-react'
 
 export interface User {
   id: string
@@ -58,6 +59,7 @@ export interface Group {
 }
 
 export default function GroupsPage() {
+  const router = useRouter()
   const [groups, setGroups] = useState<Group[]>([])
   const [users, setUsers] = useState<User[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -257,11 +259,22 @@ export default function GroupsPage() {
   return (
     <div className="container mx-auto py-6 space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">グループ管理</h1>
-          <p className="text-muted-foreground">
-            ユーザーグループとアクセス権限を管理します
-          </p>
+        <div className="flex items-center gap-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => router.push('/')}
+            className="gap-2"
+          >
+            <Home className="h-4 w-4" />
+            ホーム
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">グループ管理</h1>
+            <p className="text-muted-foreground">
+              ユーザーグループとアクセス権限を管理します
+            </p>
+          </div>
         </div>
         <Button onClick={openCreateDialog} className="gap-2">
           <Plus className="h-4 w-4" />

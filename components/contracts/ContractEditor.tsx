@@ -49,6 +49,7 @@ interface ContractEditorProps {
   onSave: (contractData: Omit<ContractData, 'id' | 'owner' | 'directory' | 'category'>) => Promise<void>
   onCancel: () => void
   isLoading?: boolean
+  homeButton?: React.ReactNode
 }
 
 const STATUS_LABELS = {
@@ -66,6 +67,7 @@ export function ContractEditor({
   onSave,
   onCancel,
   isLoading = false,
+  homeButton,
 }: ContractEditorProps) {
   const [formData, setFormData] = useState<Omit<ContractData, 'id' | 'owner' | 'directory' | 'category'>>({
     title: contract?.title || '',
@@ -134,22 +136,25 @@ export function ContractEditor({
     <div className="container max-w-6xl mx-auto py-6 space-y-6">
       {/* ヘッダー */}
       <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold">
-            {contract ? '契約書を編集' : '新しい契約書を作成'}
-          </h1>
-          {contract && (
-            <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-              <FileText className="h-4 w-4" />
-              <span>ID: {contract.id}</span>
-              {contract.directory && (
-                <>
-                  <span>•</span>
-                  <span>{contract.directory.path}</span>
-                </>
-              )}
-            </div>
-          )}
+        <div className="flex items-center gap-4">
+          {homeButton}
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold">
+              {contract ? '契約書を編集' : '新しい契約書を作成'}
+            </h1>
+            {contract && (
+              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                <FileText className="h-4 w-4" />
+                <span>ID: {contract.id}</span>
+                {contract.directory && (
+                  <>
+                    <span>•</span>
+                    <span>{contract.directory.path}</span>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex items-center space-x-2">
           <Button

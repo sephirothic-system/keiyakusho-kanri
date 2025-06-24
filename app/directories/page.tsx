@@ -1,12 +1,13 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { DirectoryTree } from '@/components/directories/DirectoryTree'
 import { DirectoryDialog } from '@/components/directories/DirectoryDialog'
 import { toast } from 'sonner'
-import { Plus, Folder } from 'lucide-react'
+import { Plus, Folder, Home } from 'lucide-react'
 
 export interface Directory {
   id: string
@@ -21,6 +22,7 @@ export interface Directory {
 }
 
 export default function DirectoriesPage() {
+  const router = useRouter()
   const [directories, setDirectories] = useState<Directory[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -191,11 +193,22 @@ export default function DirectoriesPage() {
   return (
     <div className="container mx-auto py-6 space-y-6">
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">ディレクトリ管理</h1>
-          <p className="text-muted-foreground">
-            契約書を整理するためのディレクトリを管理します
-          </p>
+        <div className="flex items-center gap-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => router.push('/')}
+            className="gap-2"
+          >
+            <Home className="h-4 w-4" />
+            ホーム
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight">ディレクトリ管理</h1>
+            <p className="text-muted-foreground">
+              契約書を整理するためのディレクトリを管理します
+            </p>
+          </div>
         </div>
         <Button onClick={() => openCreateDialog()} className="gap-2">
           <Plus className="h-4 w-4" />

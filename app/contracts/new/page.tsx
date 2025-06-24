@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ContractEditor, ContractData } from '@/components/contracts/ContractEditor'
 import { toast } from 'sonner'
+import { Button } from '@/components/ui/button'
+import { Home } from 'lucide-react'
 
 export default function NewContractPage() {
   const router = useRouter()
@@ -80,6 +82,18 @@ export default function NewContractPage() {
     router.back()
   }
 
+  const renderHomeButton = () => (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={() => router.push('/')}
+      className="gap-2"
+    >
+      <Home className="h-4 w-4" />
+      ホーム
+    </Button>
+  )
+
   if (isInitialLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -98,6 +112,7 @@ export default function NewContractPage() {
       onSave={handleSave}
       onCancel={handleCancel}
       isLoading={isLoading}
+      homeButton={renderHomeButton()}
     />
   )
 } 
