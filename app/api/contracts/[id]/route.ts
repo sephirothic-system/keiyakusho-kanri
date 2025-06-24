@@ -95,7 +95,7 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
           status: body.status,
           startDate: body.startDate ? new Date(body.startDate) : null,
           endDate: body.endDate ? new Date(body.endDate) : null,
-          categoryId: body.categoryId,
+          categoryId: body.categoryId || null,
         },
         include: {
           owner: { select: { name: true, email: true } },
