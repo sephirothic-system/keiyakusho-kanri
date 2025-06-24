@@ -269,4 +269,80 @@ test.describe('契約書管理機能', () => {
     await expect(page.locator('text=業務委託契約書（サンプル）')).toBeVisible()
     await expect(page.locator('text=秘密保持契約書（NDA）')).toBeVisible()
   })
+
+  test('DocuSign電子契約機能', async ({ page }) => {
+    // 契約書一覧ページに移動
+    await page.goto('/contracts')
+
+    // 最初の契約書をクリック
+    await page.click('[data-testid="contract-item"]:first-child')
+
+    // 契約書詳細ページに遷移することを確認
+    await expect(page).toHaveURL(/\/contracts\/[a-zA-Z0-9]+/)
+
+    // DocuSign電子契約セクションが表示されることを確認
+    await expect(page.locator('text=電子契約（DocuSign）')).toBeVisible()
+
+    // 電子契約開始ボタンが表示されることを確認（権限がある場合）
+    const startButton = page.locator('text=電子契約を開始')
+    if (await startButton.isVisible()) {
+      // 電子契約開始ボタンをクリック
+      await startButton.click()
+
+      // モーダルが開くことを確認
+      await expect(page.locator('[role="dialog"]')).toBeVisible()
+      await expect(page.locator('text=電子契約の開始')).toBeVisible()
+
+      // フォームフィールドが表示されることを確認
+      await expect(page.locator('label:has-text("件名")')).toBeVisible()
+      await expect(page.locator('label:has-text("メッセージ")')).toBeVisible()
+      await expect(page.locator('label:has-text("署名者")')).toBeVisible()
+
+      // 件名を入力
+      await page.fill('input[placeholder="電子署名の件名を入力"]', '【テスト】電子署名のお願い')
+
+      // メッセージを入力
+      await page.fill('textarea[placeholder="署名者へのメッセージ（省略可）"]', 'テスト用の電子署名です。')
+
+      // 署名者情報を入力
+      const signerEmailInputs = page.locator('input[placeholder="メールアドレス"]')
+      const signerNameInputs = page.locator('input[placeholder="名前"]')
+
+      await signerEmailInputs.nth(0).fill('signer1@example.com')
+      await signerNameInputs.nth(0).fill('署名者1')
+
+      await signerEmailInputs.nth(1).fill('signer2@example.com')
+      await signerNameInputs.nth(1).fill('署名者2')
+
+      // 署名者を追加ボタンをテスト
+      await page.click('text=署名者を追加')
+      await expect(signerEmailInputs).toHaveCount(3)
+
+      // 3人目の署名者を入力
+      await signerEmailInputs.nth(2).fill('signer3@example.com')
+      await signerNameInputs.nth(2).fill('署名者3')
+
+      // 電子契約開始ボタンをクリック
+      await page.click('text=電子契約を開始')
+
+      // 成功メッセージまたは処理中状態を確認
+      await expect(page.locator('text=開始中...')).toBeVisible().or(
+        page.locator('text=電子契約が開始されました').toBeVisible()
+      )
+
+      // モーダルが閉じることを確認
+      await expect(page.locator('[role="dialog"]')).not.toBeVisible()
+
+      // DocuSignエンベロープが表示されることを確認（成功した場合）
+      // Note: テスト環境ではモックなので、実際のエンベロープは作成されない可能性があります
+    } else {
+      // 権限がない場合は、電子契約開始ボタンが表示されないことを確認
+      console.log('電子契約開始権限がないため、ボタンが表示されていません')
+    }
+
+    // DocuSignエンベロープセクションが存在することを確認
+    await expect(page.locator('text=まだ電子契約は開始されていません')).toBeVisible().or(
+      page.locator('[data-testid="docusign-envelope"]').toBeVisible()
+    )
+  })
 })
