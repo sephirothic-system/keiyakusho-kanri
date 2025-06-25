@@ -16,7 +16,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Filter,
-  Folder
+  Folder,
+  Plus
 } from 'lucide-react'
 
 interface Contract {
@@ -160,6 +161,11 @@ export default function DirectoryContractsPage({
     router.push(`/contracts/${contractId}`)
   }
 
+  // 契約書作成ページに移動（ディレクトリIDを含む）
+  const handleCreateContract = () => {
+    router.push(`/contracts/new?directoryId=${params.id}`)
+  }
+
   if (isLoading && !contracts.length) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -199,40 +205,42 @@ export default function DirectoryContractsPage({
       </div>
 
       {/* 検索バー */}
-      <Card>
-        <CardContent className="pt-6">
-          <form onSubmit={handleSearch} className="flex gap-4">
-            <div className="flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="契約書名で検索..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+      <div className="flex gap-4 items-center">
+        <form onSubmit={handleSearch} className="flex gap-4 flex-1">
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="契約書名で検索..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
             </div>
-            <Button type="submit" className="gap-2">
-              <Search className="h-4 w-4" />
-              検索
+          </div>
+          <Button type="submit" className="gap-2">
+            <Search className="h-4 w-4" />
+            検索
+          </Button>
+          {searchQuery && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => {
+                setSearchQuery('')
+                setCurrentPage(1)
+                fetchContracts(1, '')
+              }}
+            >
+              クリア
             </Button>
-            {searchQuery && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => {
-                  setSearchQuery('')
-                  setCurrentPage(1)
-                  fetchContracts(1, '')
-                }}
-              >
-                クリア
-              </Button>
-            )}
-          </form>
-        </CardContent>
-      </Card>
+          )}
+        </form>
+        <Button onClick={handleCreateContract} className="gap-2">
+          <Plus className="h-4 w-4" />
+          契約書を作成
+        </Button>
+      </div>
 
       {/* 契約書一覧 */}
       <Card>

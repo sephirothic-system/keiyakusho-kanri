@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { ContractEditor, ContractData } from '@/components/contracts/ContractEditor'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -9,6 +9,9 @@ import { Home } from 'lucide-react'
 
 export default function NewContractPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const defaultDirectoryId = searchParams.get('directoryId')
+  
   const [directories, setDirectories] = useState<Array<{ id: string; name: string; path: string }>>([])
   const [categories, setCategories] = useState<Array<{ id: string; name: string; color: string | null }>>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -113,6 +116,7 @@ export default function NewContractPage() {
       onCancel={handleCancel}
       isLoading={isLoading}
       homeButton={renderHomeButton()}
+      defaultDirectoryId={defaultDirectoryId || undefined}
     />
   )
 } 

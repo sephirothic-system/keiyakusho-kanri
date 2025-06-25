@@ -171,25 +171,23 @@ function DirectoryNode({ directory, onEdit, onDelete, onCreateChild, onViewContr
 
             {/* アクションボタン */}
             <div className="flex items-center space-x-1 ml-4">
-              {contractCount > 0 && (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => onViewContracts(directory.id)}
-                        className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700"
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>契約書一覧を見る</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              )}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => onViewContracts(directory.id)}
+                      className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{contractCount > 0 ? '契約書一覧を見る' : '契約書一覧を見る（新規作成）'}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
 
               <TooltipProvider>
                 <Tooltip>
