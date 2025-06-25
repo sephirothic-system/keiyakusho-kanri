@@ -10,7 +10,6 @@ const DOCUSIGN_ACCOUNT_ID = process.env.DOCUSIGN_ACCOUNT_ID
 const DOCUSIGN_INTEGRATION_KEY = process.env.DOCUSIGN_INTEGRATION_KEY
 const DOCUSIGN_USER_ID = process.env.DOCUSIGN_USER_ID
 const DOCUSIGN_PRIVATE_KEY = process.env.DOCUSIGN_PRIVATE_KEY
-const DOCUSIGN_REDIRECT_URI = process.env.DOCUSIGN_REDIRECT_URI || 'http://localhost:3000/api/auth/docusign/callback'
 
 export interface DocuSignSigner {
   email: string
