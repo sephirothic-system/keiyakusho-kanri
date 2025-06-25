@@ -2037,6 +2037,7 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     isActive: boolean | null
+    isAdmin: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2049,6 +2050,7 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     isActive: boolean | null
+    isAdmin: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2061,6 +2063,7 @@ export namespace Prisma {
     emailVerified: number
     image: number
     isActive: number
+    isAdmin: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2075,6 +2078,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     isActive?: true
+    isAdmin?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2087,6 +2091,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     isActive?: true
+    isAdmin?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2099,6 +2104,7 @@ export namespace Prisma {
     emailVerified?: true
     image?: true
     isActive?: true
+    isAdmin?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2184,6 +2190,7 @@ export namespace Prisma {
     emailVerified: Date | null
     image: string | null
     isActive: boolean
+    isAdmin: boolean
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -2213,6 +2220,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     ownedContracts?: boolean | User$ownedContractsArgs<ExtArgs>
@@ -2230,6 +2238,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -2242,6 +2251,7 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -2254,11 +2264,12 @@ export namespace Prisma {
     emailVerified?: boolean
     image?: boolean
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "password" | "emailVerified" | "image" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "name" | "password" | "emailVerified" | "image" | "isActive" | "isAdmin" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ownedContracts?: boolean | User$ownedContractsArgs<ExtArgs>
     userGroups?: boolean | User$userGroupsArgs<ExtArgs>
@@ -2285,6 +2296,7 @@ export namespace Prisma {
       emailVerified: Date | null
       image: string | null
       isActive: boolean
+      isAdmin: boolean
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -2721,6 +2733,7 @@ export namespace Prisma {
     readonly emailVerified: FieldRef<"User", 'DateTime'>
     readonly image: FieldRef<"User", 'String'>
     readonly isActive: FieldRef<"User", 'Boolean'>
+    readonly isAdmin: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -14278,6 +14291,7 @@ export namespace Prisma {
     emailVerified: 'emailVerified',
     image: 'image',
     isActive: 'isActive',
+    isAdmin: 'isAdmin',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -14545,6 +14559,7 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
+    isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     ownedContracts?: ContractListRelationFilter
@@ -14561,6 +14576,7 @@ export namespace Prisma {
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     ownedContracts?: ContractOrderByRelationAggregateInput
@@ -14580,6 +14596,7 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableFilter<"User"> | Date | string | null
     image?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
+    isAdmin?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     ownedContracts?: ContractListRelationFilter
@@ -14596,6 +14613,7 @@ export namespace Prisma {
     emailVerified?: SortOrderInput | SortOrder
     image?: SortOrderInput | SortOrder
     isActive?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -14614,6 +14632,7 @@ export namespace Prisma {
     emailVerified?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     image?: StringNullableWithAggregatesFilter<"User"> | string | null
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
+    isAdmin?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -15290,6 +15309,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ownedContracts?: ContractCreateNestedManyWithoutOwnerInput
@@ -15306,6 +15326,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ownedContracts?: ContractUncheckedCreateNestedManyWithoutOwnerInput
@@ -15322,6 +15343,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownedContracts?: ContractUpdateManyWithoutOwnerNestedInput
@@ -15338,6 +15360,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownedContracts?: ContractUncheckedUpdateManyWithoutOwnerNestedInput
@@ -15354,6 +15377,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -15366,6 +15390,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15378,6 +15403,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16181,6 +16207,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     isActive?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16193,6 +16220,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     isActive?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -16205,6 +16233,7 @@ export namespace Prisma {
     emailVerified?: SortOrder
     image?: SortOrder
     isActive?: SortOrder
+    isAdmin?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -18026,6 +18055,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ownedContracts?: ContractCreateNestedManyWithoutOwnerInput
@@ -18041,6 +18071,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ownedContracts?: ContractUncheckedCreateNestedManyWithoutOwnerInput
@@ -18103,6 +18134,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownedContracts?: ContractUpdateManyWithoutOwnerNestedInput
@@ -18118,6 +18150,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownedContracts?: ContractUncheckedUpdateManyWithoutOwnerNestedInput
@@ -18567,6 +18600,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     userGroups?: UserGroupCreateNestedManyWithoutUserInput
@@ -18582,6 +18616,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     userGroups?: UserGroupUncheckedCreateNestedManyWithoutUserInput
@@ -18706,6 +18741,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userGroups?: UserGroupUpdateManyWithoutUserNestedInput
@@ -18721,6 +18757,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userGroups?: UserGroupUncheckedUpdateManyWithoutUserNestedInput
@@ -18868,6 +18905,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ownedContracts?: ContractCreateNestedManyWithoutOwnerInput
@@ -18883,6 +18921,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ownedContracts?: ContractUncheckedCreateNestedManyWithoutOwnerInput
@@ -18914,6 +18953,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownedContracts?: ContractUpdateManyWithoutOwnerNestedInput
@@ -18929,6 +18969,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownedContracts?: ContractUncheckedUpdateManyWithoutOwnerNestedInput
@@ -18944,6 +18985,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ownedContracts?: ContractCreateNestedManyWithoutOwnerInput
@@ -18959,6 +19001,7 @@ export namespace Prisma {
     emailVerified?: Date | string | null
     image?: string | null
     isActive?: boolean
+    isAdmin?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     ownedContracts?: ContractUncheckedCreateNestedManyWithoutOwnerInput
@@ -18990,6 +19033,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownedContracts?: ContractUpdateManyWithoutOwnerNestedInput
@@ -19005,6 +19049,7 @@ export namespace Prisma {
     emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     image?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    isAdmin?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownedContracts?: ContractUncheckedUpdateManyWithoutOwnerNestedInput

@@ -16,6 +16,7 @@ model User {
   emailVerified  DateTime?
   image          String?
   isActive       Boolean     @default(true)
+  isAdmin        Boolean     @default(false)
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
   ownedContracts Contract[]  @relation("ContractOwner")

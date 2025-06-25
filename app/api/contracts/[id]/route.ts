@@ -189,10 +189,10 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
       return NextResponse.json({ error: '契約書が見つかりません' }, { status: 404 })
     }
 
-    // 権限チェック（削除はオーナーのみ可能）
+    // 権限チェック（削除はオーナーまたは管理者のみ可能）
     const permission = await checkContractPermission(userId, contractId)
-    if (permission.accessType !== 'owner') {
-      return NextResponse.json({ error: '契約書の削除は作成者のみ可能です' }, { status: 403 })
+    if (permission.accessType !== 'owner' && permission.accessType !== 'admin') {
+      return NextResponse.json({ error: '契約書の削除は作成者または管理者のみ可能です' }, { status: 403 })
     }
 
     // 契約書を削除（Cascadeで関連データも削除される）
