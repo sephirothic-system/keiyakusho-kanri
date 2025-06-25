@@ -11,21 +11,15 @@ const prisma = new PrismaClient()
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id: contractId } = await params
-    let userId: string
-
-    // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
-    if (process.env.NODE_ENV === 'test') {
-      userId = request.headers.get('x-user-id') || 'test-user-id'
-    } else {
-      // セッション情報を取得
-      const session = await getServerSession(authOptions)
-      
-      if (!session?.user?.id) {
-        return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
-      }
-
-      userId = session.user.id
+    
+    // セッション情報を取得
+    const session = await getServerSession(authOptions)
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
     }
+
+    const userId = session.user.id
 
     // リクエストボディを取得
     const body = await request.json()
@@ -97,21 +91,15 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id: contractId } = await params
-    let userId: string
-
-    // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
-    if (process.env.NODE_ENV === 'test') {
-      userId = request.headers.get('x-user-id') || 'test-user-id'
-    } else {
-      // セッション情報を取得
-      const session = await getServerSession(authOptions)
-      
-      if (!session?.user?.id) {
-        return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
-      }
-
-      userId = session.user.id
+    
+    // セッション情報を取得
+    const session = await getServerSession(authOptions)
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: '認証が必要です' }, { status: 401 })
     }
+
+    const userId = session.user.id
 
     // 契約書の存在チェック
     const contractExists = await prisma.contract.findUnique({

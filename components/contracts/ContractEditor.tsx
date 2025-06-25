@@ -9,10 +9,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
-import { Calendar, Save, FileText, Eye, Edit3, FileSignature } from 'lucide-react'
+import { Save, FileText, Eye, Edit3 } from 'lucide-react'
 import { toast } from 'sonner'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Textarea } from '@/components/ui/textarea'
 
 // Markdownエディターを動的インポート（SSRの問題を回避）
 const MDEditor = dynamic(
@@ -89,15 +87,6 @@ export function ContractEditor({
   const [previewMode, setPreviewMode] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null)
-  
-  // DocuSign送信用の状態
-  const [showDocuSignModal, setShowDocuSignModal] = useState(false)
-  const [isCreatingEnvelope, setIsCreatingEnvelope] = useState(false)
-  const [docuSignSubject, setDocuSignSubject] = useState('')
-  const [docuSignMessage, setDocuSignMessage] = useState('')
-  const [signers, setSigners] = useState<{ email: string; name: string }[]>([
-    { email: '', name: '' }
-  ])
 
   // フォームバリデーション
   const validateForm = (): boolean => {
@@ -148,91 +137,6 @@ export function ContractEditor({
     }
   }
 
-  // DocuSign送信のヘルパー関数
-  const addSigner = () => {
-    setSigners([...signers, { email: '', name: '' }])
-  }
-
-  const removeSigner = (index: number) => {
-    if (signers.length > 1) {
-      setSigners(signers.filter((_, i) => i !== index))
-    }
-  }
-
-  const updateSigner = (index: number, field: 'email' | 'name', value: string) => {
-    setSigners(signers.map((signer, i) => 
-      i === index ? { ...signer, [field]: value } : signer
-    ))
-  }
-
-  const handleCreateDocuSignEnvelope = async () => {
-    if (!contract?.id) {
-      toast.error('先に契約書を保存してください')
-      return
-    }
-
-    // バリデーション
-    if (!docuSignSubject.trim()) {
-      toast.error('件名を入力してください')
-      return
-    }
-
-    const validSigners = signers.filter(signer => signer.email.trim() && signer.name.trim())
-    if (validSigners.length === 0) {
-      toast.error('最低1人の署名者を追加してください')
-      return
-    }
-
-    // メールアドレスの形式チェック
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    for (const signer of validSigners) {
-      if (!emailRegex.test(signer.email)) {
-        toast.error(`無効なメールアドレス: ${signer.email}`)
-        return
-      }
-    }
-
-    setIsCreatingEnvelope(true)
-    try {
-      const response = await fetch(`/api/contracts/${contract.id}/docusign`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-user-id': 'mock-user-id',
-        },
-        body: JSON.stringify({
-          subject: docuSignSubject.trim(),
-          message: docuSignMessage.trim() || undefined,
-          signers: validSigners
-        }),
-      })
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || '電子契約の開始に失敗しました')
-      }
-
-      const result = await response.json()
-      toast.success(result.message || '電子契約が開始されました。署名者にメールが送信されます。')
-      
-      // モーダルを閉じてフォームをリセット
-      setShowDocuSignModal(false)
-      setDocuSignSubject('')
-      setDocuSignMessage('')
-      // リセット時も現在のユーザーをデフォルトで設定
-      if (currentUser) {
-        setSigners([{ email: currentUser.email, name: currentUser.name }])
-      } else {
-        setSigners([{ email: '', name: '' }])
-      }
-    } catch (error) {
-      console.error('Create DocuSign envelope error:', error)
-      toast.error(error instanceof Error ? error.message : '電子契約の開始に失敗しました')
-    } finally {
-      setIsCreatingEnvelope(false)
-    }
-  }
-
   // 現在のユーザー情報を取得
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -252,22 +156,6 @@ export function ContractEditor({
     
     fetchCurrentUser()
   }, [])
-
-  // モーダルが開かれたときに現在のユーザーをデフォルトの署名者として設定
-  useEffect(() => {
-    if (showDocuSignModal && currentUser) {
-      setSigners([
-        { email: currentUser.email, name: currentUser.name }
-      ])
-    }
-  }, [showDocuSignModal, currentUser])
-
-  // 契約書タイトルが変わったらDocuSign件名も更新
-  useEffect(() => {
-    if (formData.title) {
-      setDocuSignSubject(`【電子署名】${formData.title}`)
-    }
-  }, [formData.title])
 
   return (
     <div className="container max-w-6xl mx-auto py-6 space-y-6">
@@ -319,99 +207,6 @@ export function ContractEditor({
             <Save className="h-4 w-4" />
             <span>{isLoading ? '保存中...' : '保存'}</span>
           </Button>
-          {contract?.id && (
-            <Dialog open={showDocuSignModal} onOpenChange={setShowDocuSignModal}>
-              <DialogTrigger asChild>
-                <Button variant="default" className="flex items-center space-x-2 bg-blue-600 hover:bg-blue-700">
-                  <FileSignature className="h-4 w-4" />
-                  <span>DocuSign送信</span>
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle>DocuSign電子契約の開始</DialogTitle>
-                  <DialogDescription>
-                    この契約書をDocuSignで電子署名プロセスに送信します。署名者のメールアドレスと名前を入力してください。
-                  </DialogDescription>
-                </DialogHeader>
-                
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="docusign-subject">件名 *</Label>
-                    <Input
-                      id="docusign-subject"
-                      value={docuSignSubject}
-                      onChange={(e) => setDocuSignSubject(e.target.value)}
-                      placeholder="電子署名の件名を入力"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="docusign-message">メッセージ</Label>
-                    <Textarea
-                      id="docusign-message"
-                      value={docuSignMessage}
-                      onChange={(e) => setDocuSignMessage(e.target.value)}
-                      placeholder="署名者へのメッセージ（省略可）"
-                      rows={3}
-                    />
-                  </div>
-                  
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <Label>署名者</Label>
-                      <Button type="button" variant="outline" size="sm" onClick={addSigner}>
-                        <FileSignature className="h-4 w-4 mr-1" />
-                        署名者を追加
-                      </Button>
-                    </div>
-                    
-                    {signers.map((signer, index) => (
-                      <div key={index} className="flex gap-2 mb-2">
-                        <Input
-                          placeholder="メールアドレス"
-                          value={signer.email}
-                          onChange={(e) => updateSigner(index, 'email', e.target.value)}
-                        />
-                        <Input
-                          placeholder="名前"
-                          value={signer.name}
-                          onChange={(e) => updateSigner(index, 'name', e.target.value)}
-                        />
-                        {signers.length > 1 && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => removeSigner(index)}
-                          >
-                            削除
-                          </Button>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="outline"
-                      onClick={() => setShowDocuSignModal(false)}
-                      disabled={isCreatingEnvelope}
-                    >
-                      キャンセル
-                    </Button>
-                    <Button
-                      onClick={handleCreateDocuSignEnvelope}
-                      disabled={isCreatingEnvelope}
-                      className="bg-blue-600 hover:bg-blue-700"
-                    >
-                      {isCreatingEnvelope ? '送信中...' : 'DocuSignで送信'}
-                    </Button>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
-          )}
         </div>
       </div>
 

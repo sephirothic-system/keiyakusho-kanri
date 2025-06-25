@@ -1,11 +1,11 @@
 import { PrismaClient } from '@/lib/generated/prisma'
-import jwt from 'jsonwebtoken'
 import { marked } from 'marked'
 
 const prisma = new PrismaClient()
 
-// DocuSign APIの設定
-const DOCUSIGN_BASE_URL = (process.env.DOCUSIGN_BASE_URL || 'https://demo.docusign.net') + '/restapi'
+// DocuSign REST APIの設定
+const DOCUSIGN_BASE_URL = process.env.DOCUSIGN_BASE_URL || 'https://demo.docusign.net'
+const DOCUSIGN_AUTH_BASE_URL = 'https://account-d.docusign.com' // Demo環境の認証エンドポイント
 const DOCUSIGN_ACCOUNT_ID = process.env.DOCUSIGN_ACCOUNT_ID
 const DOCUSIGN_INTEGRATION_KEY = process.env.DOCUSIGN_INTEGRATION_KEY
 const DOCUSIGN_USER_ID = process.env.DOCUSIGN_USER_ID
@@ -33,82 +33,107 @@ export interface DocuSignEnvelopeResponse {
 }
 
 /**
+ * DocuSign 管理者同意用のURLを生成
+ */
+export function generateConsentUrl(): string {
+  if (!DOCUSIGN_INTEGRATION_KEY) {
+    throw new Error('DocuSign Integration Key is not configured')
+  }
+
+  const consentUrl = `${DOCUSIGN_AUTH_BASE_URL}/oauth/auth?response_type=code&scope=signature%20impersonation&client_id=${DOCUSIGN_INTEGRATION_KEY}&redirect_uri=http://localhost:3000`
+  
+  return consentUrl
+}
+
+/**
  * JWT認証用のアクセストークンを取得
  */
 async function getAccessToken(): Promise<string> {
+  console.log('DocuSign credentials check:')
+  console.log('INTEGRATION_KEY:', DOCUSIGN_INTEGRATION_KEY ? '設定済み' : '未設定')
+  console.log('USER_ID:', DOCUSIGN_USER_ID ? '設定済み' : '未設定')
+  console.log('PRIVATE_KEY:', DOCUSIGN_PRIVATE_KEY ? '設定済み' : '未設定')
+  console.log('BASE_URL:', DOCUSIGN_BASE_URL)
+
   if (!DOCUSIGN_INTEGRATION_KEY || !DOCUSIGN_USER_ID || !DOCUSIGN_PRIVATE_KEY) {
     throw new Error('DocuSign credentials are not configured')
   }
 
   try {
-    // JWTペイロードを作成
-    const iat = Math.floor(Date.now() / 1000)
-    const exp = iat + 3600 // 1時間後に期限切れ
-
+    // JWT作成
+    const jwt = require('jsonwebtoken')
+    const privateKey = DOCUSIGN_PRIVATE_KEY.replace(/\\n/g, '\n')
+    
+    console.log('Private key first 50 chars:', privateKey.substring(0, 50))
+    
     const jwtPayload = {
       iss: DOCUSIGN_INTEGRATION_KEY,
       sub: DOCUSIGN_USER_ID,
-      aud: 'account-d.docusign.com', // Demo環境の場合
-      iat,
-      exp,
-      scope: 'signature impersonation'
+      aud: 'account-d.docusign.com',
+      scope: 'signature impersonation',
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 3600 // 1時間
     }
 
-    // RSA秘密鍵を使用してJWTを署名
-    const privateKey = DOCUSIGN_PRIVATE_KEY.replace(/\\n/g, '\n')
-    const token = jwt.sign(jwtPayload, privateKey, { algorithm: 'RS256' })
+    console.log('JWT payload:', jwtPayload)
 
-    // DocuSign OAuth2エンドポイントからアクセストークンを取得
-    const response = await fetch('https://account-d.docusign.com/oauth/token', {
+    const jwtToken = jwt.sign(jwtPayload, privateKey, { 
+      algorithm: 'RS256',
+      header: { typ: 'JWT', alg: 'RS256' }
+    })
+
+    console.log('JWT token created, length:', jwtToken.length)
+
+    // アクセストークンを取得（正しいエンドポイント）
+    const tokenUrl = `${DOCUSIGN_AUTH_BASE_URL}/oauth/token`
+    console.log('Token URL:', tokenUrl)
+
+    const response = await fetch(tokenUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
         grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-        assertion: token,
-      }),
+        assertion: jwtToken
+      })
     })
+
+    console.log('Response status:', response.status)
+    console.log('Response headers:', Object.fromEntries(response.headers.entries()))
 
     if (!response.ok) {
       const errorText = await response.text()
-      throw new Error(`JWT authentication failed: ${response.status} ${errorText}`)
+      console.error('DocuSign API error response:', errorText)
+      
+      // consent_requiredエラーの場合は特別な処理
+      if (errorText.includes('consent_required')) {
+        const consentUrl = generateConsentUrl()
+        console.error('DocuSign consent required. Please visit:', consentUrl)
+        throw new Error(`DocuSign管理者の同意が必要です。以下のURLにアクセスして同意プロセスを完了してください: ${consentUrl}`)
+      }
+      
+      throw new Error(`DocuSign authentication failed: ${response.status} ${errorText}`)
     }
 
-    const authData = await response.json()
-    return authData.access_token
+    const tokenData = await response.json()
+    console.log('Token response keys:', Object.keys(tokenData))
+    
+    if (!tokenData.access_token) {
+      console.error('Full token response:', tokenData)
+      throw new Error('Access token not received')
+    }
+
+    console.log('Access token received successfully')
+    return tokenData.access_token
   } catch (error) {
-    console.error('DocuSign authentication error:', error)
-    throw new Error('DocuSign認証に失敗しました')
+    console.error('DocuSign authentication error details:', error)
+    if (error instanceof Error) {
+      console.error('Error message:', error.message)
+      console.error('Error stack:', error.stack)
+    }
+    throw error
   }
-}
-
-/**
- * DocuSign APIリクエストのヘルパー
- */
-async function makeDocuSignRequest(
-  endpoint: string, 
-  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
-  body?: any
-): Promise<any> {
-  const accessToken = await getAccessToken()
-  
-  const response = await fetch(`${DOCUSIGN_BASE_URL}/v2.1/accounts/${DOCUSIGN_ACCOUNT_ID}${endpoint}`, {
-    method,
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-    },
-    body: body ? JSON.stringify(body) : undefined,
-  })
-
-  if (!response.ok) {
-    const errorText = await response.text()
-    throw new Error(`DocuSign API error: ${response.status} ${errorText}`)
-  }
-
-  return response.json()
 }
 
 /**
@@ -218,10 +243,17 @@ async function convertMarkdownToPdfBase64(markdown: string, title: string): Prom
 }
 
 /**
- * DocuSignでエンベロープ（電子契約）を作成
+ * DocuSign REST APIでエンベロープ（電子契約）を作成
  */
 export async function createDocuSignEnvelope(request: CreateEnvelopeRequest): Promise<string> {
   try {
+    if (!DOCUSIGN_ACCOUNT_ID) {
+      throw new Error('DocuSign Account ID is not configured')
+    }
+
+    // アクセストークンを取得
+    const accessToken = await getAccessToken()
+
     // 契約書データを取得
     const contract = await prisma.contract.findUnique({
       where: { id: request.contractId },
@@ -237,17 +269,17 @@ export async function createDocuSignEnvelope(request: CreateEnvelopeRequest): Pr
     // PDFドキュメントを生成
     const pdfBase64 = await convertMarkdownToPdfBase64(contract.content, contract.title)
 
-    // DocuSign エンベロープの作成リクエスト
-    const envelopeDefinition = {
+    // DocuSign エンベロープ作成用のペイロード
+    const envelopeData = {
       emailSubject: request.subject,
       emailMessage: request.message || '契約書への電子署名をお願いいたします。',
       status: 'sent',
       documents: [
         {
-          documentId: '1',
-          name: `${contract.title}.pdf`,
           documentBase64: pdfBase64,
+          name: `${contract.title}.pdf`,
           fileExtension: 'pdf',
+          documentId: '1'
         }
       ],
       recipients: {
@@ -264,7 +296,7 @@ export async function createDocuSignEnvelope(request: CreateEnvelopeRequest): Pr
                 recipientId: String(index + 1),
                 tabLabel: `SignHere${index + 1}`,
                 xPosition: '200',
-                yPosition: '700',
+                yPosition: '700'
               }
             ]
           }
@@ -272,17 +304,31 @@ export async function createDocuSignEnvelope(request: CreateEnvelopeRequest): Pr
       }
     }
 
-    // DocuSign API でエンベロープを作成
-    const response: DocuSignEnvelopeResponse = await makeDocuSignRequest(
-      '/envelopes',
-      'POST',
-      envelopeDefinition
-    )
+    // DocuSign REST APIでエンベロープを作成
+    const response = await fetch(`${DOCUSIGN_BASE_URL}/restapi/v2.1/accounts/${DOCUSIGN_ACCOUNT_ID}/envelopes`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(envelopeData)
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`DocuSign envelope creation failed: ${response.status} ${errorText}`)
+    }
+
+    const result = await response.json()
+
+    if (!result.envelopeId) {
+      throw new Error('エンベロープの作成に失敗しました')
+    }
 
     // データベースにエンベロープ情報を保存
     await prisma.docuSignEnvelope.create({
       data: {
-        envelopeId: response.envelopeId,
+        envelopeId: result.envelopeId,
         contractId: request.contractId,
         status: 'SENT',
         subject: request.subject,
@@ -299,51 +345,11 @@ export async function createDocuSignEnvelope(request: CreateEnvelopeRequest): Pr
       }
     })
 
-    return response.envelopeId
+    return result.envelopeId
   } catch (error) {
     console.error('DocuSign envelope creation failed:', error)
     throw error
   }
-}
-
-/**
- * DocuSignエンベロープのステータスを取得
- */
-export async function getEnvelopeStatus(envelopeId: string) {
-  try {
-    const result = await makeDocuSignRequest(`/envelopes/${envelopeId}`)
-    
-    // データベースのステータスも更新
-    await updateEnvelopeStatus(envelopeId, result.status || 'unknown')
-    
-    return result
-  } catch (error) {
-    console.error('Failed to get envelope status:', error)
-    throw error
-  }
-}
-
-/**
- * エンベロープステータスをデータベースに更新
- */
-async function updateEnvelopeStatus(envelopeId: string, status: string) {
-  const statusMap: Record<string, any> = {
-    'completed': 'COMPLETED',
-    'declined': 'DECLINED',
-    'voided': 'VOIDED',
-    'sent': 'SENT',
-    'created': 'CREATED',
-  }
-
-  const dbStatus = statusMap[status.toLowerCase()] || 'CREATED'
-
-  await prisma.docuSignEnvelope.update({
-    where: { envelopeId },
-    data: { 
-      status: dbStatus,
-      completedAt: dbStatus === 'COMPLETED' ? new Date() : null
-    }
-  })
 }
 
 /**
@@ -359,29 +365,4 @@ export async function getContractEnvelopes(contractId: string) {
     },
     orderBy: { createdAt: 'desc' }
   })
-}
-
-/**
- * エンベロープのサーナー用リンクを取得
- */
-export async function getSigningUrl(envelopeId: string, signerEmail: string, returnUrl?: string): Promise<string> {
-  try {
-    const recipientViewRequest = {
-      authenticationMethod: 'none',
-      email: signerEmail,
-      returnUrl: returnUrl || `${process.env.NEXTAUTH_URL}/contracts`,
-      userName: signerEmail
-    }
-
-    const result = await makeDocuSignRequest(
-      `/envelopes/${envelopeId}/views/recipient`,
-      'POST',
-      { recipientViewRequest }
-    )
-
-    return result.url || ''
-  } catch (error) {
-    console.error('Failed to get signing URL:', error)
-    throw new Error('署名URLの取得に失敗しました')
-  }
 }

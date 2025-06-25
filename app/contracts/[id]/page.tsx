@@ -30,7 +30,7 @@ import {
 } from 'lucide-react'
 
 interface ContractDetailPageProps {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }
 
 interface Contract {
@@ -114,6 +114,7 @@ const envelopeStatusLabels: Record<string, string> = {
 
 export default function ContractDetailPage({ params }: ContractDetailPageProps) {
   const router = useRouter()
+  const [contractId, setContractId] = useState<string | null>(null)
   const [contract, setContract] = useState<Contract | null>(null)
   const [permission, setPermission] = useState<Permission | null>(null)
   const [envelopes, setEnvelopes] = useState<DocuSignEnvelope[]>([])
@@ -121,6 +122,8 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
   const [isCreatingEnvelope, setIsCreatingEnvelope] = useState(false)
   const [showDocuSignModal, setShowDocuSignModal] = useState(false)
   const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null)
+  const [docusignConsentUrl, setDocusignConsentUrl] = useState<string | null>(null)
+  const [showConsentModal, setShowConsentModal] = useState(false)
   
   // DocuSign電子契約フォームの状態
   const [subject, setSubject] = useState('')
@@ -130,22 +133,25 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
     { email: '', name: '' }
   ])
 
+  // paramsからcontractIdを取得
+  useEffect(() => {
+    const getContractId = async () => {
+      const resolvedParams = await params
+      setContractId(resolvedParams.id)
+    }
+    getContractId()
+  }, [params])
+
   // 初期データを取得
   useEffect(() => {
+    if (!contractId) return
+
     const fetchData = async () => {
       try {
         const [userResponse, contractResponse, envelopesResponse] = await Promise.all([
           fetch('/api/auth/me'),
-          fetch(`/api/contracts/${params.id}`, {
-            headers: {
-              'x-user-id': 'mock-user-id', // 実際の実装では認証から取得
-            },
-          }),
-          fetch(`/api/contracts/${params.id}/docusign`, {
-            headers: {
-              'x-user-id': 'mock-user-id',
-            },
-          })
+          fetch(`/api/contracts/${contractId}`),
+          fetch(`/api/contracts/${contractId}/docusign`)
         ])
 
         // ユーザー情報を設定
@@ -192,7 +198,7 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
     }
 
     fetchData()
-  }, [params.id, router])
+  }, [contractId, router])
 
   // モーダルが開かれたときに現在のユーザーをデフォルトの署名者として設定
   useEffect(() => {
@@ -205,18 +211,15 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
   }, [showDocuSignModal, currentUser])
 
   const handleDeleteContract = async () => {
-    if (!contract || !permission?.canWrite) return
+    if (!contract || !permission?.canWrite || !contractId) return
 
     if (!confirm('本当にこの契約書を削除しますか？この操作は取り消せません。')) {
       return
     }
 
     try {
-      const response = await fetch(`/api/contracts/${params.id}`, {
+      const response = await fetch(`/api/contracts/${contractId}`, {
         method: 'DELETE',
-        headers: {
-          'x-user-id': 'mock-user-id',
-        },
       })
 
       if (!response.ok) {
@@ -233,7 +236,7 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
   }
 
   const handleCreateDocuSignEnvelope = async () => {
-    if (!contract) return
+    if (!contract || !contractId) return
 
     // バリデーション
     if (!subject.trim()) {
@@ -258,11 +261,10 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
 
     setIsCreatingEnvelope(true)
     try {
-      const response = await fetch(`/api/contracts/${params.id}/docusign`, {
+      const response = await fetch(`/api/contracts/${contractId}/docusign`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-user-id': 'mock-user-id',
         },
         body: JSON.stringify({
           subject: subject.trim(),
@@ -273,6 +275,17 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
 
       if (!response.ok) {
         const errorData = await response.json()
+        
+        // DocuSign同意が必要な場合の特別処理
+        if (errorData.error && errorData.error.includes('管理者の同意が必要です')) {
+          const urlMatch = errorData.error.match(/https:\/\/[^\s]+/)
+          if (urlMatch) {
+            setDocusignConsentUrl(urlMatch[0])
+            setShowConsentModal(true)
+            return
+          }
+        }
+        
         throw new Error(errorData.error || '電子契約の開始に失敗しました')
       }
 
@@ -294,9 +307,7 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
       }
 
       // エンベロープ一覧を再取得
-      const envelopesResponse = await fetch(`/api/contracts/${params.id}/docusign`, {
-        headers: { 'x-user-id': 'mock-user-id' },
-      })
+      const envelopesResponse = await fetch(`/api/contracts/${contractId}/docusign`)
       if (envelopesResponse.ok) {
         const envelopesData = await envelopesResponse.json()
         setEnvelopes(envelopesData.envelopes || [])
@@ -407,7 +418,7 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
           <div className="flex gap-2">
             <Button
               variant="outline"
-              onClick={() => router.push(`/contracts/${params.id}/edit`)}
+              onClick={() => contractId && router.push(`/contracts/${contractId}/edit`)}
               className="gap-2"
               data-testid="edit-button"
             >
@@ -707,6 +718,55 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
           )}
         </CardContent>
       </Card>
+
+      {/* DocuSign 同意モーダル */}
+      <Dialog open={showConsentModal} onOpenChange={setShowConsentModal}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileSignature className="h-5 w-5" />
+              DocuSign 管理者同意が必要
+            </DialogTitle>
+            <DialogDescription>
+              DocuSignの電子署名機能を使用するためには、管理者による同意が必要です。
+              以下のボタンをクリックして、DocuSignの同意プロセスを完了してください。
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h4 className="font-medium text-blue-900 mb-2">同意プロセスについて</h4>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• DocuSignのサイトにリダイレクトされます</li>
+                <li>• 管理者権限でサインインして同意してください</li>
+                <li>• 同意完了後、このページに戻って電子契約を開始できます</li>
+              </ul>
+            </div>
+            
+            <div className="flex justify-between items-center">
+              <Button
+                variant="outline"
+                onClick={() => setShowConsentModal(false)}
+              >
+                後で実行する
+              </Button>
+              
+              {docusignConsentUrl && (
+                <Button
+                  onClick={() => {
+                    window.open(docusignConsentUrl, '_blank')
+                    setShowConsentModal(false)
+                  }}
+                  className="gap-2"
+                >
+                  <FileSignature className="h-4 w-4" />
+                  DocuSign同意プロセスを開始
+                </Button>
+              )}
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
