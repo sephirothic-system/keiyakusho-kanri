@@ -55,7 +55,23 @@ export class TestScenarioBuilder {
     const businessDir = await directoryFactory.createBusinessDirectory(rootDir)
     console.log('Directories created:', { rootDir: rootDir.id, legalDir: legalDir.id, businessDir: businessDir.id })
 
-
+    // ディレクトリアクセス権限設定
+    console.log('Creating directory access permissions...')
+    await testPrisma.directoryAccess.createMany({
+      data: [
+        // 管理者はすべてに書き込み権限
+        { directoryId: rootDir.id, groupId: adminGroup.id, permission: 'WRITE' },
+        { directoryId: legalDir.id, groupId: adminGroup.id, permission: 'WRITE' },
+        { directoryId: businessDir.id, groupId: adminGroup.id, permission: 'WRITE' },
+        // 法務部は法務ディレクトリに書き込み権限
+        { directoryId: legalDir.id, groupId: legalGroup.id, permission: 'WRITE' },
+        // 営業部は営業ディレクトリに書き込み権限
+        { directoryId: businessDir.id, groupId: businessGroup.id, permission: 'WRITE' },
+        // 営業部は法務ディレクトリに読み取り権限
+        { directoryId: legalDir.id, groupId: businessGroup.id, permission: 'READ' },
+      ],
+    })
+    console.log('Directory access permissions created')
 
     // カテゴリ作成
     console.log('Creating categories...')
@@ -124,7 +140,15 @@ export class TestScenarioBuilder {
       data: { userId: owner.id, groupId: group.id },
     })
 
-
+    // グループにディレクトリアクセス権限を付与
+    console.log('Creating directory access for group...')
+    await testPrisma.directoryAccess.create({
+      data: {
+        directoryId: directory.id,
+        groupId: group.id,
+        permission: 'WRITE',
+      },
+    })
 
     // 契約書作成
     console.log('Creating contract...')

@@ -212,7 +212,51 @@ async function main() {
 
   console.log('Directory structure created:', directories.length + 2)
 
+  // ディレクトリアクセス権限の設定
+  await Promise.all([
+    // 管理者グループ → 全ディレクトリに書き込み権限
+    prisma.directoryAccess.upsert({
+      where: { directoryId_groupId: { directoryId: contractsDirectory.id, groupId: groups[0].id } },
+      update: {},
+      create: {
+        directoryId: contractsDirectory.id,
+        groupId: groups[0].id,
+        permission: 'WRITE',
+      },
+    }),
+    // 法務部 → 法務ディレクトリに書き込み権限
+    prisma.directoryAccess.upsert({
+      where: { directoryId_groupId: { directoryId: directories[0].id, groupId: groups[1].id } },
+      update: {},
+      create: {
+        directoryId: directories[0].id,
+        groupId: groups[1].id,
+        permission: 'WRITE',
+      },
+    }),
+    // 営業部 → 業務ディレクトリに書き込み権限
+    prisma.directoryAccess.upsert({
+      where: { directoryId_groupId: { directoryId: directories[1].id, groupId: groups[2].id } },
+      update: {},
+      create: {
+        directoryId: directories[1].id,
+        groupId: groups[2].id,
+        permission: 'WRITE',
+      },
+    }),
+    // 営業部 → 法務ディレクトリに読み取り権限
+    prisma.directoryAccess.upsert({
+      where: { directoryId_groupId: { directoryId: directories[0].id, groupId: groups[2].id } },
+      update: {},
+      create: {
+        directoryId: directories[0].id,
+        groupId: groups[2].id,
+        permission: 'READ',
+      },
+    }),
+  ])
 
+  console.log('Directory access permissions created')
 
   // サンプル契約書の作成
   const sampleContracts = await Promise.all([
