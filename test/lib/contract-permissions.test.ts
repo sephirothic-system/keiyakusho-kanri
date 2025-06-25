@@ -22,7 +22,7 @@ describe('権限管理機能の統合テスト', () => {
       const owner = await factories.user.build()
       const category = await factories.category.build()
       const directory = await factories.directory.build()
-      
+
       const contract = await factories.contract.build({
         ownerId: owner.id,
         directoryId: directory.id,
@@ -115,7 +115,7 @@ describe('権限管理機能の統合テスト', () => {
       const unauthorizedUser = await factories.user.build()
       const category = await factories.category.build()
       const directory = await factories.directory.build()
-      
+
       const contract = await factories.contract.build({
         ownerId: owner.id,
         directoryId: directory.id,
@@ -341,7 +341,7 @@ describe('権限管理機能の統合テスト', () => {
       const owner = await factories.user.build()
       const category = await factories.category.build()
       const directory = await factories.directory.build()
-      
+
       const contract = await factories.contract.build({
         ownerId: owner.id,
         directoryId: directory.id,
@@ -359,7 +359,7 @@ describe('権限管理機能の統合テスト', () => {
       const unauthorizedUser = await factories.user.build()
       const category = await factories.category.build()
       const directory = await factories.directory.build()
-      
+
       const contract = await factories.contract.build({
         ownerId: owner.id,
         directoryId: directory.id,

@@ -4,8 +4,8 @@ import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { FileText, Users, FolderOpen, Plus, Shield } from 'lucide-react'
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Users, FolderOpen, Plus, Shield } from 'lucide-react'
 import StatsCards from '@/components/dashboard/StatsCards'
 import RecentContractsList from '@/components/contracts/RecentContractsList'
 
@@ -61,10 +61,13 @@ export default function Home() {
   const handleManageGroups = () => {
     router.push('/groups')
   }
+  
 
   const handleManagePermissions = () => {
     router.push('/admin/permissions')
   }
+
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -156,6 +159,7 @@ export default function Home() {
                   </CardHeader>
                 </Card>
               )}
+
             </div>
           </div>
 

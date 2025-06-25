@@ -14,7 +14,8 @@ import {
   ChevronRight, 
   ChevronDown,
   FileText,
-  Info
+  Info,
+  Eye
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { Directory } from '@/app/directories/page'
@@ -24,6 +25,7 @@ interface DirectoryTreeProps {
   onEdit: (directory: Directory) => void
   onDelete: (id: string) => void
   onCreateChild: (parentId: string) => void
+  onViewContracts: (directoryId: string) => void
   level?: number
 }
 
@@ -32,10 +34,11 @@ interface DirectoryNodeProps {
   onEdit: (directory: Directory) => void
   onDelete: (id: string) => void
   onCreateChild: (parentId: string) => void
+  onViewContracts: (directoryId: string) => void
   level: number
 }
 
-function DirectoryNode({ directory, onEdit, onDelete, onCreateChild, level }: DirectoryNodeProps) {
+function DirectoryNode({ directory, onEdit, onDelete, onCreateChild, onViewContracts, level }: DirectoryNodeProps) {
   const [isExpanded, setIsExpanded] = useState(true)
   const hasChildren = directory.children && directory.children.length > 0
   const contractCount = directory.contracts?.length || 0
@@ -174,6 +177,24 @@ function DirectoryNode({ directory, onEdit, onDelete, onCreateChild, level }: Di
                     <Button
                       variant="ghost"
                       size="sm"
+                      onClick={() => onViewContracts(directory.id)}
+                      className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700"
+                    >
+                      <Eye className="h-4 w-4" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{contractCount > 0 ? '契約書一覧を見る' : '契約書一覧を見る（新規作成）'}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => onCreateChild(directory.id)}
                       className="h-8 w-8 p-0"
                     >
@@ -244,6 +265,7 @@ function DirectoryNode({ directory, onEdit, onDelete, onCreateChild, level }: Di
               onEdit={onEdit}
               onDelete={onDelete}
               onCreateChild={onCreateChild}
+              onViewContracts={onViewContracts}
               level={level + 1}
             />
           ))}
@@ -258,6 +280,7 @@ export function DirectoryTree({
   onEdit, 
   onDelete, 
   onCreateChild,
+  onViewContracts,
   level = 0 
 }: DirectoryTreeProps) {
   if (directories.length === 0) {
@@ -278,6 +301,7 @@ export function DirectoryTree({
           onEdit={onEdit}
           onDelete={onDelete}
           onCreateChild={onCreateChild}
+          onViewContracts={onViewContracts}
           level={level}
         />
       ))}

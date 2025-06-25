@@ -50,6 +50,7 @@ interface ContractEditorProps {
   onCancel: () => void
   isLoading?: boolean
   homeButton?: React.ReactNode
+  defaultDirectoryId?: string
 }
 
 const STATUS_LABELS = {
@@ -68,6 +69,7 @@ export function ContractEditor({
   onCancel,
   isLoading = false,
   homeButton,
+  defaultDirectoryId,
 }: ContractEditorProps) {
   const [formData, setFormData] = useState<Omit<ContractData, 'id' | 'owner' | 'directory' | 'category'>>({
     title: contract?.title || '',
@@ -76,7 +78,7 @@ export function ContractEditor({
     contractNumber: contract?.contractNumber || '',
     startDate: contract?.startDate || '',
     endDate: contract?.endDate || '',
-    directoryId: contract?.directoryId || '',
+    directoryId: contract?.directoryId || defaultDirectoryId || '',
     categoryId: contract?.categoryId || '',
   })
 
