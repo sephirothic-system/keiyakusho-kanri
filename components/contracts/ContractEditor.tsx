@@ -88,6 +88,7 @@ export function ContractEditor({
 
   const [previewMode, setPreviewMode] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null)
   
   // DocuSign送信用の状態
   const [showDocuSignModal, setShowDocuSignModal] = useState(false)
@@ -218,7 +219,12 @@ export function ContractEditor({
       setShowDocuSignModal(false)
       setDocuSignSubject('')
       setDocuSignMessage('')
-      setSigners([{ email: '', name: '' }])
+      // リセット時も現在のユーザーをデフォルトで設定
+      if (currentUser) {
+        setSigners([{ email: currentUser.email, name: currentUser.name }])
+      } else {
+        setSigners([{ email: '', name: '' }])
+      }
     } catch (error) {
       console.error('Create DocuSign envelope error:', error)
       toast.error(error instanceof Error ? error.message : '電子契約の開始に失敗しました')
@@ -226,6 +232,35 @@ export function ContractEditor({
       setIsCreatingEnvelope(false)
     }
   }
+
+  // 現在のユーザー情報を取得
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await fetch('/api/auth/me')
+        if (response.ok) {
+          const userData = await response.json()
+          setCurrentUser({
+            name: userData.user.name || userData.user.email,
+            email: userData.user.email
+          })
+        }
+      } catch (error) {
+        console.error('Failed to fetch current user:', error)
+      }
+    }
+    
+    fetchCurrentUser()
+  }, [])
+
+  // モーダルが開かれたときに現在のユーザーをデフォルトの署名者として設定
+  useEffect(() => {
+    if (showDocuSignModal && currentUser) {
+      setSigners([
+        { email: currentUser.email, name: currentUser.name }
+      ])
+    }
+  }, [showDocuSignModal, currentUser])
 
   // 契約書タイトルが変わったらDocuSign件名も更新
   useEffect(() => {

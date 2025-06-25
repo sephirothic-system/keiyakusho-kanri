@@ -120,6 +120,7 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
   const [isLoading, setIsLoading] = useState(true)
   const [isCreatingEnvelope, setIsCreatingEnvelope] = useState(false)
   const [showDocuSignModal, setShowDocuSignModal] = useState(false)
+  const [currentUser, setCurrentUser] = useState<{ name: string; email: string } | null>(null)
   
   // DocuSign電子契約フォームの状態
   const [subject, setSubject] = useState('')
@@ -133,7 +134,8 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [contractResponse, envelopesResponse] = await Promise.all([
+        const [userResponse, contractResponse, envelopesResponse] = await Promise.all([
+          fetch('/api/auth/me'),
           fetch(`/api/contracts/${params.id}`, {
             headers: {
               'x-user-id': 'mock-user-id', // 実際の実装では認証から取得
@@ -145,6 +147,15 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
             },
           })
         ])
+
+        // ユーザー情報を設定
+        if (userResponse.ok) {
+          const userData = await userResponse.json()
+          setCurrentUser({
+            name: userData.user.name || userData.user.email,
+            email: userData.user.email
+          })
+        }
 
         if (!contractResponse.ok) {
           if (contractResponse.status === 404) {
@@ -182,6 +193,16 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
 
     fetchData()
   }, [params.id, router])
+
+  // モーダルが開かれたときに現在のユーザーをデフォルトの署名者として設定
+  useEffect(() => {
+    if (showDocuSignModal && currentUser) {
+      setSigners([
+        { email: currentUser.email, name: currentUser.name },
+        { email: '', name: '' }
+      ])
+    }
+  }, [showDocuSignModal, currentUser])
 
   const handleDeleteContract = async () => {
     if (!contract || !permission?.canWrite) return
@@ -262,7 +283,15 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
       setShowDocuSignModal(false)
       setSubject(`【電子署名】${contract.title}`)
       setMessage('')
-      setSigners([{ email: '', name: '' }, { email: '', name: '' }])
+      // リセット時も現在のユーザーをデフォルトで設定
+      if (currentUser) {
+        setSigners([
+          { email: currentUser.email, name: currentUser.name },
+          { email: '', name: '' }
+        ])
+      } else {
+        setSigners([{ email: '', name: '' }, { email: '', name: '' }])
+      }
 
       // エンベロープ一覧を再取得
       const envelopesResponse = await fetch(`/api/contracts/${params.id}/docusign`, {
