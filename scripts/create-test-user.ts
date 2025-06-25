@@ -17,7 +17,26 @@ async function createTestUser() {
   })
 
   if (existingUser) {
-    console.log('テストユーザーは既に存在します')
+    // 既存ユーザーがisAdmin=falseの場合は更新
+    if (!existingUser.isAdmin) {
+      const updatedUser = await prisma.user.update({
+        where: { id: existingUser.id },
+        data: { isAdmin: true },
+      })
+      console.log('既存のテストユーザーを管理者に更新しました:', {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        name: updatedUser.name,
+        isAdmin: updatedUser.isAdmin,
+      })
+      return updatedUser
+    }
+    console.log('テストユーザーは既に管理者として存在します:', {
+      id: existingUser.id,
+      email: existingUser.email,
+      name: existingUser.name,
+      isAdmin: existingUser.isAdmin,
+    })
     return existingUser
   }
 
@@ -28,6 +47,7 @@ async function createTestUser() {
       password: hashedPassword,
       name,
       isActive: true,
+      isAdmin: true,
     },
   })
 
@@ -35,6 +55,7 @@ async function createTestUser() {
     id: user.id,
     email: user.email,
     name: user.name,
+    isAdmin: user.isAdmin,
   })
 
   return user
