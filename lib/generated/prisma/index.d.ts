@@ -68,6 +68,16 @@ export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
  * 
  */
 export type VerificationToken = $Result.DefaultSelection<Prisma.$VerificationTokenPayload>
+/**
+ * Model DocuSignEnvelope
+ * 
+ */
+export type DocuSignEnvelope = $Result.DefaultSelection<Prisma.$DocuSignEnvelopePayload>
+/**
+ * Model DocuSignSigner
+ * 
+ */
+export type DocuSignSigner = $Result.DefaultSelection<Prisma.$DocuSignSignerPayload>
 
 /**
  * Enums
@@ -91,6 +101,29 @@ export const ContractStatus: {
 
 export type ContractStatus = (typeof ContractStatus)[keyof typeof ContractStatus]
 
+
+export const DocuSignEnvelopeStatus: {
+  CREATED: 'CREATED',
+  SENT: 'SENT',
+  COMPLETED: 'COMPLETED',
+  DECLINED: 'DECLINED',
+  VOIDED: 'VOIDED'
+};
+
+export type DocuSignEnvelopeStatus = (typeof DocuSignEnvelopeStatus)[keyof typeof DocuSignEnvelopeStatus]
+
+
+export const DocuSignSignerStatus: {
+  CREATED: 'CREATED',
+  SENT: 'SENT',
+  DELIVERED: 'DELIVERED',
+  SIGNED: 'SIGNED',
+  COMPLETED: 'COMPLETED',
+  DECLINED: 'DECLINED'
+};
+
+export type DocuSignSignerStatus = (typeof DocuSignSignerStatus)[keyof typeof DocuSignSignerStatus]
+
 }
 
 export type Permission = $Enums.Permission
@@ -100,6 +133,14 @@ export const Permission: typeof $Enums.Permission
 export type ContractStatus = $Enums.ContractStatus
 
 export const ContractStatus: typeof $Enums.ContractStatus
+
+export type DocuSignEnvelopeStatus = $Enums.DocuSignEnvelopeStatus
+
+export const DocuSignEnvelopeStatus: typeof $Enums.DocuSignEnvelopeStatus
+
+export type DocuSignSignerStatus = $Enums.DocuSignSignerStatus
+
+export const DocuSignSignerStatus: typeof $Enums.DocuSignSignerStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -335,6 +376,26 @@ export class PrismaClient<
     * ```
     */
   get verificationToken(): Prisma.VerificationTokenDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.docuSignEnvelope`: Exposes CRUD operations for the **DocuSignEnvelope** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DocuSignEnvelopes
+    * const docuSignEnvelopes = await prisma.docuSignEnvelope.findMany()
+    * ```
+    */
+  get docuSignEnvelope(): Prisma.DocuSignEnvelopeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.docuSignSigner`: Exposes CRUD operations for the **DocuSignSigner** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more DocuSignSigners
+    * const docuSignSigners = await prisma.docuSignSigner.findMany()
+    * ```
+    */
+  get docuSignSigner(): Prisma.DocuSignSignerDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -785,7 +846,9 @@ export namespace Prisma {
     ContractVersion: 'ContractVersion',
     Account: 'Account',
     Session: 'Session',
-    VerificationToken: 'VerificationToken'
+    VerificationToken: 'VerificationToken',
+    DocuSignEnvelope: 'DocuSignEnvelope',
+    DocuSignSigner: 'DocuSignSigner'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -804,7 +867,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "group" | "userGroup" | "directory" | "directoryAccess" | "contract" | "category" | "contractVersion" | "account" | "session" | "verificationToken"
+      modelProps: "user" | "group" | "userGroup" | "directory" | "directoryAccess" | "contract" | "category" | "contractVersion" | "account" | "session" | "verificationToken" | "docuSignEnvelope" | "docuSignSigner"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1622,6 +1685,154 @@ export namespace Prisma {
           }
         }
       }
+      DocuSignEnvelope: {
+        payload: Prisma.$DocuSignEnvelopePayload<ExtArgs>
+        fields: Prisma.DocuSignEnvelopeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DocuSignEnvelopeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DocuSignEnvelopeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload>
+          }
+          findFirst: {
+            args: Prisma.DocuSignEnvelopeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DocuSignEnvelopeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload>
+          }
+          findMany: {
+            args: Prisma.DocuSignEnvelopeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload>[]
+          }
+          create: {
+            args: Prisma.DocuSignEnvelopeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload>
+          }
+          createMany: {
+            args: Prisma.DocuSignEnvelopeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DocuSignEnvelopeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload>[]
+          }
+          delete: {
+            args: Prisma.DocuSignEnvelopeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload>
+          }
+          update: {
+            args: Prisma.DocuSignEnvelopeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload>
+          }
+          deleteMany: {
+            args: Prisma.DocuSignEnvelopeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DocuSignEnvelopeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DocuSignEnvelopeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload>[]
+          }
+          upsert: {
+            args: Prisma.DocuSignEnvelopeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignEnvelopePayload>
+          }
+          aggregate: {
+            args: Prisma.DocuSignEnvelopeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDocuSignEnvelope>
+          }
+          groupBy: {
+            args: Prisma.DocuSignEnvelopeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DocuSignEnvelopeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DocuSignEnvelopeCountArgs<ExtArgs>
+            result: $Utils.Optional<DocuSignEnvelopeCountAggregateOutputType> | number
+          }
+        }
+      }
+      DocuSignSigner: {
+        payload: Prisma.$DocuSignSignerPayload<ExtArgs>
+        fields: Prisma.DocuSignSignerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DocuSignSignerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DocuSignSignerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload>
+          }
+          findFirst: {
+            args: Prisma.DocuSignSignerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DocuSignSignerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload>
+          }
+          findMany: {
+            args: Prisma.DocuSignSignerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload>[]
+          }
+          create: {
+            args: Prisma.DocuSignSignerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload>
+          }
+          createMany: {
+            args: Prisma.DocuSignSignerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DocuSignSignerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload>[]
+          }
+          delete: {
+            args: Prisma.DocuSignSignerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload>
+          }
+          update: {
+            args: Prisma.DocuSignSignerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload>
+          }
+          deleteMany: {
+            args: Prisma.DocuSignSignerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DocuSignSignerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DocuSignSignerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload>[]
+          }
+          upsert: {
+            args: Prisma.DocuSignSignerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DocuSignSignerPayload>
+          }
+          aggregate: {
+            args: Prisma.DocuSignSignerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDocuSignSigner>
+          }
+          groupBy: {
+            args: Prisma.DocuSignSignerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DocuSignSignerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DocuSignSignerCountArgs<ExtArgs>
+            result: $Utils.Optional<DocuSignSignerCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1717,6 +1928,8 @@ export namespace Prisma {
     account?: AccountOmit
     session?: SessionOmit
     verificationToken?: VerificationTokenOmit
+    docuSignEnvelope?: DocuSignEnvelopeOmit
+    docuSignSigner?: DocuSignSignerOmit
   }
 
   /* Types for Logging */
@@ -1959,10 +2172,12 @@ export namespace Prisma {
 
   export type ContractCountOutputType = {
     versions: number
+    docuSignEnvelopes: number
   }
 
   export type ContractCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     versions?: boolean | ContractCountOutputTypeCountVersionsArgs
+    docuSignEnvelopes?: boolean | ContractCountOutputTypeCountDocuSignEnvelopesArgs
   }
 
   // Custom InputTypes
@@ -1981,6 +2196,13 @@ export namespace Prisma {
    */
   export type ContractCountOutputTypeCountVersionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ContractVersionWhereInput
+  }
+
+  /**
+   * ContractCountOutputType without action
+   */
+  export type ContractCountOutputTypeCountDocuSignEnvelopesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DocuSignEnvelopeWhereInput
   }
 
 
@@ -2012,6 +2234,37 @@ export namespace Prisma {
    */
   export type CategoryCountOutputTypeCountContractsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ContractWhereInput
+  }
+
+
+  /**
+   * Count Type DocuSignEnvelopeCountOutputType
+   */
+
+  export type DocuSignEnvelopeCountOutputType = {
+    signers: number
+  }
+
+  export type DocuSignEnvelopeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    signers?: boolean | DocuSignEnvelopeCountOutputTypeCountSignersArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DocuSignEnvelopeCountOutputType without action
+   */
+  export type DocuSignEnvelopeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelopeCountOutputType
+     */
+    select?: DocuSignEnvelopeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DocuSignEnvelopeCountOutputType without action
+   */
+  export type DocuSignEnvelopeCountOutputTypeCountSignersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DocuSignSignerWhereInput
   }
 
 
@@ -7891,6 +8144,7 @@ export namespace Prisma {
     directoryId?: boolean
     categoryId?: boolean
     versions?: boolean | Contract$versionsArgs<ExtArgs>
+    docuSignEnvelopes?: boolean | Contract$docuSignEnvelopesArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
     directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -7951,6 +8205,7 @@ export namespace Prisma {
   export type ContractOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "content" | "status" | "contractNumber" | "startDate" | "endDate" | "createdAt" | "updatedAt" | "ownerId" | "directoryId" | "categoryId", ExtArgs["result"]["contract"]>
   export type ContractInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     versions?: boolean | Contract$versionsArgs<ExtArgs>
+    docuSignEnvelopes?: boolean | Contract$docuSignEnvelopesArgs<ExtArgs>
     category?: boolean | Contract$categoryArgs<ExtArgs>
     directory?: boolean | DirectoryDefaultArgs<ExtArgs>
     owner?: boolean | UserDefaultArgs<ExtArgs>
@@ -7971,6 +8226,7 @@ export namespace Prisma {
     name: "Contract"
     objects: {
       versions: Prisma.$ContractVersionPayload<ExtArgs>[]
+      docuSignEnvelopes: Prisma.$DocuSignEnvelopePayload<ExtArgs>[]
       category: Prisma.$CategoryPayload<ExtArgs> | null
       directory: Prisma.$DirectoryPayload<ExtArgs>
       owner: Prisma.$UserPayload<ExtArgs>
@@ -8383,6 +8639,7 @@ export namespace Prisma {
   export interface Prisma__ContractClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     versions<T extends Contract$versionsArgs<ExtArgs> = {}>(args?: Subset<T, Contract$versionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ContractVersionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    docuSignEnvelopes<T extends Contract$docuSignEnvelopesArgs<ExtArgs> = {}>(args?: Subset<T, Contract$docuSignEnvelopesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     category<T extends Contract$categoryArgs<ExtArgs> = {}>(args?: Subset<T, Contract$categoryArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     directory<T extends DirectoryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DirectoryDefaultArgs<ExtArgs>>): Prisma__DirectoryClient<$Result.GetResult<Prisma.$DirectoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     owner<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -8844,6 +9101,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ContractVersionScalarFieldEnum | ContractVersionScalarFieldEnum[]
+  }
+
+  /**
+   * Contract.docuSignEnvelopes
+   */
+  export type Contract$docuSignEnvelopesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    where?: DocuSignEnvelopeWhereInput
+    orderBy?: DocuSignEnvelopeOrderByWithRelationInput | DocuSignEnvelopeOrderByWithRelationInput[]
+    cursor?: DocuSignEnvelopeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DocuSignEnvelopeScalarFieldEnum | DocuSignEnvelopeScalarFieldEnum[]
   }
 
   /**
@@ -14270,6 +14551,2303 @@ export namespace Prisma {
 
 
   /**
+   * Model DocuSignEnvelope
+   */
+
+  export type AggregateDocuSignEnvelope = {
+    _count: DocuSignEnvelopeCountAggregateOutputType | null
+    _min: DocuSignEnvelopeMinAggregateOutputType | null
+    _max: DocuSignEnvelopeMaxAggregateOutputType | null
+  }
+
+  export type DocuSignEnvelopeMinAggregateOutputType = {
+    id: string | null
+    envelopeId: string | null
+    contractId: string | null
+    status: $Enums.DocuSignEnvelopeStatus | null
+    templateId: string | null
+    subject: string | null
+    message: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    completedAt: Date | null
+  }
+
+  export type DocuSignEnvelopeMaxAggregateOutputType = {
+    id: string | null
+    envelopeId: string | null
+    contractId: string | null
+    status: $Enums.DocuSignEnvelopeStatus | null
+    templateId: string | null
+    subject: string | null
+    message: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    completedAt: Date | null
+  }
+
+  export type DocuSignEnvelopeCountAggregateOutputType = {
+    id: number
+    envelopeId: number
+    contractId: number
+    status: number
+    templateId: number
+    subject: number
+    message: number
+    createdAt: number
+    updatedAt: number
+    completedAt: number
+    _all: number
+  }
+
+
+  export type DocuSignEnvelopeMinAggregateInputType = {
+    id?: true
+    envelopeId?: true
+    contractId?: true
+    status?: true
+    templateId?: true
+    subject?: true
+    message?: true
+    createdAt?: true
+    updatedAt?: true
+    completedAt?: true
+  }
+
+  export type DocuSignEnvelopeMaxAggregateInputType = {
+    id?: true
+    envelopeId?: true
+    contractId?: true
+    status?: true
+    templateId?: true
+    subject?: true
+    message?: true
+    createdAt?: true
+    updatedAt?: true
+    completedAt?: true
+  }
+
+  export type DocuSignEnvelopeCountAggregateInputType = {
+    id?: true
+    envelopeId?: true
+    contractId?: true
+    status?: true
+    templateId?: true
+    subject?: true
+    message?: true
+    createdAt?: true
+    updatedAt?: true
+    completedAt?: true
+    _all?: true
+  }
+
+  export type DocuSignEnvelopeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DocuSignEnvelope to aggregate.
+     */
+    where?: DocuSignEnvelopeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DocuSignEnvelopes to fetch.
+     */
+    orderBy?: DocuSignEnvelopeOrderByWithRelationInput | DocuSignEnvelopeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DocuSignEnvelopeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DocuSignEnvelopes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DocuSignEnvelopes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DocuSignEnvelopes
+    **/
+    _count?: true | DocuSignEnvelopeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DocuSignEnvelopeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DocuSignEnvelopeMaxAggregateInputType
+  }
+
+  export type GetDocuSignEnvelopeAggregateType<T extends DocuSignEnvelopeAggregateArgs> = {
+        [P in keyof T & keyof AggregateDocuSignEnvelope]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDocuSignEnvelope[P]>
+      : GetScalarType<T[P], AggregateDocuSignEnvelope[P]>
+  }
+
+
+
+
+  export type DocuSignEnvelopeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DocuSignEnvelopeWhereInput
+    orderBy?: DocuSignEnvelopeOrderByWithAggregationInput | DocuSignEnvelopeOrderByWithAggregationInput[]
+    by: DocuSignEnvelopeScalarFieldEnum[] | DocuSignEnvelopeScalarFieldEnum
+    having?: DocuSignEnvelopeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DocuSignEnvelopeCountAggregateInputType | true
+    _min?: DocuSignEnvelopeMinAggregateInputType
+    _max?: DocuSignEnvelopeMaxAggregateInputType
+  }
+
+  export type DocuSignEnvelopeGroupByOutputType = {
+    id: string
+    envelopeId: string
+    contractId: string
+    status: $Enums.DocuSignEnvelopeStatus
+    templateId: string | null
+    subject: string
+    message: string | null
+    createdAt: Date
+    updatedAt: Date
+    completedAt: Date | null
+    _count: DocuSignEnvelopeCountAggregateOutputType | null
+    _min: DocuSignEnvelopeMinAggregateOutputType | null
+    _max: DocuSignEnvelopeMaxAggregateOutputType | null
+  }
+
+  type GetDocuSignEnvelopeGroupByPayload<T extends DocuSignEnvelopeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DocuSignEnvelopeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DocuSignEnvelopeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DocuSignEnvelopeGroupByOutputType[P]>
+            : GetScalarType<T[P], DocuSignEnvelopeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DocuSignEnvelopeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    envelopeId?: boolean
+    contractId?: boolean
+    status?: boolean
+    templateId?: boolean
+    subject?: boolean
+    message?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+    signers?: boolean | DocuSignEnvelope$signersArgs<ExtArgs>
+    _count?: boolean | DocuSignEnvelopeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["docuSignEnvelope"]>
+
+  export type DocuSignEnvelopeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    envelopeId?: boolean
+    contractId?: boolean
+    status?: boolean
+    templateId?: boolean
+    subject?: boolean
+    message?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["docuSignEnvelope"]>
+
+  export type DocuSignEnvelopeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    envelopeId?: boolean
+    contractId?: boolean
+    status?: boolean
+    templateId?: boolean
+    subject?: boolean
+    message?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["docuSignEnvelope"]>
+
+  export type DocuSignEnvelopeSelectScalar = {
+    id?: boolean
+    envelopeId?: boolean
+    contractId?: boolean
+    status?: boolean
+    templateId?: boolean
+    subject?: boolean
+    message?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    completedAt?: boolean
+  }
+
+  export type DocuSignEnvelopeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "envelopeId" | "contractId" | "status" | "templateId" | "subject" | "message" | "createdAt" | "updatedAt" | "completedAt", ExtArgs["result"]["docuSignEnvelope"]>
+  export type DocuSignEnvelopeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+    signers?: boolean | DocuSignEnvelope$signersArgs<ExtArgs>
+    _count?: boolean | DocuSignEnvelopeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type DocuSignEnvelopeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }
+  export type DocuSignEnvelopeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contract?: boolean | ContractDefaultArgs<ExtArgs>
+  }
+
+  export type $DocuSignEnvelopePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DocuSignEnvelope"
+    objects: {
+      contract: Prisma.$ContractPayload<ExtArgs>
+      signers: Prisma.$DocuSignSignerPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      envelopeId: string
+      contractId: string
+      status: $Enums.DocuSignEnvelopeStatus
+      templateId: string | null
+      subject: string
+      message: string | null
+      createdAt: Date
+      updatedAt: Date
+      completedAt: Date | null
+    }, ExtArgs["result"]["docuSignEnvelope"]>
+    composites: {}
+  }
+
+  type DocuSignEnvelopeGetPayload<S extends boolean | null | undefined | DocuSignEnvelopeDefaultArgs> = $Result.GetResult<Prisma.$DocuSignEnvelopePayload, S>
+
+  type DocuSignEnvelopeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DocuSignEnvelopeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DocuSignEnvelopeCountAggregateInputType | true
+    }
+
+  export interface DocuSignEnvelopeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DocuSignEnvelope'], meta: { name: 'DocuSignEnvelope' } }
+    /**
+     * Find zero or one DocuSignEnvelope that matches the filter.
+     * @param {DocuSignEnvelopeFindUniqueArgs} args - Arguments to find a DocuSignEnvelope
+     * @example
+     * // Get one DocuSignEnvelope
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DocuSignEnvelopeFindUniqueArgs>(args: SelectSubset<T, DocuSignEnvelopeFindUniqueArgs<ExtArgs>>): Prisma__DocuSignEnvelopeClient<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DocuSignEnvelope that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DocuSignEnvelopeFindUniqueOrThrowArgs} args - Arguments to find a DocuSignEnvelope
+     * @example
+     * // Get one DocuSignEnvelope
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DocuSignEnvelopeFindUniqueOrThrowArgs>(args: SelectSubset<T, DocuSignEnvelopeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DocuSignEnvelopeClient<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DocuSignEnvelope that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignEnvelopeFindFirstArgs} args - Arguments to find a DocuSignEnvelope
+     * @example
+     * // Get one DocuSignEnvelope
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DocuSignEnvelopeFindFirstArgs>(args?: SelectSubset<T, DocuSignEnvelopeFindFirstArgs<ExtArgs>>): Prisma__DocuSignEnvelopeClient<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DocuSignEnvelope that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignEnvelopeFindFirstOrThrowArgs} args - Arguments to find a DocuSignEnvelope
+     * @example
+     * // Get one DocuSignEnvelope
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DocuSignEnvelopeFindFirstOrThrowArgs>(args?: SelectSubset<T, DocuSignEnvelopeFindFirstOrThrowArgs<ExtArgs>>): Prisma__DocuSignEnvelopeClient<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DocuSignEnvelopes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignEnvelopeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DocuSignEnvelopes
+     * const docuSignEnvelopes = await prisma.docuSignEnvelope.findMany()
+     * 
+     * // Get first 10 DocuSignEnvelopes
+     * const docuSignEnvelopes = await prisma.docuSignEnvelope.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const docuSignEnvelopeWithIdOnly = await prisma.docuSignEnvelope.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DocuSignEnvelopeFindManyArgs>(args?: SelectSubset<T, DocuSignEnvelopeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DocuSignEnvelope.
+     * @param {DocuSignEnvelopeCreateArgs} args - Arguments to create a DocuSignEnvelope.
+     * @example
+     * // Create one DocuSignEnvelope
+     * const DocuSignEnvelope = await prisma.docuSignEnvelope.create({
+     *   data: {
+     *     // ... data to create a DocuSignEnvelope
+     *   }
+     * })
+     * 
+     */
+    create<T extends DocuSignEnvelopeCreateArgs>(args: SelectSubset<T, DocuSignEnvelopeCreateArgs<ExtArgs>>): Prisma__DocuSignEnvelopeClient<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DocuSignEnvelopes.
+     * @param {DocuSignEnvelopeCreateManyArgs} args - Arguments to create many DocuSignEnvelopes.
+     * @example
+     * // Create many DocuSignEnvelopes
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DocuSignEnvelopeCreateManyArgs>(args?: SelectSubset<T, DocuSignEnvelopeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DocuSignEnvelopes and returns the data saved in the database.
+     * @param {DocuSignEnvelopeCreateManyAndReturnArgs} args - Arguments to create many DocuSignEnvelopes.
+     * @example
+     * // Create many DocuSignEnvelopes
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DocuSignEnvelopes and only return the `id`
+     * const docuSignEnvelopeWithIdOnly = await prisma.docuSignEnvelope.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DocuSignEnvelopeCreateManyAndReturnArgs>(args?: SelectSubset<T, DocuSignEnvelopeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DocuSignEnvelope.
+     * @param {DocuSignEnvelopeDeleteArgs} args - Arguments to delete one DocuSignEnvelope.
+     * @example
+     * // Delete one DocuSignEnvelope
+     * const DocuSignEnvelope = await prisma.docuSignEnvelope.delete({
+     *   where: {
+     *     // ... filter to delete one DocuSignEnvelope
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DocuSignEnvelopeDeleteArgs>(args: SelectSubset<T, DocuSignEnvelopeDeleteArgs<ExtArgs>>): Prisma__DocuSignEnvelopeClient<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DocuSignEnvelope.
+     * @param {DocuSignEnvelopeUpdateArgs} args - Arguments to update one DocuSignEnvelope.
+     * @example
+     * // Update one DocuSignEnvelope
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DocuSignEnvelopeUpdateArgs>(args: SelectSubset<T, DocuSignEnvelopeUpdateArgs<ExtArgs>>): Prisma__DocuSignEnvelopeClient<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DocuSignEnvelopes.
+     * @param {DocuSignEnvelopeDeleteManyArgs} args - Arguments to filter DocuSignEnvelopes to delete.
+     * @example
+     * // Delete a few DocuSignEnvelopes
+     * const { count } = await prisma.docuSignEnvelope.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DocuSignEnvelopeDeleteManyArgs>(args?: SelectSubset<T, DocuSignEnvelopeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DocuSignEnvelopes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignEnvelopeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DocuSignEnvelopes
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DocuSignEnvelopeUpdateManyArgs>(args: SelectSubset<T, DocuSignEnvelopeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DocuSignEnvelopes and returns the data updated in the database.
+     * @param {DocuSignEnvelopeUpdateManyAndReturnArgs} args - Arguments to update many DocuSignEnvelopes.
+     * @example
+     * // Update many DocuSignEnvelopes
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DocuSignEnvelopes and only return the `id`
+     * const docuSignEnvelopeWithIdOnly = await prisma.docuSignEnvelope.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DocuSignEnvelopeUpdateManyAndReturnArgs>(args: SelectSubset<T, DocuSignEnvelopeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DocuSignEnvelope.
+     * @param {DocuSignEnvelopeUpsertArgs} args - Arguments to update or create a DocuSignEnvelope.
+     * @example
+     * // Update or create a DocuSignEnvelope
+     * const docuSignEnvelope = await prisma.docuSignEnvelope.upsert({
+     *   create: {
+     *     // ... data to create a DocuSignEnvelope
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DocuSignEnvelope we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DocuSignEnvelopeUpsertArgs>(args: SelectSubset<T, DocuSignEnvelopeUpsertArgs<ExtArgs>>): Prisma__DocuSignEnvelopeClient<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DocuSignEnvelopes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignEnvelopeCountArgs} args - Arguments to filter DocuSignEnvelopes to count.
+     * @example
+     * // Count the number of DocuSignEnvelopes
+     * const count = await prisma.docuSignEnvelope.count({
+     *   where: {
+     *     // ... the filter for the DocuSignEnvelopes we want to count
+     *   }
+     * })
+    **/
+    count<T extends DocuSignEnvelopeCountArgs>(
+      args?: Subset<T, DocuSignEnvelopeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DocuSignEnvelopeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DocuSignEnvelope.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignEnvelopeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DocuSignEnvelopeAggregateArgs>(args: Subset<T, DocuSignEnvelopeAggregateArgs>): Prisma.PrismaPromise<GetDocuSignEnvelopeAggregateType<T>>
+
+    /**
+     * Group by DocuSignEnvelope.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignEnvelopeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DocuSignEnvelopeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DocuSignEnvelopeGroupByArgs['orderBy'] }
+        : { orderBy?: DocuSignEnvelopeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DocuSignEnvelopeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDocuSignEnvelopeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DocuSignEnvelope model
+   */
+  readonly fields: DocuSignEnvelopeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DocuSignEnvelope.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DocuSignEnvelopeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    contract<T extends ContractDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ContractDefaultArgs<ExtArgs>>): Prisma__ContractClient<$Result.GetResult<Prisma.$ContractPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    signers<T extends DocuSignEnvelope$signersArgs<ExtArgs> = {}>(args?: Subset<T, DocuSignEnvelope$signersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DocuSignEnvelope model
+   */
+  interface DocuSignEnvelopeFieldRefs {
+    readonly id: FieldRef<"DocuSignEnvelope", 'String'>
+    readonly envelopeId: FieldRef<"DocuSignEnvelope", 'String'>
+    readonly contractId: FieldRef<"DocuSignEnvelope", 'String'>
+    readonly status: FieldRef<"DocuSignEnvelope", 'DocuSignEnvelopeStatus'>
+    readonly templateId: FieldRef<"DocuSignEnvelope", 'String'>
+    readonly subject: FieldRef<"DocuSignEnvelope", 'String'>
+    readonly message: FieldRef<"DocuSignEnvelope", 'String'>
+    readonly createdAt: FieldRef<"DocuSignEnvelope", 'DateTime'>
+    readonly updatedAt: FieldRef<"DocuSignEnvelope", 'DateTime'>
+    readonly completedAt: FieldRef<"DocuSignEnvelope", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DocuSignEnvelope findUnique
+   */
+  export type DocuSignEnvelopeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignEnvelope to fetch.
+     */
+    where: DocuSignEnvelopeWhereUniqueInput
+  }
+
+  /**
+   * DocuSignEnvelope findUniqueOrThrow
+   */
+  export type DocuSignEnvelopeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignEnvelope to fetch.
+     */
+    where: DocuSignEnvelopeWhereUniqueInput
+  }
+
+  /**
+   * DocuSignEnvelope findFirst
+   */
+  export type DocuSignEnvelopeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignEnvelope to fetch.
+     */
+    where?: DocuSignEnvelopeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DocuSignEnvelopes to fetch.
+     */
+    orderBy?: DocuSignEnvelopeOrderByWithRelationInput | DocuSignEnvelopeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DocuSignEnvelopes.
+     */
+    cursor?: DocuSignEnvelopeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DocuSignEnvelopes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DocuSignEnvelopes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DocuSignEnvelopes.
+     */
+    distinct?: DocuSignEnvelopeScalarFieldEnum | DocuSignEnvelopeScalarFieldEnum[]
+  }
+
+  /**
+   * DocuSignEnvelope findFirstOrThrow
+   */
+  export type DocuSignEnvelopeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignEnvelope to fetch.
+     */
+    where?: DocuSignEnvelopeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DocuSignEnvelopes to fetch.
+     */
+    orderBy?: DocuSignEnvelopeOrderByWithRelationInput | DocuSignEnvelopeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DocuSignEnvelopes.
+     */
+    cursor?: DocuSignEnvelopeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DocuSignEnvelopes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DocuSignEnvelopes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DocuSignEnvelopes.
+     */
+    distinct?: DocuSignEnvelopeScalarFieldEnum | DocuSignEnvelopeScalarFieldEnum[]
+  }
+
+  /**
+   * DocuSignEnvelope findMany
+   */
+  export type DocuSignEnvelopeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignEnvelopes to fetch.
+     */
+    where?: DocuSignEnvelopeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DocuSignEnvelopes to fetch.
+     */
+    orderBy?: DocuSignEnvelopeOrderByWithRelationInput | DocuSignEnvelopeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DocuSignEnvelopes.
+     */
+    cursor?: DocuSignEnvelopeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DocuSignEnvelopes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DocuSignEnvelopes.
+     */
+    skip?: number
+    distinct?: DocuSignEnvelopeScalarFieldEnum | DocuSignEnvelopeScalarFieldEnum[]
+  }
+
+  /**
+   * DocuSignEnvelope create
+   */
+  export type DocuSignEnvelopeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DocuSignEnvelope.
+     */
+    data: XOR<DocuSignEnvelopeCreateInput, DocuSignEnvelopeUncheckedCreateInput>
+  }
+
+  /**
+   * DocuSignEnvelope createMany
+   */
+  export type DocuSignEnvelopeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DocuSignEnvelopes.
+     */
+    data: DocuSignEnvelopeCreateManyInput | DocuSignEnvelopeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DocuSignEnvelope createManyAndReturn
+   */
+  export type DocuSignEnvelopeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * The data used to create many DocuSignEnvelopes.
+     */
+    data: DocuSignEnvelopeCreateManyInput | DocuSignEnvelopeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DocuSignEnvelope update
+   */
+  export type DocuSignEnvelopeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DocuSignEnvelope.
+     */
+    data: XOR<DocuSignEnvelopeUpdateInput, DocuSignEnvelopeUncheckedUpdateInput>
+    /**
+     * Choose, which DocuSignEnvelope to update.
+     */
+    where: DocuSignEnvelopeWhereUniqueInput
+  }
+
+  /**
+   * DocuSignEnvelope updateMany
+   */
+  export type DocuSignEnvelopeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DocuSignEnvelopes.
+     */
+    data: XOR<DocuSignEnvelopeUpdateManyMutationInput, DocuSignEnvelopeUncheckedUpdateManyInput>
+    /**
+     * Filter which DocuSignEnvelopes to update
+     */
+    where?: DocuSignEnvelopeWhereInput
+    /**
+     * Limit how many DocuSignEnvelopes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DocuSignEnvelope updateManyAndReturn
+   */
+  export type DocuSignEnvelopeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * The data used to update DocuSignEnvelopes.
+     */
+    data: XOR<DocuSignEnvelopeUpdateManyMutationInput, DocuSignEnvelopeUncheckedUpdateManyInput>
+    /**
+     * Filter which DocuSignEnvelopes to update
+     */
+    where?: DocuSignEnvelopeWhereInput
+    /**
+     * Limit how many DocuSignEnvelopes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DocuSignEnvelope upsert
+   */
+  export type DocuSignEnvelopeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DocuSignEnvelope to update in case it exists.
+     */
+    where: DocuSignEnvelopeWhereUniqueInput
+    /**
+     * In case the DocuSignEnvelope found by the `where` argument doesn't exist, create a new DocuSignEnvelope with this data.
+     */
+    create: XOR<DocuSignEnvelopeCreateInput, DocuSignEnvelopeUncheckedCreateInput>
+    /**
+     * In case the DocuSignEnvelope was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DocuSignEnvelopeUpdateInput, DocuSignEnvelopeUncheckedUpdateInput>
+  }
+
+  /**
+   * DocuSignEnvelope delete
+   */
+  export type DocuSignEnvelopeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+    /**
+     * Filter which DocuSignEnvelope to delete.
+     */
+    where: DocuSignEnvelopeWhereUniqueInput
+  }
+
+  /**
+   * DocuSignEnvelope deleteMany
+   */
+  export type DocuSignEnvelopeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DocuSignEnvelopes to delete
+     */
+    where?: DocuSignEnvelopeWhereInput
+    /**
+     * Limit how many DocuSignEnvelopes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DocuSignEnvelope.signers
+   */
+  export type DocuSignEnvelope$signersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    where?: DocuSignSignerWhereInput
+    orderBy?: DocuSignSignerOrderByWithRelationInput | DocuSignSignerOrderByWithRelationInput[]
+    cursor?: DocuSignSignerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DocuSignSignerScalarFieldEnum | DocuSignSignerScalarFieldEnum[]
+  }
+
+  /**
+   * DocuSignEnvelope without action
+   */
+  export type DocuSignEnvelopeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignEnvelope
+     */
+    select?: DocuSignEnvelopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignEnvelope
+     */
+    omit?: DocuSignEnvelopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignEnvelopeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model DocuSignSigner
+   */
+
+  export type AggregateDocuSignSigner = {
+    _count: DocuSignSignerCountAggregateOutputType | null
+    _avg: DocuSignSignerAvgAggregateOutputType | null
+    _sum: DocuSignSignerSumAggregateOutputType | null
+    _min: DocuSignSignerMinAggregateOutputType | null
+    _max: DocuSignSignerMaxAggregateOutputType | null
+  }
+
+  export type DocuSignSignerAvgAggregateOutputType = {
+    routingOrder: number | null
+  }
+
+  export type DocuSignSignerSumAggregateOutputType = {
+    routingOrder: number | null
+  }
+
+  export type DocuSignSignerMinAggregateOutputType = {
+    id: string | null
+    envelopeId: string | null
+    routingOrder: number | null
+    email: string | null
+    name: string | null
+    status: $Enums.DocuSignSignerStatus | null
+    signedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DocuSignSignerMaxAggregateOutputType = {
+    id: string | null
+    envelopeId: string | null
+    routingOrder: number | null
+    email: string | null
+    name: string | null
+    status: $Enums.DocuSignSignerStatus | null
+    signedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DocuSignSignerCountAggregateOutputType = {
+    id: number
+    envelopeId: number
+    routingOrder: number
+    email: number
+    name: number
+    status: number
+    signedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DocuSignSignerAvgAggregateInputType = {
+    routingOrder?: true
+  }
+
+  export type DocuSignSignerSumAggregateInputType = {
+    routingOrder?: true
+  }
+
+  export type DocuSignSignerMinAggregateInputType = {
+    id?: true
+    envelopeId?: true
+    routingOrder?: true
+    email?: true
+    name?: true
+    status?: true
+    signedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DocuSignSignerMaxAggregateInputType = {
+    id?: true
+    envelopeId?: true
+    routingOrder?: true
+    email?: true
+    name?: true
+    status?: true
+    signedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DocuSignSignerCountAggregateInputType = {
+    id?: true
+    envelopeId?: true
+    routingOrder?: true
+    email?: true
+    name?: true
+    status?: true
+    signedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DocuSignSignerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DocuSignSigner to aggregate.
+     */
+    where?: DocuSignSignerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DocuSignSigners to fetch.
+     */
+    orderBy?: DocuSignSignerOrderByWithRelationInput | DocuSignSignerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DocuSignSignerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DocuSignSigners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DocuSignSigners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned DocuSignSigners
+    **/
+    _count?: true | DocuSignSignerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DocuSignSignerAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DocuSignSignerSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DocuSignSignerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DocuSignSignerMaxAggregateInputType
+  }
+
+  export type GetDocuSignSignerAggregateType<T extends DocuSignSignerAggregateArgs> = {
+        [P in keyof T & keyof AggregateDocuSignSigner]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDocuSignSigner[P]>
+      : GetScalarType<T[P], AggregateDocuSignSigner[P]>
+  }
+
+
+
+
+  export type DocuSignSignerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DocuSignSignerWhereInput
+    orderBy?: DocuSignSignerOrderByWithAggregationInput | DocuSignSignerOrderByWithAggregationInput[]
+    by: DocuSignSignerScalarFieldEnum[] | DocuSignSignerScalarFieldEnum
+    having?: DocuSignSignerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DocuSignSignerCountAggregateInputType | true
+    _avg?: DocuSignSignerAvgAggregateInputType
+    _sum?: DocuSignSignerSumAggregateInputType
+    _min?: DocuSignSignerMinAggregateInputType
+    _max?: DocuSignSignerMaxAggregateInputType
+  }
+
+  export type DocuSignSignerGroupByOutputType = {
+    id: string
+    envelopeId: string
+    routingOrder: number
+    email: string
+    name: string
+    status: $Enums.DocuSignSignerStatus
+    signedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: DocuSignSignerCountAggregateOutputType | null
+    _avg: DocuSignSignerAvgAggregateOutputType | null
+    _sum: DocuSignSignerSumAggregateOutputType | null
+    _min: DocuSignSignerMinAggregateOutputType | null
+    _max: DocuSignSignerMaxAggregateOutputType | null
+  }
+
+  type GetDocuSignSignerGroupByPayload<T extends DocuSignSignerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DocuSignSignerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DocuSignSignerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DocuSignSignerGroupByOutputType[P]>
+            : GetScalarType<T[P], DocuSignSignerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DocuSignSignerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    envelopeId?: boolean
+    routingOrder?: boolean
+    email?: boolean
+    name?: boolean
+    status?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    envelope?: boolean | DocuSignEnvelopeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["docuSignSigner"]>
+
+  export type DocuSignSignerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    envelopeId?: boolean
+    routingOrder?: boolean
+    email?: boolean
+    name?: boolean
+    status?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    envelope?: boolean | DocuSignEnvelopeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["docuSignSigner"]>
+
+  export type DocuSignSignerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    envelopeId?: boolean
+    routingOrder?: boolean
+    email?: boolean
+    name?: boolean
+    status?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    envelope?: boolean | DocuSignEnvelopeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["docuSignSigner"]>
+
+  export type DocuSignSignerSelectScalar = {
+    id?: boolean
+    envelopeId?: boolean
+    routingOrder?: boolean
+    email?: boolean
+    name?: boolean
+    status?: boolean
+    signedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DocuSignSignerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "envelopeId" | "routingOrder" | "email" | "name" | "status" | "signedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["docuSignSigner"]>
+  export type DocuSignSignerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    envelope?: boolean | DocuSignEnvelopeDefaultArgs<ExtArgs>
+  }
+  export type DocuSignSignerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    envelope?: boolean | DocuSignEnvelopeDefaultArgs<ExtArgs>
+  }
+  export type DocuSignSignerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    envelope?: boolean | DocuSignEnvelopeDefaultArgs<ExtArgs>
+  }
+
+  export type $DocuSignSignerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "DocuSignSigner"
+    objects: {
+      envelope: Prisma.$DocuSignEnvelopePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      envelopeId: string
+      routingOrder: number
+      email: string
+      name: string
+      status: $Enums.DocuSignSignerStatus
+      signedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["docuSignSigner"]>
+    composites: {}
+  }
+
+  type DocuSignSignerGetPayload<S extends boolean | null | undefined | DocuSignSignerDefaultArgs> = $Result.GetResult<Prisma.$DocuSignSignerPayload, S>
+
+  type DocuSignSignerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DocuSignSignerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DocuSignSignerCountAggregateInputType | true
+    }
+
+  export interface DocuSignSignerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['DocuSignSigner'], meta: { name: 'DocuSignSigner' } }
+    /**
+     * Find zero or one DocuSignSigner that matches the filter.
+     * @param {DocuSignSignerFindUniqueArgs} args - Arguments to find a DocuSignSigner
+     * @example
+     * // Get one DocuSignSigner
+     * const docuSignSigner = await prisma.docuSignSigner.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DocuSignSignerFindUniqueArgs>(args: SelectSubset<T, DocuSignSignerFindUniqueArgs<ExtArgs>>): Prisma__DocuSignSignerClient<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one DocuSignSigner that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DocuSignSignerFindUniqueOrThrowArgs} args - Arguments to find a DocuSignSigner
+     * @example
+     * // Get one DocuSignSigner
+     * const docuSignSigner = await prisma.docuSignSigner.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DocuSignSignerFindUniqueOrThrowArgs>(args: SelectSubset<T, DocuSignSignerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DocuSignSignerClient<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DocuSignSigner that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignSignerFindFirstArgs} args - Arguments to find a DocuSignSigner
+     * @example
+     * // Get one DocuSignSigner
+     * const docuSignSigner = await prisma.docuSignSigner.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DocuSignSignerFindFirstArgs>(args?: SelectSubset<T, DocuSignSignerFindFirstArgs<ExtArgs>>): Prisma__DocuSignSignerClient<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first DocuSignSigner that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignSignerFindFirstOrThrowArgs} args - Arguments to find a DocuSignSigner
+     * @example
+     * // Get one DocuSignSigner
+     * const docuSignSigner = await prisma.docuSignSigner.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DocuSignSignerFindFirstOrThrowArgs>(args?: SelectSubset<T, DocuSignSignerFindFirstOrThrowArgs<ExtArgs>>): Prisma__DocuSignSignerClient<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more DocuSignSigners that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignSignerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all DocuSignSigners
+     * const docuSignSigners = await prisma.docuSignSigner.findMany()
+     * 
+     * // Get first 10 DocuSignSigners
+     * const docuSignSigners = await prisma.docuSignSigner.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const docuSignSignerWithIdOnly = await prisma.docuSignSigner.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DocuSignSignerFindManyArgs>(args?: SelectSubset<T, DocuSignSignerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a DocuSignSigner.
+     * @param {DocuSignSignerCreateArgs} args - Arguments to create a DocuSignSigner.
+     * @example
+     * // Create one DocuSignSigner
+     * const DocuSignSigner = await prisma.docuSignSigner.create({
+     *   data: {
+     *     // ... data to create a DocuSignSigner
+     *   }
+     * })
+     * 
+     */
+    create<T extends DocuSignSignerCreateArgs>(args: SelectSubset<T, DocuSignSignerCreateArgs<ExtArgs>>): Prisma__DocuSignSignerClient<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many DocuSignSigners.
+     * @param {DocuSignSignerCreateManyArgs} args - Arguments to create many DocuSignSigners.
+     * @example
+     * // Create many DocuSignSigners
+     * const docuSignSigner = await prisma.docuSignSigner.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DocuSignSignerCreateManyArgs>(args?: SelectSubset<T, DocuSignSignerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many DocuSignSigners and returns the data saved in the database.
+     * @param {DocuSignSignerCreateManyAndReturnArgs} args - Arguments to create many DocuSignSigners.
+     * @example
+     * // Create many DocuSignSigners
+     * const docuSignSigner = await prisma.docuSignSigner.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many DocuSignSigners and only return the `id`
+     * const docuSignSignerWithIdOnly = await prisma.docuSignSigner.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DocuSignSignerCreateManyAndReturnArgs>(args?: SelectSubset<T, DocuSignSignerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a DocuSignSigner.
+     * @param {DocuSignSignerDeleteArgs} args - Arguments to delete one DocuSignSigner.
+     * @example
+     * // Delete one DocuSignSigner
+     * const DocuSignSigner = await prisma.docuSignSigner.delete({
+     *   where: {
+     *     // ... filter to delete one DocuSignSigner
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DocuSignSignerDeleteArgs>(args: SelectSubset<T, DocuSignSignerDeleteArgs<ExtArgs>>): Prisma__DocuSignSignerClient<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one DocuSignSigner.
+     * @param {DocuSignSignerUpdateArgs} args - Arguments to update one DocuSignSigner.
+     * @example
+     * // Update one DocuSignSigner
+     * const docuSignSigner = await prisma.docuSignSigner.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DocuSignSignerUpdateArgs>(args: SelectSubset<T, DocuSignSignerUpdateArgs<ExtArgs>>): Prisma__DocuSignSignerClient<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more DocuSignSigners.
+     * @param {DocuSignSignerDeleteManyArgs} args - Arguments to filter DocuSignSigners to delete.
+     * @example
+     * // Delete a few DocuSignSigners
+     * const { count } = await prisma.docuSignSigner.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DocuSignSignerDeleteManyArgs>(args?: SelectSubset<T, DocuSignSignerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DocuSignSigners.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignSignerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many DocuSignSigners
+     * const docuSignSigner = await prisma.docuSignSigner.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DocuSignSignerUpdateManyArgs>(args: SelectSubset<T, DocuSignSignerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more DocuSignSigners and returns the data updated in the database.
+     * @param {DocuSignSignerUpdateManyAndReturnArgs} args - Arguments to update many DocuSignSigners.
+     * @example
+     * // Update many DocuSignSigners
+     * const docuSignSigner = await prisma.docuSignSigner.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more DocuSignSigners and only return the `id`
+     * const docuSignSignerWithIdOnly = await prisma.docuSignSigner.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DocuSignSignerUpdateManyAndReturnArgs>(args: SelectSubset<T, DocuSignSignerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one DocuSignSigner.
+     * @param {DocuSignSignerUpsertArgs} args - Arguments to update or create a DocuSignSigner.
+     * @example
+     * // Update or create a DocuSignSigner
+     * const docuSignSigner = await prisma.docuSignSigner.upsert({
+     *   create: {
+     *     // ... data to create a DocuSignSigner
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the DocuSignSigner we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DocuSignSignerUpsertArgs>(args: SelectSubset<T, DocuSignSignerUpsertArgs<ExtArgs>>): Prisma__DocuSignSignerClient<$Result.GetResult<Prisma.$DocuSignSignerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of DocuSignSigners.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignSignerCountArgs} args - Arguments to filter DocuSignSigners to count.
+     * @example
+     * // Count the number of DocuSignSigners
+     * const count = await prisma.docuSignSigner.count({
+     *   where: {
+     *     // ... the filter for the DocuSignSigners we want to count
+     *   }
+     * })
+    **/
+    count<T extends DocuSignSignerCountArgs>(
+      args?: Subset<T, DocuSignSignerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DocuSignSignerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a DocuSignSigner.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignSignerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DocuSignSignerAggregateArgs>(args: Subset<T, DocuSignSignerAggregateArgs>): Prisma.PrismaPromise<GetDocuSignSignerAggregateType<T>>
+
+    /**
+     * Group by DocuSignSigner.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DocuSignSignerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DocuSignSignerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DocuSignSignerGroupByArgs['orderBy'] }
+        : { orderBy?: DocuSignSignerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DocuSignSignerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDocuSignSignerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the DocuSignSigner model
+   */
+  readonly fields: DocuSignSignerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for DocuSignSigner.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DocuSignSignerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    envelope<T extends DocuSignEnvelopeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DocuSignEnvelopeDefaultArgs<ExtArgs>>): Prisma__DocuSignEnvelopeClient<$Result.GetResult<Prisma.$DocuSignEnvelopePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the DocuSignSigner model
+   */
+  interface DocuSignSignerFieldRefs {
+    readonly id: FieldRef<"DocuSignSigner", 'String'>
+    readonly envelopeId: FieldRef<"DocuSignSigner", 'String'>
+    readonly routingOrder: FieldRef<"DocuSignSigner", 'Int'>
+    readonly email: FieldRef<"DocuSignSigner", 'String'>
+    readonly name: FieldRef<"DocuSignSigner", 'String'>
+    readonly status: FieldRef<"DocuSignSigner", 'DocuSignSignerStatus'>
+    readonly signedAt: FieldRef<"DocuSignSigner", 'DateTime'>
+    readonly createdAt: FieldRef<"DocuSignSigner", 'DateTime'>
+    readonly updatedAt: FieldRef<"DocuSignSigner", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * DocuSignSigner findUnique
+   */
+  export type DocuSignSignerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignSigner to fetch.
+     */
+    where: DocuSignSignerWhereUniqueInput
+  }
+
+  /**
+   * DocuSignSigner findUniqueOrThrow
+   */
+  export type DocuSignSignerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignSigner to fetch.
+     */
+    where: DocuSignSignerWhereUniqueInput
+  }
+
+  /**
+   * DocuSignSigner findFirst
+   */
+  export type DocuSignSignerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignSigner to fetch.
+     */
+    where?: DocuSignSignerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DocuSignSigners to fetch.
+     */
+    orderBy?: DocuSignSignerOrderByWithRelationInput | DocuSignSignerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DocuSignSigners.
+     */
+    cursor?: DocuSignSignerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DocuSignSigners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DocuSignSigners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DocuSignSigners.
+     */
+    distinct?: DocuSignSignerScalarFieldEnum | DocuSignSignerScalarFieldEnum[]
+  }
+
+  /**
+   * DocuSignSigner findFirstOrThrow
+   */
+  export type DocuSignSignerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignSigner to fetch.
+     */
+    where?: DocuSignSignerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DocuSignSigners to fetch.
+     */
+    orderBy?: DocuSignSignerOrderByWithRelationInput | DocuSignSignerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for DocuSignSigners.
+     */
+    cursor?: DocuSignSignerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DocuSignSigners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DocuSignSigners.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of DocuSignSigners.
+     */
+    distinct?: DocuSignSignerScalarFieldEnum | DocuSignSignerScalarFieldEnum[]
+  }
+
+  /**
+   * DocuSignSigner findMany
+   */
+  export type DocuSignSignerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    /**
+     * Filter, which DocuSignSigners to fetch.
+     */
+    where?: DocuSignSignerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of DocuSignSigners to fetch.
+     */
+    orderBy?: DocuSignSignerOrderByWithRelationInput | DocuSignSignerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing DocuSignSigners.
+     */
+    cursor?: DocuSignSignerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` DocuSignSigners from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` DocuSignSigners.
+     */
+    skip?: number
+    distinct?: DocuSignSignerScalarFieldEnum | DocuSignSignerScalarFieldEnum[]
+  }
+
+  /**
+   * DocuSignSigner create
+   */
+  export type DocuSignSignerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    /**
+     * The data needed to create a DocuSignSigner.
+     */
+    data: XOR<DocuSignSignerCreateInput, DocuSignSignerUncheckedCreateInput>
+  }
+
+  /**
+   * DocuSignSigner createMany
+   */
+  export type DocuSignSignerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many DocuSignSigners.
+     */
+    data: DocuSignSignerCreateManyInput | DocuSignSignerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * DocuSignSigner createManyAndReturn
+   */
+  export type DocuSignSignerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * The data used to create many DocuSignSigners.
+     */
+    data: DocuSignSignerCreateManyInput | DocuSignSignerCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DocuSignSigner update
+   */
+  export type DocuSignSignerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    /**
+     * The data needed to update a DocuSignSigner.
+     */
+    data: XOR<DocuSignSignerUpdateInput, DocuSignSignerUncheckedUpdateInput>
+    /**
+     * Choose, which DocuSignSigner to update.
+     */
+    where: DocuSignSignerWhereUniqueInput
+  }
+
+  /**
+   * DocuSignSigner updateMany
+   */
+  export type DocuSignSignerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update DocuSignSigners.
+     */
+    data: XOR<DocuSignSignerUpdateManyMutationInput, DocuSignSignerUncheckedUpdateManyInput>
+    /**
+     * Filter which DocuSignSigners to update
+     */
+    where?: DocuSignSignerWhereInput
+    /**
+     * Limit how many DocuSignSigners to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * DocuSignSigner updateManyAndReturn
+   */
+  export type DocuSignSignerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * The data used to update DocuSignSigners.
+     */
+    data: XOR<DocuSignSignerUpdateManyMutationInput, DocuSignSignerUncheckedUpdateManyInput>
+    /**
+     * Filter which DocuSignSigners to update
+     */
+    where?: DocuSignSignerWhereInput
+    /**
+     * Limit how many DocuSignSigners to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * DocuSignSigner upsert
+   */
+  export type DocuSignSignerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    /**
+     * The filter to search for the DocuSignSigner to update in case it exists.
+     */
+    where: DocuSignSignerWhereUniqueInput
+    /**
+     * In case the DocuSignSigner found by the `where` argument doesn't exist, create a new DocuSignSigner with this data.
+     */
+    create: XOR<DocuSignSignerCreateInput, DocuSignSignerUncheckedCreateInput>
+    /**
+     * In case the DocuSignSigner was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DocuSignSignerUpdateInput, DocuSignSignerUncheckedUpdateInput>
+  }
+
+  /**
+   * DocuSignSigner delete
+   */
+  export type DocuSignSignerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+    /**
+     * Filter which DocuSignSigner to delete.
+     */
+    where: DocuSignSignerWhereUniqueInput
+  }
+
+  /**
+   * DocuSignSigner deleteMany
+   */
+  export type DocuSignSignerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which DocuSignSigners to delete
+     */
+    where?: DocuSignSignerWhereInput
+    /**
+     * Limit how many DocuSignSigners to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * DocuSignSigner without action
+   */
+  export type DocuSignSignerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DocuSignSigner
+     */
+    select?: DocuSignSignerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the DocuSignSigner
+     */
+    omit?: DocuSignSignerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DocuSignSignerInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -14425,6 +17003,37 @@ export namespace Prisma {
   export type VerificationTokenScalarFieldEnum = (typeof VerificationTokenScalarFieldEnum)[keyof typeof VerificationTokenScalarFieldEnum]
 
 
+  export const DocuSignEnvelopeScalarFieldEnum: {
+    id: 'id',
+    envelopeId: 'envelopeId',
+    contractId: 'contractId',
+    status: 'status',
+    templateId: 'templateId',
+    subject: 'subject',
+    message: 'message',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    completedAt: 'completedAt'
+  };
+
+  export type DocuSignEnvelopeScalarFieldEnum = (typeof DocuSignEnvelopeScalarFieldEnum)[keyof typeof DocuSignEnvelopeScalarFieldEnum]
+
+
+  export const DocuSignSignerScalarFieldEnum: {
+    id: 'id',
+    envelopeId: 'envelopeId',
+    routingOrder: 'routingOrder',
+    email: 'email',
+    name: 'name',
+    status: 'status',
+    signedAt: 'signedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DocuSignSignerScalarFieldEnum = (typeof DocuSignSignerScalarFieldEnum)[keyof typeof DocuSignSignerScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -14528,6 +17137,34 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocuSignEnvelopeStatus'
+   */
+  export type EnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocuSignEnvelopeStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocuSignEnvelopeStatus[]'
+   */
+  export type ListEnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocuSignEnvelopeStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocuSignSignerStatus'
+   */
+  export type EnumDocuSignSignerStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocuSignSignerStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'DocuSignSignerStatus[]'
+   */
+  export type ListEnumDocuSignSignerStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DocuSignSignerStatus[]'>
     
 
 
@@ -14910,6 +17547,7 @@ export namespace Prisma {
     directoryId?: StringFilter<"Contract"> | string
     categoryId?: StringNullableFilter<"Contract"> | string | null
     versions?: ContractVersionListRelationFilter
+    docuSignEnvelopes?: DocuSignEnvelopeListRelationFilter
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -14929,6 +17567,7 @@ export namespace Prisma {
     directoryId?: SortOrder
     categoryId?: SortOrderInput | SortOrder
     versions?: ContractVersionOrderByRelationAggregateInput
+    docuSignEnvelopes?: DocuSignEnvelopeOrderByRelationAggregateInput
     category?: CategoryOrderByWithRelationInput
     directory?: DirectoryOrderByWithRelationInput
     owner?: UserOrderByWithRelationInput
@@ -14951,6 +17590,7 @@ export namespace Prisma {
     directoryId?: StringFilter<"Contract"> | string
     categoryId?: StringNullableFilter<"Contract"> | string | null
     versions?: ContractVersionListRelationFilter
+    docuSignEnvelopes?: DocuSignEnvelopeListRelationFilter
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     directory?: XOR<DirectoryScalarRelationFilter, DirectoryWhereInput>
     owner?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -15299,6 +17939,167 @@ export namespace Prisma {
     identifier?: StringWithAggregatesFilter<"VerificationToken"> | string
     token?: StringWithAggregatesFilter<"VerificationToken"> | string
     expires?: DateTimeWithAggregatesFilter<"VerificationToken"> | Date | string
+  }
+
+  export type DocuSignEnvelopeWhereInput = {
+    AND?: DocuSignEnvelopeWhereInput | DocuSignEnvelopeWhereInput[]
+    OR?: DocuSignEnvelopeWhereInput[]
+    NOT?: DocuSignEnvelopeWhereInput | DocuSignEnvelopeWhereInput[]
+    id?: StringFilter<"DocuSignEnvelope"> | string
+    envelopeId?: StringFilter<"DocuSignEnvelope"> | string
+    contractId?: StringFilter<"DocuSignEnvelope"> | string
+    status?: EnumDocuSignEnvelopeStatusFilter<"DocuSignEnvelope"> | $Enums.DocuSignEnvelopeStatus
+    templateId?: StringNullableFilter<"DocuSignEnvelope"> | string | null
+    subject?: StringFilter<"DocuSignEnvelope"> | string
+    message?: StringNullableFilter<"DocuSignEnvelope"> | string | null
+    createdAt?: DateTimeFilter<"DocuSignEnvelope"> | Date | string
+    updatedAt?: DateTimeFilter<"DocuSignEnvelope"> | Date | string
+    completedAt?: DateTimeNullableFilter<"DocuSignEnvelope"> | Date | string | null
+    contract?: XOR<ContractScalarRelationFilter, ContractWhereInput>
+    signers?: DocuSignSignerListRelationFilter
+  }
+
+  export type DocuSignEnvelopeOrderByWithRelationInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    contractId?: SortOrder
+    status?: SortOrder
+    templateId?: SortOrderInput | SortOrder
+    subject?: SortOrder
+    message?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    contract?: ContractOrderByWithRelationInput
+    signers?: DocuSignSignerOrderByRelationAggregateInput
+  }
+
+  export type DocuSignEnvelopeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    envelopeId?: string
+    AND?: DocuSignEnvelopeWhereInput | DocuSignEnvelopeWhereInput[]
+    OR?: DocuSignEnvelopeWhereInput[]
+    NOT?: DocuSignEnvelopeWhereInput | DocuSignEnvelopeWhereInput[]
+    contractId?: StringFilter<"DocuSignEnvelope"> | string
+    status?: EnumDocuSignEnvelopeStatusFilter<"DocuSignEnvelope"> | $Enums.DocuSignEnvelopeStatus
+    templateId?: StringNullableFilter<"DocuSignEnvelope"> | string | null
+    subject?: StringFilter<"DocuSignEnvelope"> | string
+    message?: StringNullableFilter<"DocuSignEnvelope"> | string | null
+    createdAt?: DateTimeFilter<"DocuSignEnvelope"> | Date | string
+    updatedAt?: DateTimeFilter<"DocuSignEnvelope"> | Date | string
+    completedAt?: DateTimeNullableFilter<"DocuSignEnvelope"> | Date | string | null
+    contract?: XOR<ContractScalarRelationFilter, ContractWhereInput>
+    signers?: DocuSignSignerListRelationFilter
+  }, "id" | "envelopeId">
+
+  export type DocuSignEnvelopeOrderByWithAggregationInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    contractId?: SortOrder
+    status?: SortOrder
+    templateId?: SortOrderInput | SortOrder
+    subject?: SortOrder
+    message?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrderInput | SortOrder
+    _count?: DocuSignEnvelopeCountOrderByAggregateInput
+    _max?: DocuSignEnvelopeMaxOrderByAggregateInput
+    _min?: DocuSignEnvelopeMinOrderByAggregateInput
+  }
+
+  export type DocuSignEnvelopeScalarWhereWithAggregatesInput = {
+    AND?: DocuSignEnvelopeScalarWhereWithAggregatesInput | DocuSignEnvelopeScalarWhereWithAggregatesInput[]
+    OR?: DocuSignEnvelopeScalarWhereWithAggregatesInput[]
+    NOT?: DocuSignEnvelopeScalarWhereWithAggregatesInput | DocuSignEnvelopeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DocuSignEnvelope"> | string
+    envelopeId?: StringWithAggregatesFilter<"DocuSignEnvelope"> | string
+    contractId?: StringWithAggregatesFilter<"DocuSignEnvelope"> | string
+    status?: EnumDocuSignEnvelopeStatusWithAggregatesFilter<"DocuSignEnvelope"> | $Enums.DocuSignEnvelopeStatus
+    templateId?: StringNullableWithAggregatesFilter<"DocuSignEnvelope"> | string | null
+    subject?: StringWithAggregatesFilter<"DocuSignEnvelope"> | string
+    message?: StringNullableWithAggregatesFilter<"DocuSignEnvelope"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DocuSignEnvelope"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DocuSignEnvelope"> | Date | string
+    completedAt?: DateTimeNullableWithAggregatesFilter<"DocuSignEnvelope"> | Date | string | null
+  }
+
+  export type DocuSignSignerWhereInput = {
+    AND?: DocuSignSignerWhereInput | DocuSignSignerWhereInput[]
+    OR?: DocuSignSignerWhereInput[]
+    NOT?: DocuSignSignerWhereInput | DocuSignSignerWhereInput[]
+    id?: StringFilter<"DocuSignSigner"> | string
+    envelopeId?: StringFilter<"DocuSignSigner"> | string
+    routingOrder?: IntFilter<"DocuSignSigner"> | number
+    email?: StringFilter<"DocuSignSigner"> | string
+    name?: StringFilter<"DocuSignSigner"> | string
+    status?: EnumDocuSignSignerStatusFilter<"DocuSignSigner"> | $Enums.DocuSignSignerStatus
+    signedAt?: DateTimeNullableFilter<"DocuSignSigner"> | Date | string | null
+    createdAt?: DateTimeFilter<"DocuSignSigner"> | Date | string
+    updatedAt?: DateTimeFilter<"DocuSignSigner"> | Date | string
+    envelope?: XOR<DocuSignEnvelopeScalarRelationFilter, DocuSignEnvelopeWhereInput>
+  }
+
+  export type DocuSignSignerOrderByWithRelationInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    routingOrder?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    envelope?: DocuSignEnvelopeOrderByWithRelationInput
+  }
+
+  export type DocuSignSignerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    envelopeId_routingOrder?: DocuSignSignerEnvelopeIdRoutingOrderCompoundUniqueInput
+    AND?: DocuSignSignerWhereInput | DocuSignSignerWhereInput[]
+    OR?: DocuSignSignerWhereInput[]
+    NOT?: DocuSignSignerWhereInput | DocuSignSignerWhereInput[]
+    envelopeId?: StringFilter<"DocuSignSigner"> | string
+    routingOrder?: IntFilter<"DocuSignSigner"> | number
+    email?: StringFilter<"DocuSignSigner"> | string
+    name?: StringFilter<"DocuSignSigner"> | string
+    status?: EnumDocuSignSignerStatusFilter<"DocuSignSigner"> | $Enums.DocuSignSignerStatus
+    signedAt?: DateTimeNullableFilter<"DocuSignSigner"> | Date | string | null
+    createdAt?: DateTimeFilter<"DocuSignSigner"> | Date | string
+    updatedAt?: DateTimeFilter<"DocuSignSigner"> | Date | string
+    envelope?: XOR<DocuSignEnvelopeScalarRelationFilter, DocuSignEnvelopeWhereInput>
+  }, "id" | "envelopeId_routingOrder">
+
+  export type DocuSignSignerOrderByWithAggregationInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    routingOrder?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DocuSignSignerCountOrderByAggregateInput
+    _avg?: DocuSignSignerAvgOrderByAggregateInput
+    _max?: DocuSignSignerMaxOrderByAggregateInput
+    _min?: DocuSignSignerMinOrderByAggregateInput
+    _sum?: DocuSignSignerSumOrderByAggregateInput
+  }
+
+  export type DocuSignSignerScalarWhereWithAggregatesInput = {
+    AND?: DocuSignSignerScalarWhereWithAggregatesInput | DocuSignSignerScalarWhereWithAggregatesInput[]
+    OR?: DocuSignSignerScalarWhereWithAggregatesInput[]
+    NOT?: DocuSignSignerScalarWhereWithAggregatesInput | DocuSignSignerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"DocuSignSigner"> | string
+    envelopeId?: StringWithAggregatesFilter<"DocuSignSigner"> | string
+    routingOrder?: IntWithAggregatesFilter<"DocuSignSigner"> | number
+    email?: StringWithAggregatesFilter<"DocuSignSigner"> | string
+    name?: StringWithAggregatesFilter<"DocuSignSigner"> | string
+    status?: EnumDocuSignSignerStatusWithAggregatesFilter<"DocuSignSigner"> | $Enums.DocuSignSignerStatus
+    signedAt?: DateTimeNullableWithAggregatesFilter<"DocuSignSigner"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"DocuSignSigner"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"DocuSignSigner"> | Date | string
   }
 
   export type UserCreateInput = {
@@ -15679,6 +18480,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     versions?: ContractVersionCreateNestedManyWithoutContractInput
+    docuSignEnvelopes?: DocuSignEnvelopeCreateNestedManyWithoutContractInput
     category?: CategoryCreateNestedOneWithoutContractsInput
     directory: DirectoryCreateNestedOneWithoutContractsInput
     owner: UserCreateNestedOneWithoutOwnedContractsInput
@@ -15698,6 +18500,7 @@ export namespace Prisma {
     directoryId: string
     categoryId?: string | null
     versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractUpdateInput = {
@@ -15711,6 +18514,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    docuSignEnvelopes?: DocuSignEnvelopeUpdateManyWithoutContractNestedInput
     category?: CategoryUpdateOneWithoutContractsNestedInput
     directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
     owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
@@ -15730,6 +18534,7 @@ export namespace Prisma {
     directoryId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractCreateManyInput = {
@@ -16095,6 +18900,183 @@ export namespace Prisma {
     identifier?: StringFieldUpdateOperationsInput | string
     token?: StringFieldUpdateOperationsInput | string
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DocuSignEnvelopeCreateInput = {
+    id?: string
+    envelopeId: string
+    status?: $Enums.DocuSignEnvelopeStatus
+    templateId?: string | null
+    subject: string
+    message?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    contract: ContractCreateNestedOneWithoutDocuSignEnvelopesInput
+    signers?: DocuSignSignerCreateNestedManyWithoutEnvelopeInput
+  }
+
+  export type DocuSignEnvelopeUncheckedCreateInput = {
+    id?: string
+    envelopeId: string
+    contractId: string
+    status?: $Enums.DocuSignEnvelopeStatus
+    templateId?: string | null
+    subject: string
+    message?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    signers?: DocuSignSignerUncheckedCreateNestedManyWithoutEnvelopeInput
+  }
+
+  export type DocuSignEnvelopeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput | $Enums.DocuSignEnvelopeStatus
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contract?: ContractUpdateOneRequiredWithoutDocuSignEnvelopesNestedInput
+    signers?: DocuSignSignerUpdateManyWithoutEnvelopeNestedInput
+  }
+
+  export type DocuSignEnvelopeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    contractId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput | $Enums.DocuSignEnvelopeStatus
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signers?: DocuSignSignerUncheckedUpdateManyWithoutEnvelopeNestedInput
+  }
+
+  export type DocuSignEnvelopeCreateManyInput = {
+    id?: string
+    envelopeId: string
+    contractId: string
+    status?: $Enums.DocuSignEnvelopeStatus
+    templateId?: string | null
+    subject: string
+    message?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type DocuSignEnvelopeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput | $Enums.DocuSignEnvelopeStatus
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DocuSignEnvelopeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    contractId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput | $Enums.DocuSignEnvelopeStatus
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type DocuSignSignerCreateInput = {
+    id?: string
+    routingOrder: number
+    email: string
+    name: string
+    status?: $Enums.DocuSignSignerStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    envelope: DocuSignEnvelopeCreateNestedOneWithoutSignersInput
+  }
+
+  export type DocuSignSignerUncheckedCreateInput = {
+    id?: string
+    envelopeId: string
+    routingOrder: number
+    email: string
+    name: string
+    status?: $Enums.DocuSignSignerStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DocuSignSignerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    routingOrder?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignSignerStatusFieldUpdateOperationsInput | $Enums.DocuSignSignerStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    envelope?: DocuSignEnvelopeUpdateOneRequiredWithoutSignersNestedInput
+  }
+
+  export type DocuSignSignerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    routingOrder?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignSignerStatusFieldUpdateOperationsInput | $Enums.DocuSignSignerStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DocuSignSignerCreateManyInput = {
+    id?: string
+    envelopeId: string
+    routingOrder: number
+    email: string
+    name: string
+    status?: $Enums.DocuSignSignerStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DocuSignSignerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    routingOrder?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignSignerStatusFieldUpdateOperationsInput | $Enums.DocuSignSignerStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DocuSignSignerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    routingOrder?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignSignerStatusFieldUpdateOperationsInput | $Enums.DocuSignSignerStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -16500,12 +19482,22 @@ export namespace Prisma {
     none?: ContractVersionWhereInput
   }
 
+  export type DocuSignEnvelopeListRelationFilter = {
+    every?: DocuSignEnvelopeWhereInput
+    some?: DocuSignEnvelopeWhereInput
+    none?: DocuSignEnvelopeWhereInput
+  }
+
   export type CategoryNullableScalarRelationFilter = {
     is?: CategoryWhereInput | null
     isNot?: CategoryWhereInput | null
   }
 
   export type ContractVersionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DocuSignEnvelopeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -16790,6 +19782,143 @@ export namespace Prisma {
     identifier?: SortOrder
     token?: SortOrder
     expires?: SortOrder
+  }
+
+  export type EnumDocuSignEnvelopeStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocuSignEnvelopeStatus | EnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DocuSignEnvelopeStatus[] | ListEnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocuSignEnvelopeStatus[] | ListEnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocuSignEnvelopeStatusFilter<$PrismaModel> | $Enums.DocuSignEnvelopeStatus
+  }
+
+  export type DocuSignSignerListRelationFilter = {
+    every?: DocuSignSignerWhereInput
+    some?: DocuSignSignerWhereInput
+    none?: DocuSignSignerWhereInput
+  }
+
+  export type DocuSignSignerOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type DocuSignEnvelopeCountOrderByAggregateInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    contractId?: SortOrder
+    status?: SortOrder
+    templateId?: SortOrder
+    subject?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type DocuSignEnvelopeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    contractId?: SortOrder
+    status?: SortOrder
+    templateId?: SortOrder
+    subject?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type DocuSignEnvelopeMinOrderByAggregateInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    contractId?: SortOrder
+    status?: SortOrder
+    templateId?: SortOrder
+    subject?: SortOrder
+    message?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    completedAt?: SortOrder
+  }
+
+  export type EnumDocuSignEnvelopeStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocuSignEnvelopeStatus | EnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DocuSignEnvelopeStatus[] | ListEnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocuSignEnvelopeStatus[] | ListEnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocuSignEnvelopeStatusWithAggregatesFilter<$PrismaModel> | $Enums.DocuSignEnvelopeStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocuSignEnvelopeStatusFilter<$PrismaModel>
+    _max?: NestedEnumDocuSignEnvelopeStatusFilter<$PrismaModel>
+  }
+
+  export type EnumDocuSignSignerStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocuSignSignerStatus | EnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DocuSignSignerStatus[] | ListEnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocuSignSignerStatus[] | ListEnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocuSignSignerStatusFilter<$PrismaModel> | $Enums.DocuSignSignerStatus
+  }
+
+  export type DocuSignEnvelopeScalarRelationFilter = {
+    is?: DocuSignEnvelopeWhereInput
+    isNot?: DocuSignEnvelopeWhereInput
+  }
+
+  export type DocuSignSignerEnvelopeIdRoutingOrderCompoundUniqueInput = {
+    envelopeId: string
+    routingOrder: number
+  }
+
+  export type DocuSignSignerCountOrderByAggregateInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    routingOrder?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DocuSignSignerAvgOrderByAggregateInput = {
+    routingOrder?: SortOrder
+  }
+
+  export type DocuSignSignerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    routingOrder?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DocuSignSignerMinOrderByAggregateInput = {
+    id?: SortOrder
+    envelopeId?: SortOrder
+    routingOrder?: SortOrder
+    email?: SortOrder
+    name?: SortOrder
+    status?: SortOrder
+    signedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DocuSignSignerSumOrderByAggregateInput = {
+    routingOrder?: SortOrder
+  }
+
+  export type EnumDocuSignSignerStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocuSignSignerStatus | EnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DocuSignSignerStatus[] | ListEnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocuSignSignerStatus[] | ListEnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocuSignSignerStatusWithAggregatesFilter<$PrismaModel> | $Enums.DocuSignSignerStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocuSignSignerStatusFilter<$PrismaModel>
+    _max?: NestedEnumDocuSignSignerStatusFilter<$PrismaModel>
   }
 
   export type ContractCreateNestedManyWithoutOwnerInput = {
@@ -17273,6 +20402,13 @@ export namespace Prisma {
     connect?: ContractVersionWhereUniqueInput | ContractVersionWhereUniqueInput[]
   }
 
+  export type DocuSignEnvelopeCreateNestedManyWithoutContractInput = {
+    create?: XOR<DocuSignEnvelopeCreateWithoutContractInput, DocuSignEnvelopeUncheckedCreateWithoutContractInput> | DocuSignEnvelopeCreateWithoutContractInput[] | DocuSignEnvelopeUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: DocuSignEnvelopeCreateOrConnectWithoutContractInput | DocuSignEnvelopeCreateOrConnectWithoutContractInput[]
+    createMany?: DocuSignEnvelopeCreateManyContractInputEnvelope
+    connect?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+  }
+
   export type CategoryCreateNestedOneWithoutContractsInput = {
     create?: XOR<CategoryCreateWithoutContractsInput, CategoryUncheckedCreateWithoutContractsInput>
     connectOrCreate?: CategoryCreateOrConnectWithoutContractsInput
@@ -17298,6 +20434,13 @@ export namespace Prisma {
     connect?: ContractVersionWhereUniqueInput | ContractVersionWhereUniqueInput[]
   }
 
+  export type DocuSignEnvelopeUncheckedCreateNestedManyWithoutContractInput = {
+    create?: XOR<DocuSignEnvelopeCreateWithoutContractInput, DocuSignEnvelopeUncheckedCreateWithoutContractInput> | DocuSignEnvelopeCreateWithoutContractInput[] | DocuSignEnvelopeUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: DocuSignEnvelopeCreateOrConnectWithoutContractInput | DocuSignEnvelopeCreateOrConnectWithoutContractInput[]
+    createMany?: DocuSignEnvelopeCreateManyContractInputEnvelope
+    connect?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+  }
+
   export type EnumContractStatusFieldUpdateOperationsInput = {
     set?: $Enums.ContractStatus
   }
@@ -17314,6 +20457,20 @@ export namespace Prisma {
     update?: ContractVersionUpdateWithWhereUniqueWithoutContractInput | ContractVersionUpdateWithWhereUniqueWithoutContractInput[]
     updateMany?: ContractVersionUpdateManyWithWhereWithoutContractInput | ContractVersionUpdateManyWithWhereWithoutContractInput[]
     deleteMany?: ContractVersionScalarWhereInput | ContractVersionScalarWhereInput[]
+  }
+
+  export type DocuSignEnvelopeUpdateManyWithoutContractNestedInput = {
+    create?: XOR<DocuSignEnvelopeCreateWithoutContractInput, DocuSignEnvelopeUncheckedCreateWithoutContractInput> | DocuSignEnvelopeCreateWithoutContractInput[] | DocuSignEnvelopeUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: DocuSignEnvelopeCreateOrConnectWithoutContractInput | DocuSignEnvelopeCreateOrConnectWithoutContractInput[]
+    upsert?: DocuSignEnvelopeUpsertWithWhereUniqueWithoutContractInput | DocuSignEnvelopeUpsertWithWhereUniqueWithoutContractInput[]
+    createMany?: DocuSignEnvelopeCreateManyContractInputEnvelope
+    set?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+    disconnect?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+    delete?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+    connect?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+    update?: DocuSignEnvelopeUpdateWithWhereUniqueWithoutContractInput | DocuSignEnvelopeUpdateWithWhereUniqueWithoutContractInput[]
+    updateMany?: DocuSignEnvelopeUpdateManyWithWhereWithoutContractInput | DocuSignEnvelopeUpdateManyWithWhereWithoutContractInput[]
+    deleteMany?: DocuSignEnvelopeScalarWhereInput | DocuSignEnvelopeScalarWhereInput[]
   }
 
   export type CategoryUpdateOneWithoutContractsNestedInput = {
@@ -17354,6 +20511,20 @@ export namespace Prisma {
     update?: ContractVersionUpdateWithWhereUniqueWithoutContractInput | ContractVersionUpdateWithWhereUniqueWithoutContractInput[]
     updateMany?: ContractVersionUpdateManyWithWhereWithoutContractInput | ContractVersionUpdateManyWithWhereWithoutContractInput[]
     deleteMany?: ContractVersionScalarWhereInput | ContractVersionScalarWhereInput[]
+  }
+
+  export type DocuSignEnvelopeUncheckedUpdateManyWithoutContractNestedInput = {
+    create?: XOR<DocuSignEnvelopeCreateWithoutContractInput, DocuSignEnvelopeUncheckedCreateWithoutContractInput> | DocuSignEnvelopeCreateWithoutContractInput[] | DocuSignEnvelopeUncheckedCreateWithoutContractInput[]
+    connectOrCreate?: DocuSignEnvelopeCreateOrConnectWithoutContractInput | DocuSignEnvelopeCreateOrConnectWithoutContractInput[]
+    upsert?: DocuSignEnvelopeUpsertWithWhereUniqueWithoutContractInput | DocuSignEnvelopeUpsertWithWhereUniqueWithoutContractInput[]
+    createMany?: DocuSignEnvelopeCreateManyContractInputEnvelope
+    set?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+    disconnect?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+    delete?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+    connect?: DocuSignEnvelopeWhereUniqueInput | DocuSignEnvelopeWhereUniqueInput[]
+    update?: DocuSignEnvelopeUpdateWithWhereUniqueWithoutContractInput | DocuSignEnvelopeUpdateWithWhereUniqueWithoutContractInput[]
+    updateMany?: DocuSignEnvelopeUpdateManyWithWhereWithoutContractInput | DocuSignEnvelopeUpdateManyWithWhereWithoutContractInput[]
+    deleteMany?: DocuSignEnvelopeScalarWhereInput | DocuSignEnvelopeScalarWhereInput[]
   }
 
   export type ContractCreateNestedManyWithoutCategoryInput = {
@@ -17454,6 +20625,84 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutSessionsInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type ContractCreateNestedOneWithoutDocuSignEnvelopesInput = {
+    create?: XOR<ContractCreateWithoutDocuSignEnvelopesInput, ContractUncheckedCreateWithoutDocuSignEnvelopesInput>
+    connectOrCreate?: ContractCreateOrConnectWithoutDocuSignEnvelopesInput
+    connect?: ContractWhereUniqueInput
+  }
+
+  export type DocuSignSignerCreateNestedManyWithoutEnvelopeInput = {
+    create?: XOR<DocuSignSignerCreateWithoutEnvelopeInput, DocuSignSignerUncheckedCreateWithoutEnvelopeInput> | DocuSignSignerCreateWithoutEnvelopeInput[] | DocuSignSignerUncheckedCreateWithoutEnvelopeInput[]
+    connectOrCreate?: DocuSignSignerCreateOrConnectWithoutEnvelopeInput | DocuSignSignerCreateOrConnectWithoutEnvelopeInput[]
+    createMany?: DocuSignSignerCreateManyEnvelopeInputEnvelope
+    connect?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+  }
+
+  export type DocuSignSignerUncheckedCreateNestedManyWithoutEnvelopeInput = {
+    create?: XOR<DocuSignSignerCreateWithoutEnvelopeInput, DocuSignSignerUncheckedCreateWithoutEnvelopeInput> | DocuSignSignerCreateWithoutEnvelopeInput[] | DocuSignSignerUncheckedCreateWithoutEnvelopeInput[]
+    connectOrCreate?: DocuSignSignerCreateOrConnectWithoutEnvelopeInput | DocuSignSignerCreateOrConnectWithoutEnvelopeInput[]
+    createMany?: DocuSignSignerCreateManyEnvelopeInputEnvelope
+    connect?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+  }
+
+  export type EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DocuSignEnvelopeStatus
+  }
+
+  export type ContractUpdateOneRequiredWithoutDocuSignEnvelopesNestedInput = {
+    create?: XOR<ContractCreateWithoutDocuSignEnvelopesInput, ContractUncheckedCreateWithoutDocuSignEnvelopesInput>
+    connectOrCreate?: ContractCreateOrConnectWithoutDocuSignEnvelopesInput
+    upsert?: ContractUpsertWithoutDocuSignEnvelopesInput
+    connect?: ContractWhereUniqueInput
+    update?: XOR<XOR<ContractUpdateToOneWithWhereWithoutDocuSignEnvelopesInput, ContractUpdateWithoutDocuSignEnvelopesInput>, ContractUncheckedUpdateWithoutDocuSignEnvelopesInput>
+  }
+
+  export type DocuSignSignerUpdateManyWithoutEnvelopeNestedInput = {
+    create?: XOR<DocuSignSignerCreateWithoutEnvelopeInput, DocuSignSignerUncheckedCreateWithoutEnvelopeInput> | DocuSignSignerCreateWithoutEnvelopeInput[] | DocuSignSignerUncheckedCreateWithoutEnvelopeInput[]
+    connectOrCreate?: DocuSignSignerCreateOrConnectWithoutEnvelopeInput | DocuSignSignerCreateOrConnectWithoutEnvelopeInput[]
+    upsert?: DocuSignSignerUpsertWithWhereUniqueWithoutEnvelopeInput | DocuSignSignerUpsertWithWhereUniqueWithoutEnvelopeInput[]
+    createMany?: DocuSignSignerCreateManyEnvelopeInputEnvelope
+    set?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+    disconnect?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+    delete?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+    connect?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+    update?: DocuSignSignerUpdateWithWhereUniqueWithoutEnvelopeInput | DocuSignSignerUpdateWithWhereUniqueWithoutEnvelopeInput[]
+    updateMany?: DocuSignSignerUpdateManyWithWhereWithoutEnvelopeInput | DocuSignSignerUpdateManyWithWhereWithoutEnvelopeInput[]
+    deleteMany?: DocuSignSignerScalarWhereInput | DocuSignSignerScalarWhereInput[]
+  }
+
+  export type DocuSignSignerUncheckedUpdateManyWithoutEnvelopeNestedInput = {
+    create?: XOR<DocuSignSignerCreateWithoutEnvelopeInput, DocuSignSignerUncheckedCreateWithoutEnvelopeInput> | DocuSignSignerCreateWithoutEnvelopeInput[] | DocuSignSignerUncheckedCreateWithoutEnvelopeInput[]
+    connectOrCreate?: DocuSignSignerCreateOrConnectWithoutEnvelopeInput | DocuSignSignerCreateOrConnectWithoutEnvelopeInput[]
+    upsert?: DocuSignSignerUpsertWithWhereUniqueWithoutEnvelopeInput | DocuSignSignerUpsertWithWhereUniqueWithoutEnvelopeInput[]
+    createMany?: DocuSignSignerCreateManyEnvelopeInputEnvelope
+    set?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+    disconnect?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+    delete?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+    connect?: DocuSignSignerWhereUniqueInput | DocuSignSignerWhereUniqueInput[]
+    update?: DocuSignSignerUpdateWithWhereUniqueWithoutEnvelopeInput | DocuSignSignerUpdateWithWhereUniqueWithoutEnvelopeInput[]
+    updateMany?: DocuSignSignerUpdateManyWithWhereWithoutEnvelopeInput | DocuSignSignerUpdateManyWithWhereWithoutEnvelopeInput[]
+    deleteMany?: DocuSignSignerScalarWhereInput | DocuSignSignerScalarWhereInput[]
+  }
+
+  export type DocuSignEnvelopeCreateNestedOneWithoutSignersInput = {
+    create?: XOR<DocuSignEnvelopeCreateWithoutSignersInput, DocuSignEnvelopeUncheckedCreateWithoutSignersInput>
+    connectOrCreate?: DocuSignEnvelopeCreateOrConnectWithoutSignersInput
+    connect?: DocuSignEnvelopeWhereUniqueInput
+  }
+
+  export type EnumDocuSignSignerStatusFieldUpdateOperationsInput = {
+    set?: $Enums.DocuSignSignerStatus
+  }
+
+  export type DocuSignEnvelopeUpdateOneRequiredWithoutSignersNestedInput = {
+    create?: XOR<DocuSignEnvelopeCreateWithoutSignersInput, DocuSignEnvelopeUncheckedCreateWithoutSignersInput>
+    connectOrCreate?: DocuSignEnvelopeCreateOrConnectWithoutSignersInput
+    upsert?: DocuSignEnvelopeUpsertWithoutSignersInput
+    connect?: DocuSignEnvelopeWhereUniqueInput
+    update?: XOR<XOR<DocuSignEnvelopeUpdateToOneWithWhereWithoutSignersInput, DocuSignEnvelopeUpdateWithoutSignersInput>, DocuSignEnvelopeUncheckedUpdateWithoutSignersInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -17691,6 +20940,40 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumDocuSignEnvelopeStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocuSignEnvelopeStatus | EnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DocuSignEnvelopeStatus[] | ListEnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocuSignEnvelopeStatus[] | ListEnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocuSignEnvelopeStatusFilter<$PrismaModel> | $Enums.DocuSignEnvelopeStatus
+  }
+
+  export type NestedEnumDocuSignEnvelopeStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocuSignEnvelopeStatus | EnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DocuSignEnvelopeStatus[] | ListEnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocuSignEnvelopeStatus[] | ListEnumDocuSignEnvelopeStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocuSignEnvelopeStatusWithAggregatesFilter<$PrismaModel> | $Enums.DocuSignEnvelopeStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocuSignEnvelopeStatusFilter<$PrismaModel>
+    _max?: NestedEnumDocuSignEnvelopeStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumDocuSignSignerStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocuSignSignerStatus | EnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DocuSignSignerStatus[] | ListEnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocuSignSignerStatus[] | ListEnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocuSignSignerStatusFilter<$PrismaModel> | $Enums.DocuSignSignerStatus
+  }
+
+  export type NestedEnumDocuSignSignerStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.DocuSignSignerStatus | EnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.DocuSignSignerStatus[] | ListEnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.DocuSignSignerStatus[] | ListEnumDocuSignSignerStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumDocuSignSignerStatusWithAggregatesFilter<$PrismaModel> | $Enums.DocuSignSignerStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumDocuSignSignerStatusFilter<$PrismaModel>
+    _max?: NestedEnumDocuSignSignerStatusFilter<$PrismaModel>
+  }
+
   export type ContractCreateWithoutOwnerInput = {
     id?: string
     title: string
@@ -17702,6 +20985,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     versions?: ContractVersionCreateNestedManyWithoutContractInput
+    docuSignEnvelopes?: DocuSignEnvelopeCreateNestedManyWithoutContractInput
     category?: CategoryCreateNestedOneWithoutContractsInput
     directory: DirectoryCreateNestedOneWithoutContractsInput
   }
@@ -17719,6 +21003,7 @@ export namespace Prisma {
     directoryId: string
     categoryId?: string | null
     versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutOwnerInput = {
@@ -18169,6 +21454,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     versions?: ContractVersionCreateNestedManyWithoutContractInput
+    docuSignEnvelopes?: DocuSignEnvelopeCreateNestedManyWithoutContractInput
     category?: CategoryCreateNestedOneWithoutContractsInput
     owner: UserCreateNestedOneWithoutOwnedContractsInput
   }
@@ -18186,6 +21472,7 @@ export namespace Prisma {
     ownerId: string
     categoryId?: string | null
     versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutDirectoryInput = {
@@ -18540,6 +21827,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type DocuSignEnvelopeCreateWithoutContractInput = {
+    id?: string
+    envelopeId: string
+    status?: $Enums.DocuSignEnvelopeStatus
+    templateId?: string | null
+    subject: string
+    message?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    signers?: DocuSignSignerCreateNestedManyWithoutEnvelopeInput
+  }
+
+  export type DocuSignEnvelopeUncheckedCreateWithoutContractInput = {
+    id?: string
+    envelopeId: string
+    status?: $Enums.DocuSignEnvelopeStatus
+    templateId?: string | null
+    subject: string
+    message?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    signers?: DocuSignSignerUncheckedCreateNestedManyWithoutEnvelopeInput
+  }
+
+  export type DocuSignEnvelopeCreateOrConnectWithoutContractInput = {
+    where: DocuSignEnvelopeWhereUniqueInput
+    create: XOR<DocuSignEnvelopeCreateWithoutContractInput, DocuSignEnvelopeUncheckedCreateWithoutContractInput>
+  }
+
+  export type DocuSignEnvelopeCreateManyContractInputEnvelope = {
+    data: DocuSignEnvelopeCreateManyContractInput | DocuSignEnvelopeCreateManyContractInput[]
+    skipDuplicates?: boolean
+  }
+
   export type CategoryCreateWithoutContractsInput = {
     id?: string
     name: string
@@ -18656,6 +21979,38 @@ export namespace Prisma {
     changeNote?: StringNullableFilter<"ContractVersion"> | string | null
     createdAt?: DateTimeFilter<"ContractVersion"> | Date | string
     contractId?: StringFilter<"ContractVersion"> | string
+  }
+
+  export type DocuSignEnvelopeUpsertWithWhereUniqueWithoutContractInput = {
+    where: DocuSignEnvelopeWhereUniqueInput
+    update: XOR<DocuSignEnvelopeUpdateWithoutContractInput, DocuSignEnvelopeUncheckedUpdateWithoutContractInput>
+    create: XOR<DocuSignEnvelopeCreateWithoutContractInput, DocuSignEnvelopeUncheckedCreateWithoutContractInput>
+  }
+
+  export type DocuSignEnvelopeUpdateWithWhereUniqueWithoutContractInput = {
+    where: DocuSignEnvelopeWhereUniqueInput
+    data: XOR<DocuSignEnvelopeUpdateWithoutContractInput, DocuSignEnvelopeUncheckedUpdateWithoutContractInput>
+  }
+
+  export type DocuSignEnvelopeUpdateManyWithWhereWithoutContractInput = {
+    where: DocuSignEnvelopeScalarWhereInput
+    data: XOR<DocuSignEnvelopeUpdateManyMutationInput, DocuSignEnvelopeUncheckedUpdateManyWithoutContractInput>
+  }
+
+  export type DocuSignEnvelopeScalarWhereInput = {
+    AND?: DocuSignEnvelopeScalarWhereInput | DocuSignEnvelopeScalarWhereInput[]
+    OR?: DocuSignEnvelopeScalarWhereInput[]
+    NOT?: DocuSignEnvelopeScalarWhereInput | DocuSignEnvelopeScalarWhereInput[]
+    id?: StringFilter<"DocuSignEnvelope"> | string
+    envelopeId?: StringFilter<"DocuSignEnvelope"> | string
+    contractId?: StringFilter<"DocuSignEnvelope"> | string
+    status?: EnumDocuSignEnvelopeStatusFilter<"DocuSignEnvelope"> | $Enums.DocuSignEnvelopeStatus
+    templateId?: StringNullableFilter<"DocuSignEnvelope"> | string | null
+    subject?: StringFilter<"DocuSignEnvelope"> | string
+    message?: StringNullableFilter<"DocuSignEnvelope"> | string | null
+    createdAt?: DateTimeFilter<"DocuSignEnvelope"> | Date | string
+    updatedAt?: DateTimeFilter<"DocuSignEnvelope"> | Date | string
+    completedAt?: DateTimeNullableFilter<"DocuSignEnvelope"> | Date | string | null
   }
 
   export type CategoryUpsertWithoutContractsInput = {
@@ -18776,6 +22131,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     versions?: ContractVersionCreateNestedManyWithoutContractInput
+    docuSignEnvelopes?: DocuSignEnvelopeCreateNestedManyWithoutContractInput
     directory: DirectoryCreateNestedOneWithoutContractsInput
     owner: UserCreateNestedOneWithoutOwnedContractsInput
   }
@@ -18793,6 +22149,7 @@ export namespace Prisma {
     ownerId: string
     directoryId: string
     versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutCategoryInput = {
@@ -18831,6 +22188,7 @@ export namespace Prisma {
     endDate?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    docuSignEnvelopes?: DocuSignEnvelopeCreateNestedManyWithoutContractInput
     category?: CategoryCreateNestedOneWithoutContractsInput
     directory: DirectoryCreateNestedOneWithoutContractsInput
     owner: UserCreateNestedOneWithoutOwnedContractsInput
@@ -18849,6 +22207,7 @@ export namespace Prisma {
     ownerId: string
     directoryId: string
     categoryId?: string | null
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedCreateNestedManyWithoutContractInput
   }
 
   export type ContractCreateOrConnectWithoutVersionsInput = {
@@ -18877,6 +22236,7 @@ export namespace Prisma {
     endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    docuSignEnvelopes?: DocuSignEnvelopeUpdateManyWithoutContractNestedInput
     category?: CategoryUpdateOneWithoutContractsNestedInput
     directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
     owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
@@ -18895,6 +22255,7 @@ export namespace Prisma {
     ownerId?: StringFieldUpdateOperationsInput | string
     directoryId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type UserCreateWithoutAccountsInput = {
@@ -19057,6 +22418,217 @@ export namespace Prisma {
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
   }
 
+  export type ContractCreateWithoutDocuSignEnvelopesInput = {
+    id?: string
+    title: string
+    content: string
+    status?: $Enums.ContractStatus
+    contractNumber?: string | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    versions?: ContractVersionCreateNestedManyWithoutContractInput
+    category?: CategoryCreateNestedOneWithoutContractsInput
+    directory: DirectoryCreateNestedOneWithoutContractsInput
+    owner: UserCreateNestedOneWithoutOwnedContractsInput
+  }
+
+  export type ContractUncheckedCreateWithoutDocuSignEnvelopesInput = {
+    id?: string
+    title: string
+    content: string
+    status?: $Enums.ContractStatus
+    contractNumber?: string | null
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ownerId: string
+    directoryId: string
+    categoryId?: string | null
+    versions?: ContractVersionUncheckedCreateNestedManyWithoutContractInput
+  }
+
+  export type ContractCreateOrConnectWithoutDocuSignEnvelopesInput = {
+    where: ContractWhereUniqueInput
+    create: XOR<ContractCreateWithoutDocuSignEnvelopesInput, ContractUncheckedCreateWithoutDocuSignEnvelopesInput>
+  }
+
+  export type DocuSignSignerCreateWithoutEnvelopeInput = {
+    id?: string
+    routingOrder: number
+    email: string
+    name: string
+    status?: $Enums.DocuSignSignerStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DocuSignSignerUncheckedCreateWithoutEnvelopeInput = {
+    id?: string
+    routingOrder: number
+    email: string
+    name: string
+    status?: $Enums.DocuSignSignerStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DocuSignSignerCreateOrConnectWithoutEnvelopeInput = {
+    where: DocuSignSignerWhereUniqueInput
+    create: XOR<DocuSignSignerCreateWithoutEnvelopeInput, DocuSignSignerUncheckedCreateWithoutEnvelopeInput>
+  }
+
+  export type DocuSignSignerCreateManyEnvelopeInputEnvelope = {
+    data: DocuSignSignerCreateManyEnvelopeInput | DocuSignSignerCreateManyEnvelopeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ContractUpsertWithoutDocuSignEnvelopesInput = {
+    update: XOR<ContractUpdateWithoutDocuSignEnvelopesInput, ContractUncheckedUpdateWithoutDocuSignEnvelopesInput>
+    create: XOR<ContractCreateWithoutDocuSignEnvelopesInput, ContractUncheckedCreateWithoutDocuSignEnvelopesInput>
+    where?: ContractWhereInput
+  }
+
+  export type ContractUpdateToOneWithWhereWithoutDocuSignEnvelopesInput = {
+    where?: ContractWhereInput
+    data: XOR<ContractUpdateWithoutDocuSignEnvelopesInput, ContractUncheckedUpdateWithoutDocuSignEnvelopesInput>
+  }
+
+  export type ContractUpdateWithoutDocuSignEnvelopesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    contractNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    category?: CategoryUpdateOneWithoutContractsNestedInput
+    directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
+    owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
+  }
+
+  export type ContractUncheckedUpdateWithoutDocuSignEnvelopesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    status?: EnumContractStatusFieldUpdateOperationsInput | $Enums.ContractStatus
+    contractNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ownerId?: StringFieldUpdateOperationsInput | string
+    directoryId?: StringFieldUpdateOperationsInput | string
+    categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
+  }
+
+  export type DocuSignSignerUpsertWithWhereUniqueWithoutEnvelopeInput = {
+    where: DocuSignSignerWhereUniqueInput
+    update: XOR<DocuSignSignerUpdateWithoutEnvelopeInput, DocuSignSignerUncheckedUpdateWithoutEnvelopeInput>
+    create: XOR<DocuSignSignerCreateWithoutEnvelopeInput, DocuSignSignerUncheckedCreateWithoutEnvelopeInput>
+  }
+
+  export type DocuSignSignerUpdateWithWhereUniqueWithoutEnvelopeInput = {
+    where: DocuSignSignerWhereUniqueInput
+    data: XOR<DocuSignSignerUpdateWithoutEnvelopeInput, DocuSignSignerUncheckedUpdateWithoutEnvelopeInput>
+  }
+
+  export type DocuSignSignerUpdateManyWithWhereWithoutEnvelopeInput = {
+    where: DocuSignSignerScalarWhereInput
+    data: XOR<DocuSignSignerUpdateManyMutationInput, DocuSignSignerUncheckedUpdateManyWithoutEnvelopeInput>
+  }
+
+  export type DocuSignSignerScalarWhereInput = {
+    AND?: DocuSignSignerScalarWhereInput | DocuSignSignerScalarWhereInput[]
+    OR?: DocuSignSignerScalarWhereInput[]
+    NOT?: DocuSignSignerScalarWhereInput | DocuSignSignerScalarWhereInput[]
+    id?: StringFilter<"DocuSignSigner"> | string
+    envelopeId?: StringFilter<"DocuSignSigner"> | string
+    routingOrder?: IntFilter<"DocuSignSigner"> | number
+    email?: StringFilter<"DocuSignSigner"> | string
+    name?: StringFilter<"DocuSignSigner"> | string
+    status?: EnumDocuSignSignerStatusFilter<"DocuSignSigner"> | $Enums.DocuSignSignerStatus
+    signedAt?: DateTimeNullableFilter<"DocuSignSigner"> | Date | string | null
+    createdAt?: DateTimeFilter<"DocuSignSigner"> | Date | string
+    updatedAt?: DateTimeFilter<"DocuSignSigner"> | Date | string
+  }
+
+  export type DocuSignEnvelopeCreateWithoutSignersInput = {
+    id?: string
+    envelopeId: string
+    status?: $Enums.DocuSignEnvelopeStatus
+    templateId?: string | null
+    subject: string
+    message?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+    contract: ContractCreateNestedOneWithoutDocuSignEnvelopesInput
+  }
+
+  export type DocuSignEnvelopeUncheckedCreateWithoutSignersInput = {
+    id?: string
+    envelopeId: string
+    contractId: string
+    status?: $Enums.DocuSignEnvelopeStatus
+    templateId?: string | null
+    subject: string
+    message?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
+  export type DocuSignEnvelopeCreateOrConnectWithoutSignersInput = {
+    where: DocuSignEnvelopeWhereUniqueInput
+    create: XOR<DocuSignEnvelopeCreateWithoutSignersInput, DocuSignEnvelopeUncheckedCreateWithoutSignersInput>
+  }
+
+  export type DocuSignEnvelopeUpsertWithoutSignersInput = {
+    update: XOR<DocuSignEnvelopeUpdateWithoutSignersInput, DocuSignEnvelopeUncheckedUpdateWithoutSignersInput>
+    create: XOR<DocuSignEnvelopeCreateWithoutSignersInput, DocuSignEnvelopeUncheckedCreateWithoutSignersInput>
+    where?: DocuSignEnvelopeWhereInput
+  }
+
+  export type DocuSignEnvelopeUpdateToOneWithWhereWithoutSignersInput = {
+    where?: DocuSignEnvelopeWhereInput
+    data: XOR<DocuSignEnvelopeUpdateWithoutSignersInput, DocuSignEnvelopeUncheckedUpdateWithoutSignersInput>
+  }
+
+  export type DocuSignEnvelopeUpdateWithoutSignersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput | $Enums.DocuSignEnvelopeStatus
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    contract?: ContractUpdateOneRequiredWithoutDocuSignEnvelopesNestedInput
+  }
+
+  export type DocuSignEnvelopeUncheckedUpdateWithoutSignersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    contractId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput | $Enums.DocuSignEnvelopeStatus
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type ContractCreateManyOwnerInput = {
     id?: string
     title: string
@@ -19108,6 +22680,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    docuSignEnvelopes?: DocuSignEnvelopeUpdateManyWithoutContractNestedInput
     category?: CategoryUpdateOneWithoutContractsNestedInput
     directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
   }
@@ -19125,6 +22698,7 @@ export namespace Prisma {
     directoryId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateManyWithoutOwnerInput = {
@@ -19313,6 +22887,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    docuSignEnvelopes?: DocuSignEnvelopeUpdateManyWithoutContractNestedInput
     category?: CategoryUpdateOneWithoutContractsNestedInput
     owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
   }
@@ -19330,6 +22905,7 @@ export namespace Prisma {
     ownerId?: StringFieldUpdateOperationsInput | string
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateManyWithoutDirectoryInput = {
@@ -19412,6 +22988,18 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type DocuSignEnvelopeCreateManyContractInput = {
+    id?: string
+    envelopeId: string
+    status?: $Enums.DocuSignEnvelopeStatus
+    templateId?: string | null
+    subject: string
+    message?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    completedAt?: Date | string | null
+  }
+
   export type ContractVersionUpdateWithoutContractInput = {
     id?: StringFieldUpdateOperationsInput | string
     version?: IntFieldUpdateOperationsInput | number
@@ -19439,6 +23027,44 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type DocuSignEnvelopeUpdateWithoutContractInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput | $Enums.DocuSignEnvelopeStatus
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signers?: DocuSignSignerUpdateManyWithoutEnvelopeNestedInput
+  }
+
+  export type DocuSignEnvelopeUncheckedUpdateWithoutContractInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput | $Enums.DocuSignEnvelopeStatus
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    signers?: DocuSignSignerUncheckedUpdateManyWithoutEnvelopeNestedInput
+  }
+
+  export type DocuSignEnvelopeUncheckedUpdateManyWithoutContractInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    envelopeId?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignEnvelopeStatusFieldUpdateOperationsInput | $Enums.DocuSignEnvelopeStatus
+    templateId?: NullableStringFieldUpdateOperationsInput | string | null
+    subject?: StringFieldUpdateOperationsInput | string
+    message?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    completedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type ContractCreateManyCategoryInput = {
     id?: string
     title: string
@@ -19464,6 +23090,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     versions?: ContractVersionUpdateManyWithoutContractNestedInput
+    docuSignEnvelopes?: DocuSignEnvelopeUpdateManyWithoutContractNestedInput
     directory?: DirectoryUpdateOneRequiredWithoutContractsNestedInput
     owner?: UserUpdateOneRequiredWithoutOwnedContractsNestedInput
   }
@@ -19481,6 +23108,7 @@ export namespace Prisma {
     ownerId?: StringFieldUpdateOperationsInput | string
     directoryId?: StringFieldUpdateOperationsInput | string
     versions?: ContractVersionUncheckedUpdateManyWithoutContractNestedInput
+    docuSignEnvelopes?: DocuSignEnvelopeUncheckedUpdateManyWithoutContractNestedInput
   }
 
   export type ContractUncheckedUpdateManyWithoutCategoryInput = {
@@ -19495,6 +23123,50 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ownerId?: StringFieldUpdateOperationsInput | string
     directoryId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type DocuSignSignerCreateManyEnvelopeInput = {
+    id?: string
+    routingOrder: number
+    email: string
+    name: string
+    status?: $Enums.DocuSignSignerStatus
+    signedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DocuSignSignerUpdateWithoutEnvelopeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    routingOrder?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignSignerStatusFieldUpdateOperationsInput | $Enums.DocuSignSignerStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DocuSignSignerUncheckedUpdateWithoutEnvelopeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    routingOrder?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignSignerStatusFieldUpdateOperationsInput | $Enums.DocuSignSignerStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DocuSignSignerUncheckedUpdateManyWithoutEnvelopeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    routingOrder?: IntFieldUpdateOperationsInput | number
+    email?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    status?: EnumDocuSignSignerStatusFieldUpdateOperationsInput | $Enums.DocuSignSignerStatus
+    signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

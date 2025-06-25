@@ -84,22 +84,23 @@ model DirectoryAccess {
 }
 
 model Contract {
-  id             String            @id @default(cuid())
+  id             String             @id @default(cuid())
   title          String
   content        String
-  status         ContractStatus    @default(DRAFT)
-  contractNumber String?           @unique
+  status         ContractStatus     @default(DRAFT)
+  contractNumber String?            @unique
   startDate      DateTime?
   endDate        DateTime?
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
   ownerId        String
   directoryId    String
   categoryId     String?
   versions       ContractVersion[]
-  category       Category?         @relation(fields: [categoryId], references: [id])
-  directory      Directory         @relation(fields: [directoryId], references: [id])
-  owner          User              @relation("ContractOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  docuSignEnvelopes DocuSignEnvelope[]
+  category       Category?          @relation(fields: [categoryId], references: [id])
+  directory      Directory          @relation(fields: [directoryId], references: [id])
+  owner          User               @relation("ContractOwner", fields: [ownerId], references: [id], onDelete: Cascade)
 
   @@index([directoryId])
   @@index([ownerId])
@@ -183,4 +184,58 @@ model VerificationToken {
 
   @@unique([identifier, token])
   @@map("verificationtokens")
+}
+
+// DocuSign連携用のモデル
+model DocuSignEnvelope {
+  id            String                 @id @default(cuid())
+  envelopeId    String                 @unique // DocuSignのEnvelope ID
+  contractId    String
+  status        DocuSignEnvelopeStatus @default(CREATED)
+  templateId    String?                // DocuSignテンプレートID
+  subject       String                 // 署名リクエストの件名
+  message       String?                // 署名リクエストのメッセージ
+  createdAt     DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  completedAt   DateTime?              // 署名完了日時
+  contract      Contract               @relation(fields: [contractId], references: [id], onDelete: Cascade)
+  signers       DocuSignSigner[]
+
+  @@index([contractId])
+  @@index([envelopeId])
+  @@map("docusign_envelopes")
+}
+
+model DocuSignSigner {
+  id            String             @id @default(cuid())
+  envelopeId    String
+  routingOrder  Int                // 署名順序
+  email         String
+  name          String
+  status        DocuSignSignerStatus @default(CREATED)
+  signedAt      DateTime?          // 署名完了日時
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  envelope      DocuSignEnvelope   @relation(fields: [envelopeId], references: [id], onDelete: Cascade)
+
+  @@unique([envelopeId, routingOrder])
+  @@index([envelopeId])
+  @@map("docusign_signers")
+}
+
+enum DocuSignEnvelopeStatus {
+  CREATED    // 作成済み
+  SENT       // 送信済み
+  COMPLETED  // 完了
+  DECLINED   // 拒否
+  VOIDED     // 無効
+}
+
+enum DocuSignSignerStatus {
+  CREATED    // 作成済み
+  SENT       // 送信済み
+  DELIVERED  // 配信済み
+  SIGNED     // 署名済み
+  COMPLETED  // 完了
+  DECLINED   // 拒否
 }

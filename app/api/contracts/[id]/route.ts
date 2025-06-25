@@ -7,9 +7,9 @@ import { authOptions } from '@/lib/auth'
 const prisma = new PrismaClient()
 
 // 契約書詳細の取得
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const contractId = params.id
+    const { id: contractId } = await params
     let userId: string
 
     // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
@@ -71,9 +71,9 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 }
 
 // 契約書の更新
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const contractId = params.id
+    const { id: contractId } = await params
     let userId: string
 
     // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
@@ -160,9 +160,9 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 }
 
 // 契約書の削除
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const contractId = params.id
+    const { id: contractId } = await params
     let userId: string
 
     // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得

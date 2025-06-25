@@ -5,6 +5,7 @@ export * from './group.factory'
 export * from './category.factory'
 export * from './directory.factory'
 export * from './contract.factory'
+export * from './docusign.factory'
 
 import { Directory } from '@/lib/generated/prisma'
 import { userFactory } from './user.factory'
@@ -12,6 +13,7 @@ import { groupFactory } from './group.factory'
 import { categoryFactory } from './category.factory'
 import { directoryFactory } from './directory.factory'
 import { contractFactory } from './contract.factory'
+import { docuSignEnvelopeFactory, docuSignSignerFactory } from './docusign.factory'
 import { testPrisma } from './index'
 
 // テストシナリオヘルパー
@@ -244,6 +246,8 @@ export const factories = {
   category: categoryFactory,
   directory: directoryFactory,
   contract: contractFactory,
+  docuSignEnvelope: docuSignEnvelopeFactory,
+  docuSignSigner: docuSignSignerFactory,
 }
 
 export const scenarios = TestScenarioBuilder
