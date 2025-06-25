@@ -27,71 +27,8 @@ OSSとして公開する
 
 ## データベーススキーマ
 
-### 主要なモデル
-
-#### User（ユーザー）
-
-- id: ユーザーID
-- email: メールアドレス
-- name: 名前
-- isActive: アクティブ状態
-
-#### Group（グループ）
-
-- id: グループID
-- name: グループ名
-- description: 説明
-- isActive: アクティブ状態
-
-#### Directory（ディレクトリ）
-
-- id: ディレクトリID
-- name: ディレクトリ名
-- parentId: 親ディレクトリID（階層構造）
-- path: パス
-- description: 説明
-
-#### Contract（契約書）
-
-- id: 契約書ID
-- title: タイトル
-- content: Markdownコンテンツ
-- status: ステータス（DRAFT, REVIEW, ACTIVE, EXPIRED, TERMINATED）
-- contractNumber: 契約書番号
-- startDate: 開始日
-- endDate: 終了日
-- ownerId: 作成者ID
-- directoryId: ディレクトリID
-- categoryId: カテゴリID
-
-#### Category（カテゴリ）
-
-- id: カテゴリID
-- name: カテゴリ名
-- color: カテゴリの色
-
-#### ContractVersion（契約書バージョン）
-
-- id: バージョンID
-- version: バージョン番号
-- title: そのバージョンのタイトル
-- content: その時点のコンテンツ
-- changeNote: 変更メモ
-- contractId: 契約書ID
-
-#### DirectoryAccess（ディレクトリアクセス権限）
-
-- id: アクセス権限ID
-- directoryId: ディレクトリID
-- groupId: グループID
-- permission: 権限（READ, WRITE）
-
-#### UserGroup（ユーザーグループ関連）
-
-- id: 関連ID
-- userId: ユーザーID
-- groupId: グループID
-- joinedAt: 参加日時
+`prisma/shcema.prisma`
+を参照
 
 ## セットアップ手順
 

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { ContractEditor, ContractData } from '@/components/contracts/ContractEditor'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
-import { Home } from 'lucide-react'
+import { Home, ArrowLeft } from 'lucide-react'
 
 interface EditContractPageProps {
   params: { id: string }
@@ -140,6 +140,18 @@ export default function EditContractPage({ params }: EditContractPageProps) {
     </Button>
   )
 
+  const renderBackButton = () => (
+    <Button
+      variant="outline"
+      size="sm"
+      onClick={() => router.push(`/contracts/${params.id}`)}
+      className="gap-2"
+    >
+      <ArrowLeft className="h-4 w-4" />
+      詳細に戻る
+    </Button>
+  )
+
   if (isInitialLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -170,6 +182,7 @@ export default function EditContractPage({ params }: EditContractPageProps) {
       onCancel={handleCancel}
       isLoading={isLoading}
       homeButton={renderHomeButton()}
+      backButton={renderBackButton()}
     />
   )
 }

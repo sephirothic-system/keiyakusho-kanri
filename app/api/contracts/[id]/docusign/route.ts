@@ -8,9 +8,9 @@ import { authOptions } from '@/lib/auth'
 const prisma = new PrismaClient()
 
 // 電子契約の開始
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const contractId = params.id
+    const { id: contractId } = await params
     let userId: string
 
     // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
@@ -94,9 +94,9 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
 }
 
 // 契約書のDocuSignエンベロープ一覧を取得
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const contractId = params.id
+    const { id: contractId } = await params
     let userId: string
 
     // テスト環境ではヘッダーからユーザーIDを取得、本番環境ではセッションから取得
