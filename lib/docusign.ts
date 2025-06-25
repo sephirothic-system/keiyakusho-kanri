@@ -155,9 +155,12 @@ async function convertMarkdownToPdfBase64(markdown: string, title: string): Prom
       <head>
         <meta charset="UTF-8">
         <title>${title}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
         <style>
           body {
-            font-family: 'Noto Sans JP', Arial, sans-serif;
+            font-family: 'Noto Sans JP', 'Yu Gothic', 'Yu Gothic Medium', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'BIZ UDPGothic', 'Meiryo', Arial, sans-serif;
             line-height: 1.6;
             max-width: 800px;
             margin: 0 auto;
@@ -219,11 +222,19 @@ async function convertMarkdownToPdfBase64(markdown: string, title: string): Prom
     // Puppeteerを使用してPDFを生成
     browser = await puppeteer.default.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
+      args: [
+        '--no-sandbox', 
+        '--disable-setuid-sandbox',
+        '--disable-web-security',
+        '--font-render-hinting=none'
+      ]
     })
     
     const page = await browser.newPage()
+    
+    // 日本語フォントを確実に読み込むため、フォント読み込み完了を待つ
     await page.setContent(fullHtml, { waitUntil: 'networkidle2' })
+    await page.evaluateHandle('document.fonts.ready')
     
     const pdfBuffer = await page.pdf({
       format: 'A4' as const,

@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
 @custom-variant dark (&:is(.dark *));
 
@@ -118,5 +119,15 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Noto Sans JP', var(--font-geist-sans), 'Yu Gothic', 'Yu Gothic Medium', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'BIZ UDPGothic', 'Meiryo', system-ui, -apple-system, sans-serif;
+  }
+  
+  /* Prose（Markdown表示）でも日本語フォントを使用 */
+  .prose {
+    font-family: 'Noto Sans JP', var(--font-geist-sans), 'Yu Gothic', 'Yu Gothic Medium', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'BIZ UDPGothic', 'Meiryo', system-ui, -apple-system, sans-serif;
+  }
+  
+  .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+    font-family: 'Noto Sans JP', var(--font-geist-sans), 'Yu Gothic', 'Yu Gothic Medium', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'BIZ UDPGothic', 'Meiryo', system-ui, -apple-system, sans-serif;
   }
 }

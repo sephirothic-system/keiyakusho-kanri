@@ -13,6 +13,12 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
+const notoSansJP = Noto_Sans_JP({
+  variable: '--font-noto-sans-jp',
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+})
+
 export const metadata: Metadata = {
   title: '契約書管理システム',
   description: '契約書管理システム',

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
+import { marked } from 'marked'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -679,10 +680,13 @@ export default function ContractDetailPage({ params }: ContractDetailPageProps) 
         </CardHeader>
         <CardContent>
           <div 
-            className="prose max-w-none"
+            className="prose max-w-none prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-li:text-foreground"
             data-testid="contract-content"
             dangerouslySetInnerHTML={{
-              __html: contract.content.replace(/\n/g, '<br/>')
+              __html: marked.parse(contract.content, { 
+                breaks: true,
+                gfm: true 
+              })
             }}
           />
         </CardContent>
