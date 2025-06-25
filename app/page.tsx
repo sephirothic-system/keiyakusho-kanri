@@ -2,45 +2,15 @@
 
 import { useSession, signOut } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { FileText, Users, FolderOpen, Plus, Search, Shield } from 'lucide-react'
+import { FileText, Users, FolderOpen, Plus, Search } from 'lucide-react'
 import StatsCards from '@/components/dashboard/StatsCards'
 import RecentContractsList from '@/components/contracts/RecentContractsList'
-
-interface UserInfo {
-  id: string
-  email: string
-  name: string | null
-  isAdmin: boolean
-  isActive: boolean
-  createdAt: string
-}
 
 export default function Home() {
   const { data: session, status } = useSession()
   const router = useRouter()
-  const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
-
-  // ユーザー情報を取得（管理者フラグ含む）
-  useEffect(() => {
-    if (status === 'loading' || !session) return
-
-    const fetchUserInfo = async () => {
-      try {
-        const response = await fetch('/api/auth/me')
-        if (response.ok) {
-          const data = await response.json()
-          setUserInfo(data.user)
-        }
-      } catch (error) {
-        console.error('Failed to fetch user info:', error)
-      }
-    }
-
-    fetchUserInfo()
-  }, [session, status])
 
   if (status === 'loading') {
     return (
@@ -60,10 +30,6 @@ export default function Home() {
 
   const handleManageGroups = () => {
     router.push('/groups')
-  }
-
-  const handleManagePermissions = () => {
-    router.push('/admin/permissions')
   }
 
   const handleBrowseContracts = () => {
@@ -143,23 +109,6 @@ export default function Home() {
                   <CardDescription>チームメンバーとアクセス権限を管理</CardDescription>
                 </CardHeader>
               </Card>
-              {/* 管理者のみ表示 */}
-              {userInfo?.isAdmin && (
-                <Card 
-                  className="cursor-pointer transition-colors hover:bg-gray-50 border-orange-200 bg-orange-50"
-                  onClick={handleManagePermissions}
-                >
-                  <CardHeader>
-                    <CardTitle className="flex items-center text-base text-orange-800">
-                      <Shield className="mr-2 h-5 w-5" />
-                      権限管理
-                    </CardTitle>
-                    <CardDescription className="text-orange-700">
-                      グループごとのディレクトリアクセス権限を管理 (管理者のみ)
-                    </CardDescription>
-                  </CardHeader>
-                </Card>
-              )}
               <Card 
                 className="cursor-pointer transition-colors hover:bg-gray-50"
                 onClick={handleBrowseContracts}
